@@ -1,0 +1,60 @@
+{
+  "baseline_digest": "b23118dc67a55bfee9de810ea7c2a9a2c326596bf23e69e56b0f1dc044254290",
+  "candidate_config_digest": "734e1367f78210d93eff2a3aa69ffacf5e7569996b9228bd44c3e277f22dbc8b",
+  "corpus": {
+    "case_count": 8,
+    "cases_digest": "2a1d82119d20bce146c66c3db0f17c33c4818fdcdc99320bd857d82a76a3aa60",
+    "document_count": 10,
+    "documents_digest": "c501d5dddc28ac79b09c7f8bc6c2a0f4c5858fb4f90cd5a5b47eb2037b78797c",
+    "long_document_bytes": 10240,
+    "long_document_fact_count": 32,
+    "schema_version": 1
+  },
+  "fts5": true,
+  "implementation_digest": "74fb7f1504c61c40252649d6f60f6a15c26f9d1ed4655935204e4ccc1a5c7304",
+  "model_config_digest": "e1387812ccefa0d6f46f759da559d95fce34d1a861e3e87edf51cf0f91036e19",
+  "python_required": "3.14",
+  "schema_version": 1,
+  "sources": {
+    "drift": false,
+    "records": [
+      {
+        "actual_sha256": null,
+        "behavior": "pipeline policy and provenance",
+        "path": "comm/mail/components/ai/modules/AIPipeline.sys.mjs",
+        "sha256": "fc64163bc9d960183714f64df1840457f88b30316b12cf0ae82a9f1420fbd3c2",
+        "status": "unavailable"
+      },
+      {
+        "actual_sha256": null,
+        "behavior": "chunking, exact entities, deterministic vectors, retrieval",
+        "path": "comm/mail/components/ai/modules/AIRAGIndex.sys.mjs",
+        "sha256": "ae111371a90e3f600005b8e14596914851528dcad23d027ec7f0eb40ce34a658",
+        "status": "unavailable"
+      },
+      {
+        "actual_sha256": null,
+        "behavior": "source-backed graph contributions",
+        "path": "comm/mail/components/ai/modules/AIGraph.sys.mjs",
+        "sha256": "31cbe48ec947bd5a299fe6f1762d6f73c3e091c15729da132353abfe645948ba",
+        "status": "unavailable"
+      },
+      {
+        "actual_sha256": null,
+        "behavior": "bounded endpoint requests and generation settings",
+        "path": "comm/mail/components/ai/modules/AIEndpoint.sys.mjs",
+        "sha256": "733e73065b5da70b11329c585ad23ce072c046d20845e6e82bc787d2ca033135",
+        "status": "unavailable"
+      },
+      {
+        "actual_sha256": null,
+        "behavior": "RRF, adaptive retrieval, evidence and read-only tools",
+        "path": "comm/mail/components/ai/modules/AIChat.sys.mjs",
+        "sha256": "a3396f17dfbec30eec864d6d8197267432aaa198e8e3183039d8bedca5810e0a",
+        "status": "unavailable"
+      }
+    ],
+    "source_root": null
+  },
+  "sqlite_version": "3.46.1"
+}

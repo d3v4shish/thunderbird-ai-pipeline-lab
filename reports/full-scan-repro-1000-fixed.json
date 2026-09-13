@@ -1,0 +1,50 @@
+{
+  "results": [
+    {
+      "counts": {
+        "chunks": 1000,
+        "documents": 1000,
+        "graph_edges": 0,
+        "unsafe_documents": 0
+      },
+      "database_bytes": 2486272,
+      "documents_per_second": 2054.4547784484726,
+      "ingest_cpu_seconds": 0.485422916,
+      "ingest_wall_seconds": 0.48674714600201696,
+      "peak_rss_kib": 35104,
+      "query_p50_ms": 9.244464483344927,
+      "query_p95_ms": 10.096037003677338,
+      "schema_version": 1,
+      "seed": 1,
+      "size": 1000
+    }
+  ],
+  "schema_version": 1,
+  "title": "Deterministic pipeline benchmark",
+  "variant": {
+    "adaptive_searches": 3,
+    "chunk_chars": 1200,
+    "chunk_overlap": 180,
+    "chunking": "fixed",
+    "context_chars": 1800,
+    "context_records": 8,
+    "context_window": 16384,
+    "dense_candidates": "full-scan",
+    "embedding_model": "deterministic-local-v1",
+    "graph": "keyword",
+    "id": "tb-current",
+    "max_chunks": 24,
+    "max_output_tokens": 1024,
+    "model": "deterministic",
+    "prompt": "compact",
+    "reranking": "deterministic",
+    "retrieval": "hybrid",
+    "rrf_k": 60,
+    "schema_version": 1,
+    "temperature": 0.2,
+    "tool_calls": 6,
+    "tool_evidence": 24,
+    "tool_rounds": 4,
+    "tools": "bounded"
+  }
+}

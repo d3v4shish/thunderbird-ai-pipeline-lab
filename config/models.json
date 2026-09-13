@@ -1,0 +1,34 @@
+{
+  "schema_version": 1,
+  "download_allowlist": [
+    "granite3.1-moe:3b-instruct-fp16",
+    "deepseek-v2:16b",
+    "phi4:14b-q8_0",
+    "qwen3-embedding:4b",
+    "qwen2.5:14b-instruct-q4_K_M",
+    "granite4.1:30b-q2_K"
+  ],
+  "installed_controls": [
+    "llama3.2",
+    "llama3.1:8b",
+    "qwen3:8b",
+    "qwen3.6:27b",
+    "qwen3-embedding:0.6b",
+    "bge-m3"
+  ],
+  "standard_context": 16384,
+  "optional_stress_context": 32768,
+  "max_output_tokens": 1024,
+  "concurrency": 1,
+  "vram_cap_gib": 17,
+  "minimum_free_disk_gib": 64,
+  "require_full_gpu_residency": true,
+  "estimated_download_gib": {
+    "granite3.1-moe:3b-instruct-fp16": 6.6,
+    "deepseek-v2:16b": 8.9,
+    "phi4:14b-q8_0": 16.0,
+    "qwen3-embedding:4b": 2.5,
+    "qwen2.5:14b-instruct-q4_K_M": 9.0,
+    "granite4.1:30b-q2_K": 11.0
+  }
+}

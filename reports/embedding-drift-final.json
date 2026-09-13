@@ -1,0 +1,1704 @@
+{
+  "batch_and_order_invariant": false,
+  "batch_order_isolatable": false,
+  "batch_size": 24,
+  "cross_load_comparisons": [
+    {
+      "documents": {
+        "exact_equal": true,
+        "max_absolute_component_delta": 0.0,
+        "mean_absolute_component_delta": 0.0,
+        "mean_cosine_similarity": 1.0,
+        "minimum_cosine_similarity": 1.0,
+        "shape_equal": true
+      },
+      "quality_delta": {
+        "fact_recall_at_8": 0.0,
+        "mean_document_recall_at_8": 0.0
+      },
+      "queries": {
+        "exact_equal": true,
+        "max_absolute_component_delta": 0.0,
+        "mean_absolute_component_delta": 0.0,
+        "mean_cosine_similarity": 1.0,
+        "minimum_cosine_similarity": 1.0,
+        "shape_equal": true
+      },
+      "rankings": {
+        "identical_ranking_rate": 1.0,
+        "maximum_shared_score_delta": 0.0,
+        "mean_overlap_at_8": 1.0
+      },
+      "repeat": 1
+    },
+    {
+      "documents": {
+        "exact_equal": false,
+        "max_absolute_component_delta": 0.008705027999999998,
+        "mean_absolute_component_delta": 0.00034976942401600676,
+        "mean_cosine_similarity": 0.9993762864805962,
+        "minimum_cosine_similarity": 0.9974031255907239,
+        "shape_equal": true
+      },
+      "quality_delta": {
+        "fact_recall_at_8": 0.0,
+        "mean_document_recall_at_8": 0.0
+      },
+      "queries": {
+        "exact_equal": true,
+        "max_absolute_component_delta": 0.0,
+        "mean_absolute_component_delta": 0.0,
+        "mean_cosine_similarity": 1.0,
+        "minimum_cosine_similarity": 1.0,
+        "shape_equal": true
+      },
+      "rankings": {
+        "identical_ranking_rate": 0.5384615384615384,
+        "maximum_shared_score_delta": 0.008420569058222305,
+        "mean_overlap_at_8": 0.9711538461538461
+      },
+      "repeat": 2
+    },
+    {
+      "documents": {
+        "exact_equal": false,
+        "max_absolute_component_delta": 0.009106681000000002,
+        "mean_absolute_component_delta": 0.00043178004142917047,
+        "mean_cosine_similarity": 0.9992292276801641,
+        "minimum_cosine_similarity": 0.9974031255907239,
+        "shape_equal": true
+      },
+      "quality_delta": {
+        "fact_recall_at_8": 0.0,
+        "mean_document_recall_at_8": 0.0
+      },
+      "queries": {
+        "exact_equal": true,
+        "max_absolute_component_delta": 0.0,
+        "mean_absolute_component_delta": 0.0,
+        "mean_cosine_similarity": 1.0,
+        "minimum_cosine_similarity": 1.0,
+        "shape_equal": true
+      },
+      "rankings": {
+        "identical_ranking_rate": 0.7692307692307693,
+        "maximum_shared_score_delta": 0.005202031682786656,
+        "mean_overlap_at_8": 0.9807692307692307
+      },
+      "repeat": 3
+    }
+  ],
+  "cross_load_exact": false,
+  "decision": "Persist document embeddings and permit this endpoint only if steady-state calls are exact and cross-load ranking remains at least 95% overlapping with no more than 1% aggregate quality drift; byte-level nondeterminism remains separately visible.",
+  "duplicate_in_request_exact": false,
+  "manifest": {
+    "implementation_digest": "5335a3c71f247cdec434e48eca674d2538870decd3b5c60d06c507056fb8b2a2",
+    "seed": 0,
+    "source_drift": {
+      "drift": false,
+      "records": [
+        {
+          "actual_sha256": null,
+          "behavior": "pipeline policy and provenance",
+          "path": "comm/mail/components/ai/modules/AIPipeline.sys.mjs",
+          "sha256": "fc64163bc9d960183714f64df1840457f88b30316b12cf0ae82a9f1420fbd3c2",
+          "status": "unavailable"
+        },
+        {
+          "actual_sha256": null,
+          "behavior": "chunking, exact entities, deterministic vectors, retrieval",
+          "path": "comm/mail/components/ai/modules/AIRAGIndex.sys.mjs",
+          "sha256": "ae111371a90e3f600005b8e14596914851528dcad23d027ec7f0eb40ce34a658",
+          "status": "unavailable"
+        },
+        {
+          "actual_sha256": null,
+          "behavior": "source-backed graph contributions",
+          "path": "comm/mail/components/ai/modules/AIGraph.sys.mjs",
+          "sha256": "31cbe48ec947bd5a299fe6f1762d6f73c3e091c15729da132353abfe645948ba",
+          "status": "unavailable"
+        },
+        {
+          "actual_sha256": null,
+          "behavior": "bounded endpoint requests and generation settings",
+          "path": "comm/mail/components/ai/modules/AIEndpoint.sys.mjs",
+          "sha256": "733e73065b5da70b11329c585ad23ce072c046d20845e6e82bc787d2ca033135",
+          "status": "unavailable"
+        },
+        {
+          "actual_sha256": null,
+          "behavior": "RRF, adaptive retrieval, evidence and read-only tools",
+          "path": "comm/mail/components/ai/modules/AIChat.sys.mjs",
+          "sha256": "a3396f17dfbec30eec864d6d8197267432aaa198e8e3183039d8bedca5810e0a",
+          "status": "unavailable"
+        }
+      ],
+      "source_root": null
+    },
+    "synthetic_email_corpus_digest": "5bc946dc6336149a0c81c619a9e2669adb80f540822792cb53d7e5d7b44939eb"
+  },
+  "model": {
+    "digest": "df5bd2e3c74cd8d069d21dc038f1b359fcdc9458fce1c99bd43c9eb1518ff907",
+    "name": "qwen3-embedding:4b"
+  },
+  "production_ready": false,
+  "rank_quality_tolerance_pass": true,
+  "repeated_singleton_exact": true,
+  "repeats": [
+    {
+      "batch_size_one_sample": {
+        "exact_equal": false,
+        "max_absolute_component_delta": 0.004258275999999999,
+        "mean_absolute_component_delta": 0.00015736792152221433,
+        "mean_cosine_similarity": 0.9997965083947006,
+        "minimum_cosine_similarity": 0.9990885379993755,
+        "shape_equal": true
+      },
+      "dimensions": 2560,
+      "document_count": 180,
+      "document_vector_digest": "2812292678c697b8123e0a470b439fc3b750ac29ea2d3652ead62af41e2c8dac",
+      "duplicate_in_one_request": {
+        "exact_equal": false,
+        "max_absolute_component_delta": 0.005276149000000001,
+        "mean_absolute_component_delta": 0.0005450188189964844,
+        "mean_cosine_similarity": 0.9993817642604435,
+        "minimum_cosine_similarity": 0.9993817642604435,
+        "shape_equal": true
+      },
+      "quality": {
+        "fact_recall_at_8": 0.8461538461538461,
+        "mean_document_recall_at_8": 0.9696969696969696
+      },
+      "query_vector_digest": "5063fca664de827f3173f31354d63ba987c68c3bd10de832687f4b80787ccbfc",
+      "rankings": {
+        "email-attachment": [
+          {
+            "document_id": "helios-security-request",
+            "score": 0.7658132145684735
+          },
+          {
+            "document_id": "helios-security-attachment",
+            "score": 0.7421572983548829
+          },
+          {
+            "document_id": "safety-injection",
+            "score": 0.45675498338492115
+          },
+          {
+            "document_id": "atlas-900-action-07",
+            "score": 0.45366454247793303
+          },
+          {
+            "document_id": "atlas-900-action-05",
+            "score": 0.4347810886434172
+          },
+          {
+            "document_id": "orchid-room-final",
+            "score": 0.4318200183118359
+          },
+          {
+            "document_id": "atlas-900-action-04",
+            "score": 0.42990631223803133
+          },
+          {
+            "document_id": "atlas-900-action-11",
+            "score": 0.4282204034582119
+          }
+        ],
+        "email-exact-room": [
+          {
+            "document_id": "orchid-room-final",
+            "score": 0.7421877003438091
+          },
+          {
+            "document_id": "orchid-room-old",
+            "score": 0.6580230947210752
+          },
+          {
+            "document_id": "helios-security-request",
+            "score": 0.5260133527179458
+          },
+          {
+            "document_id": "helios-security-attachment",
+            "score": 0.5183151377035348
+          },
+          {
+            "document_id": "meridian-904-schedule",
+            "score": 0.517973347324529
+          },
+          {
+            "document_id": "cedar-cutover-old",
+            "score": 0.5053498815155749
+          },
+          {
+            "document_id": "meridian-904-budget",
+            "score": 0.49720616406687074
+          },
+          {
+            "document_id": "northstar-continuity",
+            "score": 0.4914936295529038
+          }
+        ],
+        "email-exhaustive-atlas": [
+          {
+            "document_id": "atlas-900-action-09",
+            "score": 0.6662072434627916
+          },
+          {
+            "document_id": "atlas-900-action-01",
+            "score": 0.6445666979255181
+          },
+          {
+            "document_id": "atlas-900-action-02",
+            "score": 0.6373142059994933
+          },
+          {
+            "document_id": "atlas-900-action-11",
+            "score": 0.6367019671696295
+          },
+          {
+            "document_id": "atlas-900-action-05",
+            "score": 0.6356586460447549
+          },
+          {
+            "document_id": "atlas-900-action-04",
+            "score": 0.6276975744631814
+          },
+          {
+            "document_id": "atlas-900-action-08",
+            "score": 0.6267743650064571
+          },
+          {
+            "document_id": "atlas-900-action-03",
+            "score": 0.6257673488483992
+          }
+        ],
+        "email-latest-revision": [
+          {
+            "document_id": "cedar-cutover-final",
+            "score": 0.8510719854524152
+          },
+          {
+            "document_id": "cedar-cutover-old",
+            "score": 0.7985182334733387
+          },
+          {
+            "document_id": "meridian-904-schedule",
+            "score": 0.5625206597559291
+          },
+          {
+            "document_id": "meridian-904-budget",
+            "score": 0.5573343666348689
+          },
+          {
+            "document_id": "ember-620-renewal",
+            "score": 0.5488491254459086
+          },
+          {
+            "document_id": "ember-620-approver",
+            "score": 0.5484314300331299
+          },
+          {
+            "document_id": "orchid-room-final",
+            "score": 0.5431968202519386
+          },
+          {
+            "document_id": "polar-118-storage",
+            "score": 0.5430383383890047
+          }
+        ],
+        "email-multilingual": [
+          {
+            "document_id": "lumen-multilingual",
+            "score": 0.7773021025509386
+          },
+          {
+            "document_id": "meridian-904-budget",
+            "score": 0.5132973725274259
+          },
+          {
+            "document_id": "ember-620-renewal",
+            "score": 0.5076862247769421
+          },
+          {
+            "document_id": "atlas-900-action-05",
+            "score": 0.4889391704872632
+          },
+          {
+            "document_id": "meridian-904-schedule",
+            "score": 0.4854277867738187
+          },
+          {
+            "document_id": "cedar-cutover-final",
+            "score": 0.4692903538327223
+          },
+          {
+            "document_id": "cedar-cutover-old",
+            "score": 0.4642872881276394
+          },
+          {
+            "document_id": "quartz-314-supplier",
+            "score": 0.4605235729418546
+          }
+        ],
+        "email-multipart-ember": [
+          {
+            "document_id": "ember-620-approver",
+            "score": 0.7927689518265074
+          },
+          {
+            "document_id": "ember-620-renewal",
+            "score": 0.776522239683755
+          },
+          {
+            "document_id": "cedar-cutover-final",
+            "score": 0.5322639024920909
+          },
+          {
+            "document_id": "meridian-904-budget",
+            "score": 0.5210647398859393
+          },
+          {
+            "document_id": "cedar-cutover-old",
+            "score": 0.4904189744400329
+          },
+          {
+            "document_id": "helios-security-request",
+            "score": 0.48364326777953615
+          },
+          {
+            "document_id": "lumen-multilingual",
+            "score": 0.4810135811585091
+          },
+          {
+            "document_id": "polar-118-rollback",
+            "score": 0.4788429586595207
+          }
+        ],
+        "email-multipart-meridian": [
+          {
+            "document_id": "meridian-904-schedule",
+            "score": 0.6870617886033606
+          },
+          {
+            "document_id": "meridian-904-budget",
+            "score": 0.6613595480390236
+          },
+          {
+            "document_id": "atlas-900-action-04",
+            "score": 0.4199195402428809
+          },
+          {
+            "document_id": "atlas-900-action-09",
+            "score": 0.4036175715187055
+          },
+          {
+            "document_id": "quartz-314-supplier",
+            "score": 0.3913813874049899
+          },
+          {
+            "document_id": "cedar-cutover-final",
+            "score": 0.3866177136685089
+          },
+          {
+            "document_id": "ember-620-approver",
+            "score": 0.3803429527317062
+          },
+          {
+            "document_id": "lumen-multilingual",
+            "score": 0.3789633837839879
+          }
+        ],
+        "email-multipart-polar": [
+          {
+            "document_id": "polar-118-storage",
+            "score": 0.7198567056440379
+          },
+          {
+            "document_id": "polar-118-rollback",
+            "score": 0.7043273369991692
+          },
+          {
+            "document_id": "northstar-continuity",
+            "score": 0.4899772363351384
+          },
+          {
+            "document_id": "quartz-314-owner",
+            "score": 0.4866644786587653
+          },
+          {
+            "document_id": "atlas-900-action-11",
+            "score": 0.4632130240228286
+          },
+          {
+            "document_id": "cedar-cutover-old",
+            "score": 0.45805885352795944
+          },
+          {
+            "document_id": "ember-620-renewal",
+            "score": 0.45106816921292703
+          },
+          {
+            "document_id": "atlas-900-action-08",
+            "score": 0.4411351464121055
+          }
+        ],
+        "email-multipart-quartz": [
+          {
+            "document_id": "quartz-314-owner",
+            "score": 0.6709462542435443
+          },
+          {
+            "document_id": "quartz-314-supplier",
+            "score": 0.666281512448047
+          },
+          {
+            "document_id": "cedar-cutover-old",
+            "score": 0.4200346246266428
+          },
+          {
+            "document_id": "meridian-904-schedule",
+            "score": 0.41940058632455746
+          },
+          {
+            "document_id": "safety-injection",
+            "score": 0.4152397895714218
+          },
+          {
+            "document_id": "cedar-cutover-final",
+            "score": 0.4142505095736251
+          },
+          {
+            "document_id": "atlas-900-action-03",
+            "score": 0.4118316016002983
+          },
+          {
+            "document_id": "atlas-900-action-04",
+            "score": 0.41118593823729993
+          }
+        ],
+        "email-negative": [
+          {
+            "document_id": "meridian-904-schedule",
+            "score": 0.5141341136535522
+          },
+          {
+            "document_id": "ember-620-approver",
+            "score": 0.4887141565080655
+          },
+          {
+            "document_id": "cedar-cutover-final",
+            "score": 0.45628441106742573
+          },
+          {
+            "document_id": "orchid-room-final",
+            "score": 0.4503088644380617
+          },
+          {
+            "document_id": "meridian-904-budget",
+            "score": 0.44232045763293026
+          },
+          {
+            "document_id": "polar-118-rollback",
+            "score": 0.4389255037982019
+          },
+          {
+            "document_id": "ember-620-renewal",
+            "score": 0.43861730655994285
+          },
+          {
+            "document_id": "atlas-900-action-11",
+            "score": 0.43491379039536004
+          }
+        ],
+        "email-prompt-injection": [
+          {
+            "document_id": "safety-injection",
+            "score": 0.7801140782200963
+          },
+          {
+            "document_id": "quartz-314-supplier",
+            "score": 0.49770561825515997
+          },
+          {
+            "document_id": "atlas-900-action-04",
+            "score": 0.4932445191933363
+          },
+          {
+            "document_id": "atlas-900-action-02",
+            "score": 0.48365312878134414
+          },
+          {
+            "document_id": "ember-620-approver",
+            "score": 0.4704936301339836
+          },
+          {
+            "document_id": "meridian-904-budget",
+            "score": 0.4693940769339228
+          },
+          {
+            "document_id": "meridian-904-schedule",
+            "score": 0.45541642297695584
+          },
+          {
+            "document_id": "helios-security-attachment",
+            "score": 0.4500646108092773
+          }
+        ],
+        "email-scope-isolation": [
+          {
+            "document_id": "safety-injection",
+            "score": 0.508781846518301
+          },
+          {
+            "document_id": "atlas-900-action-09",
+            "score": 0.4547194291060884
+          },
+          {
+            "document_id": "helios-security-attachment",
+            "score": 0.4280060313388244
+          },
+          {
+            "document_id": "atlas-900-action-01",
+            "score": 0.42317673079678025
+          },
+          {
+            "document_id": "atlas-900-action-05",
+            "score": 0.41923276350497163
+          },
+          {
+            "document_id": "helios-security-request",
+            "score": 0.417516101629112
+          },
+          {
+            "document_id": "atlas-900-action-11",
+            "score": 0.4174919005726984
+          },
+          {
+            "document_id": "meridian-904-schedule",
+            "score": 0.415713072132177
+          }
+        ],
+        "email-semantic-recovery": [
+          {
+            "document_id": "northstar-continuity",
+            "score": 0.6922993608864852
+          },
+          {
+            "document_id": "polar-118-rollback",
+            "score": 0.5166250363856872
+          },
+          {
+            "document_id": "atlas-900-action-04",
+            "score": 0.453312102209202
+          },
+          {
+            "document_id": "quartz-314-owner",
+            "score": 0.44805991567302933
+          },
+          {
+            "document_id": "meridian-904-schedule",
+            "score": 0.4278269268504258
+          },
+          {
+            "document_id": "routine-099",
+            "score": 0.4073994733742371
+          },
+          {
+            "document_id": "orchid-room-final",
+            "score": 0.4036331947677057
+          },
+          {
+            "document_id": "atlas-900-action-09",
+            "score": 0.40345836203926627
+          }
+        ]
+      },
+      "repeat": 1,
+      "repeated_singleton_request": {
+        "exact_equal": true,
+        "max_absolute_component_delta": 0.0,
+        "mean_absolute_component_delta": 0.0,
+        "mean_cosine_similarity": 1.0,
+        "minimum_cosine_similarity": 1.0,
+        "shape_equal": true
+      },
+      "reversed_order_sample": {
+        "exact_equal": false,
+        "max_absolute_component_delta": 0.0037255700000000044,
+        "mean_absolute_component_delta": 9.44652318209668e-05,
+        "mean_cosine_similarity": 0.9998549522503382,
+        "minimum_cosine_similarity": 0.9988396180027055,
+        "shape_equal": true
+      },
+      "runtime": {
+        "active_ollama_vram_bytes": 6455432314,
+        "active_whole_gpu_bytes": 8085569536
+      },
+      "same_load_repeat": {
+        "exact_equal": false,
+        "max_absolute_component_delta": 0.008425006999999998,
+        "mean_absolute_component_delta": 0.00040816675430878867,
+        "mean_cosine_similarity": 0.9992779076453823,
+        "minimum_cosine_similarity": 0.9972639810949363,
+        "shape_equal": true
+      },
+      "steady_state_repeat": {
+        "exact_equal": false,
+        "max_absolute_component_delta": 0.009106681000000002,
+        "mean_absolute_component_delta": 0.0003462455544503027,
+        "mean_cosine_similarity": 0.9993821865737039,
+        "minimum_cosine_similarity": 0.997496378777748,
+        "shape_equal": true
+      },
+      "timing_ms": {
+        "documents": 6923.811114000273,
+        "duplicate_pair": 141.08544799819356,
+        "queries": 260.52983599947765,
+        "reversed_sample": 305.10432200026116,
+        "same_load_repeat": 5100.298337001732,
+        "singleton_repeat": 239.48933499923442,
+        "singleton_sample": 1086.3454330028617,
+        "steady_state_repeat": 5087.352902999555
+      }
+    },
+    {
+      "batch_size_one_sample": {
+        "exact_equal": false,
+        "max_absolute_component_delta": 0.003445972000000002,
+        "mean_absolute_component_delta": 0.00015285632724353272,
+        "mean_cosine_similarity": 0.9998097479834291,
+        "minimum_cosine_similarity": 0.9991944547092034,
+        "shape_equal": true
+      },
+      "dimensions": 2560,
+      "document_count": 180,
+      "document_vector_digest": "f2405d4c28fcd11d430ce2c1e30e33b4062e167757cb68a405579fa4481d8f68",
+      "duplicate_in_one_request": {
+        "exact_equal": false,
+        "max_absolute_component_delta": 0.005276149000000001,
+        "mean_absolute_component_delta": 0.0005450188189964844,
+        "mean_cosine_similarity": 0.9993817642604435,
+        "minimum_cosine_similarity": 0.9993817642604435,
+        "shape_equal": true
+      },
+      "quality": {
+        "fact_recall_at_8": 0.8461538461538461,
+        "mean_document_recall_at_8": 0.9696969696969696
+      },
+      "query_vector_digest": "5063fca664de827f3173f31354d63ba987c68c3bd10de832687f4b80787ccbfc",
+      "rankings": {
+        "email-attachment": [
+          {
+            "document_id": "helios-security-request",
+            "score": 0.7658132145684735
+          },
+          {
+            "document_id": "helios-security-attachment",
+            "score": 0.7421572983548829
+          },
+          {
+            "document_id": "atlas-900-action-07",
+            "score": 0.45717531148646673
+          },
+          {
+            "document_id": "safety-injection",
+            "score": 0.45675498338492115
+          },
+          {
+            "document_id": "atlas-900-action-05",
+            "score": 0.4347810886434172
+          },
+          {
+            "document_id": "orchid-room-final",
+            "score": 0.43258416730088245
+          },
+          {
+            "document_id": "atlas-900-action-11",
+            "score": 0.4282204034582119
+          },
+          {
+            "document_id": "quartz-314-supplier",
+            "score": 0.42787920059682066
+          }
+        ],
+        "email-exact-room": [
+          {
+            "document_id": "orchid-room-final",
+            "score": 0.7369856686610224
+          },
+          {
+            "document_id": "orchid-room-old",
+            "score": 0.6580230947210752
+          },
+          {
+            "document_id": "helios-security-request",
+            "score": 0.5260133527179458
+          },
+          {
+            "document_id": "helios-security-attachment",
+            "score": 0.5183151377035348
+          },
+          {
+            "document_id": "meridian-904-schedule",
+            "score": 0.517973347324529
+          },
+          {
+            "document_id": "cedar-cutover-old",
+            "score": 0.5053498815155749
+          },
+          {
+            "document_id": "meridian-904-budget",
+            "score": 0.49720616406687074
+          },
+          {
+            "document_id": "northstar-continuity",
+            "score": 0.4914936295529038
+          }
+        ],
+        "email-exhaustive-atlas": [
+          {
+            "document_id": "atlas-900-action-09",
+            "score": 0.6665693816739192
+          },
+          {
+            "document_id": "atlas-900-action-01",
+            "score": 0.6445666979255181
+          },
+          {
+            "document_id": "atlas-900-action-02",
+            "score": 0.6373142059994933
+          },
+          {
+            "document_id": "atlas-900-action-11",
+            "score": 0.6367019671696295
+          },
+          {
+            "document_id": "atlas-900-action-05",
+            "score": 0.6356586460447549
+          },
+          {
+            "document_id": "atlas-900-action-08",
+            "score": 0.6267743650064571
+          },
+          {
+            "document_id": "atlas-900-action-03",
+            "score": 0.6257673488483992
+          },
+          {
+            "document_id": "atlas-900-action-06",
+            "score": 0.6255571288329105
+          }
+        ],
+        "email-latest-revision": [
+          {
+            "document_id": "cedar-cutover-final",
+            "score": 0.8510719854524152
+          },
+          {
+            "document_id": "cedar-cutover-old",
+            "score": 0.7985182334733387
+          },
+          {
+            "document_id": "meridian-904-schedule",
+            "score": 0.5625206597559291
+          },
+          {
+            "document_id": "meridian-904-budget",
+            "score": 0.5573343666348689
+          },
+          {
+            "document_id": "ember-620-renewal",
+            "score": 0.5488491254459086
+          },
+          {
+            "document_id": "ember-620-approver",
+            "score": 0.5484314300331299
+          },
+          {
+            "document_id": "orchid-room-final",
+            "score": 0.5447748492952771
+          },
+          {
+            "document_id": "polar-118-storage",
+            "score": 0.5422067932768025
+          }
+        ],
+        "email-multilingual": [
+          {
+            "document_id": "lumen-multilingual",
+            "score": 0.7773021025509386
+          },
+          {
+            "document_id": "meridian-904-budget",
+            "score": 0.5132973725274259
+          },
+          {
+            "document_id": "ember-620-renewal",
+            "score": 0.5076862247769421
+          },
+          {
+            "document_id": "atlas-900-action-05",
+            "score": 0.4889391704872632
+          },
+          {
+            "document_id": "meridian-904-schedule",
+            "score": 0.4854277867738187
+          },
+          {
+            "document_id": "cedar-cutover-final",
+            "score": 0.4692903538327223
+          },
+          {
+            "document_id": "cedar-cutover-old",
+            "score": 0.4642872881276394
+          },
+          {
+            "document_id": "quartz-314-supplier",
+            "score": 0.4605235729418546
+          }
+        ],
+        "email-multipart-ember": [
+          {
+            "document_id": "ember-620-approver",
+            "score": 0.7927689518265074
+          },
+          {
+            "document_id": "ember-620-renewal",
+            "score": 0.776522239683755
+          },
+          {
+            "document_id": "cedar-cutover-final",
+            "score": 0.5322639024920909
+          },
+          {
+            "document_id": "meridian-904-budget",
+            "score": 0.5210647398859393
+          },
+          {
+            "document_id": "cedar-cutover-old",
+            "score": 0.4904189744400329
+          },
+          {
+            "document_id": "helios-security-request",
+            "score": 0.48364326777953615
+          },
+          {
+            "document_id": "polar-118-rollback",
+            "score": 0.48349429340897776
+          },
+          {
+            "document_id": "lumen-multilingual",
+            "score": 0.4810135811585091
+          }
+        ],
+        "email-multipart-meridian": [
+          {
+            "document_id": "meridian-904-schedule",
+            "score": 0.6870617886033606
+          },
+          {
+            "document_id": "meridian-904-budget",
+            "score": 0.6613595480390236
+          },
+          {
+            "document_id": "atlas-900-action-04",
+            "score": 0.4143065454916106
+          },
+          {
+            "document_id": "atlas-900-action-09",
+            "score": 0.4077820911874353
+          },
+          {
+            "document_id": "quartz-314-supplier",
+            "score": 0.3913813874049899
+          },
+          {
+            "document_id": "cedar-cutover-final",
+            "score": 0.3866177136685089
+          },
+          {
+            "document_id": "ember-620-approver",
+            "score": 0.3803429527317062
+          },
+          {
+            "document_id": "lumen-multilingual",
+            "score": 0.3789633837839879
+          }
+        ],
+        "email-multipart-polar": [
+          {
+            "document_id": "polar-118-storage",
+            "score": 0.7227076537181126
+          },
+          {
+            "document_id": "polar-118-rollback",
+            "score": 0.7127479060573915
+          },
+          {
+            "document_id": "northstar-continuity",
+            "score": 0.4899772363351384
+          },
+          {
+            "document_id": "quartz-314-owner",
+            "score": 0.4866644786587653
+          },
+          {
+            "document_id": "atlas-900-action-11",
+            "score": 0.4632130240228286
+          },
+          {
+            "document_id": "cedar-cutover-old",
+            "score": 0.45805885352795944
+          },
+          {
+            "document_id": "ember-620-renewal",
+            "score": 0.45106816921292703
+          },
+          {
+            "document_id": "atlas-900-action-08",
+            "score": 0.4411351464121055
+          }
+        ],
+        "email-multipart-quartz": [
+          {
+            "document_id": "quartz-314-owner",
+            "score": 0.6709462542435443
+          },
+          {
+            "document_id": "quartz-314-supplier",
+            "score": 0.666281512448047
+          },
+          {
+            "document_id": "cedar-cutover-old",
+            "score": 0.4200346246266428
+          },
+          {
+            "document_id": "meridian-904-schedule",
+            "score": 0.41940058632455746
+          },
+          {
+            "document_id": "safety-injection",
+            "score": 0.4152397895714218
+          },
+          {
+            "document_id": "cedar-cutover-final",
+            "score": 0.4142505095736251
+          },
+          {
+            "document_id": "atlas-900-action-03",
+            "score": 0.4118316016002983
+          },
+          {
+            "document_id": "atlas-900-action-04",
+            "score": 0.4067418642792253
+          }
+        ],
+        "email-negative": [
+          {
+            "document_id": "meridian-904-schedule",
+            "score": 0.5141341136535522
+          },
+          {
+            "document_id": "ember-620-approver",
+            "score": 0.4887141565080655
+          },
+          {
+            "document_id": "cedar-cutover-final",
+            "score": 0.45628441106742573
+          },
+          {
+            "document_id": "orchid-room-final",
+            "score": 0.4479447727421395
+          },
+          {
+            "document_id": "polar-118-rollback",
+            "score": 0.445062079075721
+          },
+          {
+            "document_id": "meridian-904-budget",
+            "score": 0.44232045763293026
+          },
+          {
+            "document_id": "ember-620-renewal",
+            "score": 0.43861730655994285
+          },
+          {
+            "document_id": "atlas-900-action-11",
+            "score": 0.43491379039536004
+          }
+        ],
+        "email-prompt-injection": [
+          {
+            "document_id": "safety-injection",
+            "score": 0.7801140782200963
+          },
+          {
+            "document_id": "quartz-314-supplier",
+            "score": 0.49770561825515997
+          },
+          {
+            "document_id": "atlas-900-action-04",
+            "score": 0.4880316750606233
+          },
+          {
+            "document_id": "atlas-900-action-02",
+            "score": 0.48365312878134414
+          },
+          {
+            "document_id": "ember-620-approver",
+            "score": 0.4704936301339836
+          },
+          {
+            "document_id": "meridian-904-budget",
+            "score": 0.4693940769339228
+          },
+          {
+            "document_id": "meridian-904-schedule",
+            "score": 0.45541642297695584
+          },
+          {
+            "document_id": "atlas-900-action-09",
+            "score": 0.4532247299344601
+          }
+        ],
+        "email-scope-isolation": [
+          {
+            "document_id": "safety-injection",
+            "score": 0.508781846518301
+          },
+          {
+            "document_id": "atlas-900-action-09",
+            "score": 0.45563999283792056
+          },
+          {
+            "document_id": "helios-security-attachment",
+            "score": 0.4280060313388244
+          },
+          {
+            "document_id": "atlas-900-action-01",
+            "score": 0.42317673079678025
+          },
+          {
+            "document_id": "atlas-900-action-05",
+            "score": 0.41923276350497163
+          },
+          {
+            "document_id": "helios-security-request",
+            "score": 0.417516101629112
+          },
+          {
+            "document_id": "atlas-900-action-11",
+            "score": 0.4174919005726984
+          },
+          {
+            "document_id": "meridian-904-schedule",
+            "score": 0.415713072132177
+          }
+        ],
+        "email-semantic-recovery": [
+          {
+            "document_id": "northstar-continuity",
+            "score": 0.6922993608864852
+          },
+          {
+            "document_id": "polar-118-rollback",
+            "score": 0.5233152568445877
+          },
+          {
+            "document_id": "atlas-900-action-04",
+            "score": 0.45293090773591527
+          },
+          {
+            "document_id": "quartz-314-owner",
+            "score": 0.44805991567302933
+          },
+          {
+            "document_id": "meridian-904-schedule",
+            "score": 0.4278269268504258
+          },
+          {
+            "document_id": "atlas-900-action-09",
+            "score": 0.4064694000269266
+          },
+          {
+            "document_id": "orchid-room-final",
+            "score": 0.40062367859095493
+          },
+          {
+            "document_id": "routine-099",
+            "score": 0.3995918812484761
+          }
+        ]
+      },
+      "repeat": 2,
+      "repeated_singleton_request": {
+        "exact_equal": true,
+        "max_absolute_component_delta": 0.0,
+        "mean_absolute_component_delta": 0.0,
+        "mean_cosine_similarity": 1.0,
+        "minimum_cosine_similarity": 1.0,
+        "shape_equal": true
+      },
+      "reversed_order_sample": {
+        "exact_equal": true,
+        "max_absolute_component_delta": 0.0,
+        "mean_absolute_component_delta": 0.0,
+        "mean_cosine_similarity": 1.0,
+        "minimum_cosine_similarity": 1.0,
+        "shape_equal": true
+      },
+      "runtime": {
+        "active_ollama_vram_bytes": 6455432314,
+        "active_whole_gpu_bytes": 8085569536
+      },
+      "same_load_repeat": {
+        "exact_equal": false,
+        "max_absolute_component_delta": 0.009106681000000002,
+        "mean_absolute_component_delta": 0.0003601441926274547,
+        "mean_cosine_similarity": 0.999363351098809,
+        "minimum_cosine_similarity": 0.9974031255907239,
+        "shape_equal": true
+      },
+      "steady_state_repeat": {
+        "exact_equal": false,
+        "max_absolute_component_delta": 0.008705027999999998,
+        "mean_absolute_component_delta": 0.00034035934496976926,
+        "mean_cosine_similarity": 0.9994027027860515,
+        "minimum_cosine_similarity": 0.9977196600197631,
+        "shape_equal": true
+      },
+      "timing_ms": {
+        "documents": 6847.477639003046,
+        "duplicate_pair": 144.90082300108043,
+        "queries": 272.0679249978275,
+        "reversed_sample": 293.6899490014184,
+        "same_load_repeat": 5109.79675300041,
+        "singleton_repeat": 238.31883800085052,
+        "singleton_sample": 1049.5308520003164,
+        "steady_state_repeat": 5117.370805000974
+      }
+    },
+    {
+      "batch_size_one_sample": {
+        "exact_equal": false,
+        "max_absolute_component_delta": 0.003445972000000002,
+        "mean_absolute_component_delta": 0.00015285632724353272,
+        "mean_cosine_similarity": 0.9998097479834291,
+        "minimum_cosine_similarity": 0.9991944547092034,
+        "shape_equal": true
+      },
+      "dimensions": 2560,
+      "document_count": 180,
+      "document_vector_digest": "57356d635519c17919a821c6053b239b75eda1bf863ea9ba766b084f1a1252d0",
+      "duplicate_in_one_request": {
+        "exact_equal": false,
+        "max_absolute_component_delta": 0.005276149000000001,
+        "mean_absolute_component_delta": 0.0005450188189964844,
+        "mean_cosine_similarity": 0.9993817642604435,
+        "minimum_cosine_similarity": 0.9993817642604435,
+        "shape_equal": true
+      },
+      "quality": {
+        "fact_recall_at_8": 0.8461538461538461,
+        "mean_document_recall_at_8": 0.9696969696969696
+      },
+      "query_vector_digest": "5063fca664de827f3173f31354d63ba987c68c3bd10de832687f4b80787ccbfc",
+      "rankings": {
+        "email-attachment": [
+          {
+            "document_id": "helios-security-request",
+            "score": 0.7658132145684735
+          },
+          {
+            "document_id": "helios-security-attachment",
+            "score": 0.7421572983548829
+          },
+          {
+            "document_id": "atlas-900-action-07",
+            "score": 0.45717531148646673
+          },
+          {
+            "document_id": "safety-injection",
+            "score": 0.45675498338492115
+          },
+          {
+            "document_id": "atlas-900-action-05",
+            "score": 0.4347810886434172
+          },
+          {
+            "document_id": "atlas-900-action-11",
+            "score": 0.43304993997371855
+          },
+          {
+            "document_id": "orchid-room-final",
+            "score": 0.43258416730088245
+          },
+          {
+            "document_id": "quartz-314-supplier",
+            "score": 0.43248258434891484
+          }
+        ],
+        "email-exact-room": [
+          {
+            "document_id": "orchid-room-final",
+            "score": 0.7369856686610224
+          },
+          {
+            "document_id": "orchid-room-old",
+            "score": 0.6580230947210752
+          },
+          {
+            "document_id": "helios-security-request",
+            "score": 0.5260133527179458
+          },
+          {
+            "document_id": "helios-security-attachment",
+            "score": 0.5183151377035348
+          },
+          {
+            "document_id": "meridian-904-schedule",
+            "score": 0.517973347324529
+          },
+          {
+            "document_id": "cedar-cutover-old",
+            "score": 0.5053498815155749
+          },
+          {
+            "document_id": "meridian-904-budget",
+            "score": 0.49720616406687074
+          },
+          {
+            "document_id": "northstar-continuity",
+            "score": 0.4914936295529038
+          }
+        ],
+        "email-exhaustive-atlas": [
+          {
+            "document_id": "atlas-900-action-09",
+            "score": 0.6662072434627916
+          },
+          {
+            "document_id": "atlas-900-action-01",
+            "score": 0.6445666979255181
+          },
+          {
+            "document_id": "atlas-900-action-02",
+            "score": 0.6373142059994933
+          },
+          {
+            "document_id": "atlas-900-action-11",
+            "score": 0.6367868833858714
+          },
+          {
+            "document_id": "atlas-900-action-05",
+            "score": 0.6356586460447549
+          },
+          {
+            "document_id": "atlas-900-action-04",
+            "score": 0.6276975744631814
+          },
+          {
+            "document_id": "atlas-900-action-08",
+            "score": 0.6267743650064571
+          },
+          {
+            "document_id": "atlas-900-action-03",
+            "score": 0.6257673488483992
+          }
+        ],
+        "email-latest-revision": [
+          {
+            "document_id": "cedar-cutover-final",
+            "score": 0.8510719854524152
+          },
+          {
+            "document_id": "cedar-cutover-old",
+            "score": 0.7985182334733387
+          },
+          {
+            "document_id": "meridian-904-schedule",
+            "score": 0.5625206597559291
+          },
+          {
+            "document_id": "meridian-904-budget",
+            "score": 0.5573343666348689
+          },
+          {
+            "document_id": "ember-620-renewal",
+            "score": 0.5488491254459086
+          },
+          {
+            "document_id": "ember-620-approver",
+            "score": 0.5484314300331299
+          },
+          {
+            "document_id": "orchid-room-final",
+            "score": 0.5447748492952771
+          },
+          {
+            "document_id": "polar-118-storage",
+            "score": 0.5430383383890047
+          }
+        ],
+        "email-multilingual": [
+          {
+            "document_id": "lumen-multilingual",
+            "score": 0.7773021025509386
+          },
+          {
+            "document_id": "meridian-904-budget",
+            "score": 0.5132973725274259
+          },
+          {
+            "document_id": "ember-620-renewal",
+            "score": 0.5076862247769421
+          },
+          {
+            "document_id": "atlas-900-action-05",
+            "score": 0.4889391704872632
+          },
+          {
+            "document_id": "meridian-904-schedule",
+            "score": 0.4854277867738187
+          },
+          {
+            "document_id": "cedar-cutover-final",
+            "score": 0.4692903538327223
+          },
+          {
+            "document_id": "cedar-cutover-old",
+            "score": 0.4642872881276394
+          },
+          {
+            "document_id": "quartz-314-supplier",
+            "score": 0.4589761369909381
+          }
+        ],
+        "email-multipart-ember": [
+          {
+            "document_id": "ember-620-approver",
+            "score": 0.7927689518265074
+          },
+          {
+            "document_id": "ember-620-renewal",
+            "score": 0.776522239683755
+          },
+          {
+            "document_id": "cedar-cutover-final",
+            "score": 0.5322639024920909
+          },
+          {
+            "document_id": "meridian-904-budget",
+            "score": 0.5210647398859393
+          },
+          {
+            "document_id": "cedar-cutover-old",
+            "score": 0.4904189744400329
+          },
+          {
+            "document_id": "helios-security-request",
+            "score": 0.48364326777953615
+          },
+          {
+            "document_id": "lumen-multilingual",
+            "score": 0.4810135811585091
+          },
+          {
+            "document_id": "polar-118-rollback",
+            "score": 0.4788429586595207
+          }
+        ],
+        "email-multipart-meridian": [
+          {
+            "document_id": "meridian-904-schedule",
+            "score": 0.6870617886033606
+          },
+          {
+            "document_id": "meridian-904-budget",
+            "score": 0.6613595480390236
+          },
+          {
+            "document_id": "atlas-900-action-04",
+            "score": 0.4199195402428809
+          },
+          {
+            "document_id": "atlas-900-action-09",
+            "score": 0.4036175715187055
+          },
+          {
+            "document_id": "quartz-314-supplier",
+            "score": 0.391767424240174
+          },
+          {
+            "document_id": "cedar-cutover-final",
+            "score": 0.3866177136685089
+          },
+          {
+            "document_id": "ember-620-approver",
+            "score": 0.3803429527317062
+          },
+          {
+            "document_id": "lumen-multilingual",
+            "score": 0.3789633837839879
+          }
+        ],
+        "email-multipart-polar": [
+          {
+            "document_id": "polar-118-storage",
+            "score": 0.7198567056440379
+          },
+          {
+            "document_id": "polar-118-rollback",
+            "score": 0.7043273369991692
+          },
+          {
+            "document_id": "northstar-continuity",
+            "score": 0.4899772363351384
+          },
+          {
+            "document_id": "quartz-314-owner",
+            "score": 0.4866644786587653
+          },
+          {
+            "document_id": "atlas-900-action-11",
+            "score": 0.46804100040635116
+          },
+          {
+            "document_id": "cedar-cutover-old",
+            "score": 0.45805885352795944
+          },
+          {
+            "document_id": "ember-620-renewal",
+            "score": 0.45106816921292703
+          },
+          {
+            "document_id": "atlas-900-action-08",
+            "score": 0.4411351464121055
+          }
+        ],
+        "email-multipart-quartz": [
+          {
+            "document_id": "quartz-314-owner",
+            "score": 0.6709462542435443
+          },
+          {
+            "document_id": "quartz-314-supplier",
+            "score": 0.6675378582160915
+          },
+          {
+            "document_id": "cedar-cutover-old",
+            "score": 0.4200346246266428
+          },
+          {
+            "document_id": "meridian-904-schedule",
+            "score": 0.41940058632455746
+          },
+          {
+            "document_id": "safety-injection",
+            "score": 0.4152397895714218
+          },
+          {
+            "document_id": "cedar-cutover-final",
+            "score": 0.4142505095736251
+          },
+          {
+            "document_id": "atlas-900-action-03",
+            "score": 0.4118316016002983
+          },
+          {
+            "document_id": "atlas-900-action-04",
+            "score": 0.41118593823729993
+          }
+        ],
+        "email-negative": [
+          {
+            "document_id": "meridian-904-schedule",
+            "score": 0.5141341136535522
+          },
+          {
+            "document_id": "ember-620-approver",
+            "score": 0.4887141565080655
+          },
+          {
+            "document_id": "cedar-cutover-final",
+            "score": 0.45628441106742573
+          },
+          {
+            "document_id": "orchid-room-final",
+            "score": 0.4479447727421395
+          },
+          {
+            "document_id": "meridian-904-budget",
+            "score": 0.44232045763293026
+          },
+          {
+            "document_id": "polar-118-rollback",
+            "score": 0.4389255037982019
+          },
+          {
+            "document_id": "ember-620-renewal",
+            "score": 0.43861730655994285
+          },
+          {
+            "document_id": "atlas-900-action-11",
+            "score": 0.43741133544079186
+          }
+        ],
+        "email-prompt-injection": [
+          {
+            "document_id": "safety-injection",
+            "score": 0.7801140782200963
+          },
+          {
+            "document_id": "quartz-314-supplier",
+            "score": 0.4997741759711846
+          },
+          {
+            "document_id": "atlas-900-action-04",
+            "score": 0.4932445191933363
+          },
+          {
+            "document_id": "atlas-900-action-02",
+            "score": 0.48365312878134414
+          },
+          {
+            "document_id": "ember-620-approver",
+            "score": 0.4704936301339836
+          },
+          {
+            "document_id": "meridian-904-budget",
+            "score": 0.4693940769339228
+          },
+          {
+            "document_id": "meridian-904-schedule",
+            "score": 0.45541642297695584
+          },
+          {
+            "document_id": "helios-security-attachment",
+            "score": 0.4500646108092773
+          }
+        ],
+        "email-scope-isolation": [
+          {
+            "document_id": "safety-injection",
+            "score": 0.508781846518301
+          },
+          {
+            "document_id": "atlas-900-action-09",
+            "score": 0.4547194291060884
+          },
+          {
+            "document_id": "helios-security-attachment",
+            "score": 0.4280060313388244
+          },
+          {
+            "document_id": "atlas-900-action-01",
+            "score": 0.42317673079678025
+          },
+          {
+            "document_id": "atlas-900-action-11",
+            "score": 0.4219184781659606
+          },
+          {
+            "document_id": "atlas-900-action-05",
+            "score": 0.41923276350497163
+          },
+          {
+            "document_id": "helios-security-request",
+            "score": 0.417516101629112
+          },
+          {
+            "document_id": "meridian-904-schedule",
+            "score": 0.415713072132177
+          }
+        ],
+        "email-semantic-recovery": [
+          {
+            "document_id": "northstar-continuity",
+            "score": 0.6922993608864852
+          },
+          {
+            "document_id": "polar-118-rollback",
+            "score": 0.5166250363856872
+          },
+          {
+            "document_id": "atlas-900-action-04",
+            "score": 0.453312102209202
+          },
+          {
+            "document_id": "quartz-314-owner",
+            "score": 0.44805991567302933
+          },
+          {
+            "document_id": "meridian-904-schedule",
+            "score": 0.4278269268504258
+          },
+          {
+            "document_id": "routine-099",
+            "score": 0.4073994733742371
+          },
+          {
+            "document_id": "atlas-900-action-09",
+            "score": 0.40345836203926627
+          },
+          {
+            "document_id": "atlas-900-action-11",
+            "score": 0.40277462936559777
+          }
+        ]
+      },
+      "repeat": 3,
+      "repeated_singleton_request": {
+        "exact_equal": true,
+        "max_absolute_component_delta": 0.0,
+        "mean_absolute_component_delta": 0.0,
+        "mean_cosine_similarity": 1.0,
+        "minimum_cosine_similarity": 1.0,
+        "shape_equal": true
+      },
+      "reversed_order_sample": {
+        "exact_equal": false,
+        "max_absolute_component_delta": 0.002745292,
+        "mean_absolute_component_delta": 7.899949967177735e-05,
+        "mean_cosine_similarity": 0.9998993068386505,
+        "minimum_cosine_similarity": 0.9991944547092034,
+        "shape_equal": true
+      },
+      "runtime": {
+        "active_ollama_vram_bytes": 6455432314,
+        "active_whole_gpu_bytes": 8085569536
+      },
+      "same_load_repeat": {
+        "exact_equal": false,
+        "max_absolute_component_delta": 0.008866982,
+        "mean_absolute_component_delta": 0.00038676605543757275,
+        "mean_cosine_similarity": 0.9993123769027515,
+        "minimum_cosine_similarity": 0.9974031255907239,
+        "shape_equal": true
+      },
+      "steady_state_repeat": {
+        "exact_equal": false,
+        "max_absolute_component_delta": 0.008705027999999998,
+        "mean_absolute_component_delta": 0.00036994739525525797,
+        "mean_cosine_similarity": 0.999349153078107,
+        "minimum_cosine_similarity": 0.9972639810949363,
+        "shape_equal": true
+      },
+      "timing_ms": {
+        "documents": 6954.374869001185,
+        "duplicate_pair": 140.23702100166702,
+        "queries": 258.5199509994709,
+        "reversed_sample": 297.7599559999362,
+        "same_load_repeat": 5134.993094001402,
+        "singleton_repeat": 244.8954120009148,
+        "singleton_sample": 1062.406592998741,
+        "steady_state_repeat": 5119.424953998532
+      }
+    }
+  ],
+  "schema_version": 1,
+  "steady_state_exact": false,
+  "title": "Endpoint Embedding Drift Investigation",
+  "within_load_exact": false
+}

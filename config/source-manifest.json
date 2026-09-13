@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "license": "MPL-2.0",
+  "sources": [
+    {
+      "path": "comm/mail/components/ai/modules/AIPipeline.sys.mjs",
+      "sha256": "fc64163bc9d960183714f64df1840457f88b30316b12cf0ae82a9f1420fbd3c2",
+      "behavior": "pipeline policy and provenance"
+    },
+    {
+      "path": "comm/mail/components/ai/modules/AIRAGIndex.sys.mjs",
+      "sha256": "ae111371a90e3f600005b8e14596914851528dcad23d027ec7f0eb40ce34a658",
+      "behavior": "chunking, exact entities, deterministic vectors, retrieval"
+    },
+    {
+      "path": "comm/mail/components/ai/modules/AIGraph.sys.mjs",
+      "sha256": "31cbe48ec947bd5a299fe6f1762d6f73c3e091c15729da132353abfe645948ba",
+      "behavior": "source-backed graph contributions"
+    },
+    {
+      "path": "comm/mail/components/ai/modules/AIEndpoint.sys.mjs",
+      "sha256": "733e73065b5da70b11329c585ad23ce072c046d20845e6e82bc787d2ca033135",
+      "behavior": "bounded endpoint requests and generation settings"
+    },
+    {
+      "path": "comm/mail/components/ai/modules/AIChat.sys.mjs",
+      "sha256": "a3396f17dfbec30eec864d6d8197267432aaa198e8e3183039d8bedca5810e0a",
+      "behavior": "RRF, adaptive retrieval, evidence and read-only tools"
+    }
+  ]
+}
+

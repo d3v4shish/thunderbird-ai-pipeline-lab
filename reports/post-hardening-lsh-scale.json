@@ -1,0 +1,182 @@
+{
+  "results": [
+    {
+      "counts": {
+        "chunks": 1000,
+        "documents": 1000,
+        "graph_edges": 0,
+        "stages": {
+          "chunk": {
+            "count": 1000,
+            "cpu_ms": 14.613358999998832,
+            "errors": 0,
+            "wall_ms": 14.574659006029833
+          },
+          "extract-safety": {
+            "count": 1000,
+            "cpu_ms": 29.830403000000334,
+            "errors": 0,
+            "wall_ms": 29.791250996822782
+          },
+          "graph-index": {
+            "count": 1000,
+            "cpu_ms": 77.76248400000122,
+            "errors": 0,
+            "wall_ms": 77.6296649928554
+          },
+          "index": {
+            "count": 1000,
+            "cpu_ms": 546.7372089999984,
+            "errors": 0,
+            "wall_ms": 546.7106620089908
+          },
+          "normalize": {
+            "count": 1000,
+            "cpu_ms": 23.870735999999514,
+            "errors": 0,
+            "wall_ms": 23.839202995077358
+          }
+        },
+        "unsafe_documents": 0
+      },
+      "database_bytes": 3420160,
+      "documents_per_second": 1418.7124813938105,
+      "ingest_cpu_seconds": 0.70429601,
+      "ingest_wall_seconds": 0.704864455000461,
+      "peak_rss_kib": 32004,
+      "query_p50_ms": 1.683855000010226,
+      "query_p95_ms": 1.9655449996207608,
+      "schema_version": 1,
+      "seed": 1,
+      "size": 1000
+    },
+    {
+      "counts": {
+        "chunks": 10000,
+        "documents": 10000,
+        "graph_edges": 0,
+        "stages": {
+          "chunk": {
+            "count": 10000,
+            "cpu_ms": 148.43701999997774,
+            "errors": 0,
+            "wall_ms": 148.08940807506588
+          },
+          "extract-safety": {
+            "count": 10000,
+            "cpu_ms": 298.3562069999456,
+            "errors": 0,
+            "wall_ms": 298.3038569782366
+          },
+          "graph-index": {
+            "count": 10000,
+            "cpu_ms": 779.6136940000165,
+            "errors": 0,
+            "wall_ms": 778.6796429936658
+          },
+          "index": {
+            "count": 10000,
+            "cpu_ms": 5636.973904000002,
+            "errors": 0,
+            "wall_ms": 5639.877233075822
+          },
+          "normalize": {
+            "count": 10000,
+            "cpu_ms": 240.00590699995374,
+            "errors": 0,
+            "wall_ms": 240.1761160026581
+          }
+        },
+        "unsafe_documents": 0
+      },
+      "database_bytes": 32903168,
+      "documents_per_second": 1383.375925820267,
+      "ingest_cpu_seconds": 7.218688091000001,
+      "ingest_wall_seconds": 7.228693093000402,
+      "peak_rss_kib": 38276,
+      "query_p50_ms": 14.117609999630076,
+      "query_p95_ms": 14.231666000341647,
+      "schema_version": 1,
+      "seed": 1,
+      "size": 10000
+    },
+    {
+      "counts": {
+        "chunks": 100000,
+        "documents": 100000,
+        "graph_edges": 0,
+        "stages": {
+          "chunk": {
+            "count": 100000,
+            "cpu_ms": 1471.7896519984934,
+            "errors": 0,
+            "wall_ms": 1467.7800158005994
+          },
+          "extract-safety": {
+            "count": 100000,
+            "cpu_ms": 2986.1759149996888,
+            "errors": 0,
+            "wall_ms": 2982.440039926587
+          },
+          "graph-index": {
+            "count": 100000,
+            "cpu_ms": 7816.832755999006,
+            "errors": 0,
+            "wall_ms": 7804.342333929526
+          },
+          "index": {
+            "count": 100000,
+            "cpu_ms": 56425.14103100226,
+            "errors": 0,
+            "wall_ms": 56409.70217895938
+          },
+          "normalize": {
+            "count": 100000,
+            "cpu_ms": 2397.7968989985707,
+            "errors": 0,
+            "wall_ms": 2394.1474111152274
+          }
+        },
+        "unsafe_documents": 0
+      },
+      "database_bytes": 329154560,
+      "documents_per_second": 1383.31851887941,
+      "ingest_cpu_seconds": 72.246388254,
+      "ingest_wall_seconds": 72.28993079699922,
+      "peak_rss_kib": 101176,
+      "query_p50_ms": 141.35171849966355,
+      "query_p95_ms": 142.25820999945427,
+      "schema_version": 1,
+      "seed": 1,
+      "size": 100000
+    }
+  ],
+  "schema_version": 1,
+  "title": "Deterministic pipeline benchmark",
+  "variant": {
+    "adaptive_searches": 3,
+    "chunk_chars": 1200,
+    "chunk_overlap": 180,
+    "chunking": "fixed",
+    "context_chars": 1800,
+    "context_records": 8,
+    "context_window": 16384,
+    "dense_candidates": "lsh",
+    "embedding_model": "deterministic-local-v1",
+    "graph": "keyword",
+    "id": "tb-current",
+    "max_chunks": 24,
+    "max_output_tokens": 1024,
+    "model": "deterministic",
+    "prompt": "compact",
+    "reranking": "deterministic",
+    "retrieval": "hybrid",
+    "rrf_k": 60,
+    "schema_version": 1,
+    "temperature": 0.2,
+    "tool_calls": 6,
+    "tool_evidence": 24,
+    "tool_rounds": 4,
+    "tools": "bounded"
+  }
+}

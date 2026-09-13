@@ -1,0 +1,631 @@
+{
+  "decision": "Use sender-scoped template families as bounded retrieval metadata, retain source-validated slots and facts in deterministic ledgers, and cap family graph expansion. Top-K remains unsuitable for exhaustive thread requests.",
+  "fixture_version": "synthetic-template-thread-scale-v1",
+  "hard_gate_pass": true,
+  "manifest": {
+    "implementation_digest": "2f59aea14a99938e8b399eaaf5bf39938f4d7c1406b4ef3b2f4eb37481b318d1",
+    "seed": 0,
+    "source_drift": {
+      "drift": false,
+      "records": [
+        {
+          "actual_sha256": null,
+          "behavior": "pipeline policy and provenance",
+          "path": "comm/mail/components/ai/modules/AIPipeline.sys.mjs",
+          "sha256": "fc64163bc9d960183714f64df1840457f88b30316b12cf0ae82a9f1420fbd3c2",
+          "status": "unavailable"
+        },
+        {
+          "actual_sha256": null,
+          "behavior": "chunking, exact entities, deterministic vectors, retrieval",
+          "path": "comm/mail/components/ai/modules/AIRAGIndex.sys.mjs",
+          "sha256": "ae111371a90e3f600005b8e14596914851528dcad23d027ec7f0eb40ce34a658",
+          "status": "unavailable"
+        },
+        {
+          "actual_sha256": null,
+          "behavior": "source-backed graph contributions",
+          "path": "comm/mail/components/ai/modules/AIGraph.sys.mjs",
+          "sha256": "31cbe48ec947bd5a299fe6f1762d6f73c3e091c15729da132353abfe645948ba",
+          "status": "unavailable"
+        },
+        {
+          "actual_sha256": null,
+          "behavior": "bounded endpoint requests and generation settings",
+          "path": "comm/mail/components/ai/modules/AIEndpoint.sys.mjs",
+          "sha256": "733e73065b5da70b11329c585ad23ce072c046d20845e6e82bc787d2ca033135",
+          "status": "unavailable"
+        },
+        {
+          "actual_sha256": null,
+          "behavior": "RRF, adaptive retrieval, evidence and read-only tools",
+          "path": "comm/mail/components/ai/modules/AIChat.sys.mjs",
+          "sha256": "a3396f17dfbec30eec864d6d8197267432aaa198e8e3183039d8bedca5810e0a",
+          "status": "unavailable"
+        }
+      ],
+      "source_root": null
+    }
+  },
+  "production_ready": false,
+  "results": [
+    {
+      "fixture_digest": "c597f8064c193dd978364f39f0798814efe403b6dce5cfba4efe66a307a4bdd7",
+      "graph": {
+        "family_node_count": 8,
+        "max_neighbors": 8,
+        "neighbors": {
+          "bulletin": [
+            "template-scale-00500-00496",
+            "template-scale-00500-00488",
+            "template-scale-00500-00480",
+            "template-scale-00500-00472",
+            "template-scale-00500-00464",
+            "template-scale-00500-00456",
+            "template-scale-00500-00448",
+            "template-scale-00500-00440"
+          ],
+          "invoice": [
+            "template-scale-00500-00497",
+            "template-scale-00500-00489",
+            "template-scale-00500-00481",
+            "template-scale-00500-00473",
+            "template-scale-00500-00465",
+            "template-scale-00500-00457",
+            "template-scale-00500-00449",
+            "template-scale-00500-00441"
+          ],
+          "meeting": [
+            "template-scale-00500-00493",
+            "template-scale-00500-00485",
+            "template-scale-00500-00477",
+            "template-scale-00500-00469",
+            "template-scale-00500-00461",
+            "template-scale-00500-00453",
+            "template-scale-00500-00445",
+            "template-scale-00500-00437"
+          ],
+          "order": [
+            "template-scale-00500-00499",
+            "template-scale-00500-00491",
+            "template-scale-00500-00483",
+            "template-scale-00500-00475",
+            "template-scale-00500-00467",
+            "template-scale-00500-00459",
+            "template-scale-00500-00451",
+            "template-scale-00500-00443"
+          ],
+          "receipt": [
+            "template-scale-00500-00500",
+            "template-scale-00500-00492",
+            "template-scale-00500-00484",
+            "template-scale-00500-00476",
+            "template-scale-00500-00468",
+            "template-scale-00500-00460",
+            "template-scale-00500-00452",
+            "template-scale-00500-00444"
+          ],
+          "security": [
+            "template-scale-00500-00494",
+            "template-scale-00500-00486",
+            "template-scale-00500-00478",
+            "template-scale-00500-00470",
+            "template-scale-00500-00462",
+            "template-scale-00500-00454",
+            "template-scale-00500-00446",
+            "template-scale-00500-00438"
+          ],
+          "shipment": [
+            "template-scale-00500-00498",
+            "template-scale-00500-00490",
+            "template-scale-00500-00482",
+            "template-scale-00500-00474",
+            "template-scale-00500-00466",
+            "template-scale-00500-00458",
+            "template-scale-00500-00450",
+            "template-scale-00500-00442"
+          ],
+          "support": [
+            "template-scale-00500-00495",
+            "template-scale-00500-00487",
+            "template-scale-00500-00479",
+            "template-scale-00500-00471",
+            "template-scale-00500-00463",
+            "template-scale-00500-00455",
+            "template-scale-00500-00447",
+            "template-scale-00500-00439"
+          ]
+        }
+      },
+      "hard_gate_pass": true,
+      "metrics": {
+        "assignment_recall": 1.0,
+        "character_reduction": 0.6659691359254905,
+        "database_bytes": 2527232,
+        "direct_top_8_fact_recall": 0.016,
+        "fact_recall": 1.0,
+        "family": {
+          "correct": 500,
+          "expected": 500,
+          "f1": 1.0,
+          "offered": 500,
+          "precision": 1.0,
+          "recall": 1.0
+        },
+        "ingest_ms": 1304.4700809987262,
+        "latest_family_accuracy": 1.0,
+        "ledger_characters": 10999,
+        "mining_ms": 65.58656500419602,
+        "peak_python_bytes": 38789,
+        "raw_characters": 150531,
+        "slot_source_validity": 1.0,
+        "source_digest_validity": 1.0,
+        "template_retrieval_characters": 50282
+      },
+      "page_sweep": [
+        {
+          "fact_recall": 1.0,
+          "missing_fact_ids": [],
+          "page_count": 32,
+          "page_size": 16,
+          "peak_ledger_characters": 351,
+          "peak_source_characters": 4828,
+          "unsupported_facts": {}
+        },
+        {
+          "fact_recall": 1.0,
+          "missing_fact_ids": [],
+          "page_count": 16,
+          "page_size": 32,
+          "peak_ledger_characters": 703,
+          "peak_source_characters": 9648,
+          "unsupported_facts": {}
+        },
+        {
+          "fact_recall": 1.0,
+          "missing_fact_ids": [],
+          "page_count": 8,
+          "page_size": 64,
+          "peak_ledger_characters": 1407,
+          "peak_source_characters": 19288,
+          "unsupported_facts": {}
+        }
+      ],
+      "thread_size": 500
+    },
+    {
+      "fixture_digest": "4ca43e001ba6fe61f8f18b32f8706182ea141bfaa5cd1e124c72a8b68dc180a8",
+      "graph": {
+        "family_node_count": 8,
+        "max_neighbors": 8,
+        "neighbors": {
+          "bulletin": [
+            "template-scale-01000-01000",
+            "template-scale-01000-00992",
+            "template-scale-01000-00984",
+            "template-scale-01000-00976",
+            "template-scale-01000-00968",
+            "template-scale-01000-00960",
+            "template-scale-01000-00952",
+            "template-scale-01000-00944"
+          ],
+          "invoice": [
+            "template-scale-01000-00993",
+            "template-scale-01000-00985",
+            "template-scale-01000-00977",
+            "template-scale-01000-00969",
+            "template-scale-01000-00961",
+            "template-scale-01000-00953",
+            "template-scale-01000-00945",
+            "template-scale-01000-00937"
+          ],
+          "meeting": [
+            "template-scale-01000-00997",
+            "template-scale-01000-00989",
+            "template-scale-01000-00981",
+            "template-scale-01000-00973",
+            "template-scale-01000-00965",
+            "template-scale-01000-00957",
+            "template-scale-01000-00949",
+            "template-scale-01000-00941"
+          ],
+          "order": [
+            "template-scale-01000-00995",
+            "template-scale-01000-00987",
+            "template-scale-01000-00979",
+            "template-scale-01000-00971",
+            "template-scale-01000-00963",
+            "template-scale-01000-00955",
+            "template-scale-01000-00947",
+            "template-scale-01000-00939"
+          ],
+          "receipt": [
+            "template-scale-01000-00996",
+            "template-scale-01000-00988",
+            "template-scale-01000-00980",
+            "template-scale-01000-00972",
+            "template-scale-01000-00964",
+            "template-scale-01000-00956",
+            "template-scale-01000-00948",
+            "template-scale-01000-00940"
+          ],
+          "security": [
+            "template-scale-01000-00998",
+            "template-scale-01000-00990",
+            "template-scale-01000-00982",
+            "template-scale-01000-00974",
+            "template-scale-01000-00966",
+            "template-scale-01000-00958",
+            "template-scale-01000-00950",
+            "template-scale-01000-00942"
+          ],
+          "shipment": [
+            "template-scale-01000-00994",
+            "template-scale-01000-00986",
+            "template-scale-01000-00978",
+            "template-scale-01000-00970",
+            "template-scale-01000-00962",
+            "template-scale-01000-00954",
+            "template-scale-01000-00946",
+            "template-scale-01000-00938"
+          ],
+          "support": [
+            "template-scale-01000-00999",
+            "template-scale-01000-00991",
+            "template-scale-01000-00983",
+            "template-scale-01000-00975",
+            "template-scale-01000-00967",
+            "template-scale-01000-00959",
+            "template-scale-01000-00951",
+            "template-scale-01000-00943"
+          ]
+        }
+      },
+      "hard_gate_pass": true,
+      "metrics": {
+        "assignment_recall": 1.0,
+        "character_reduction": 0.6651097679911363,
+        "database_bytes": 4874240,
+        "direct_top_8_fact_recall": 0.008,
+        "fact_recall": 1.0,
+        "family": {
+          "correct": 1000,
+          "expected": 1000,
+          "f1": 1.0,
+          "offered": 1000,
+          "precision": 1.0,
+          "recall": 1.0
+        },
+        "ingest_ms": 2568.052617003559,
+        "latest_family_accuracy": 1.0,
+        "ledger_characters": 21999,
+        "mining_ms": 118.05397699936293,
+        "peak_python_bytes": 39002,
+        "raw_characters": 301454,
+        "slot_source_validity": 1.0,
+        "source_digest_validity": 1.0,
+        "template_retrieval_characters": 100954
+      },
+      "page_sweep": [
+        {
+          "fact_recall": 1.0,
+          "missing_fact_ids": [],
+          "page_count": 63,
+          "page_size": 16,
+          "peak_ledger_characters": 351,
+          "peak_source_characters": 4834,
+          "unsupported_facts": {}
+        },
+        {
+          "fact_recall": 1.0,
+          "missing_fact_ids": [],
+          "page_count": 32,
+          "page_size": 32,
+          "peak_ledger_characters": 703,
+          "peak_source_characters": 9668,
+          "unsupported_facts": {}
+        },
+        {
+          "fact_recall": 1.0,
+          "missing_fact_ids": [],
+          "page_count": 16,
+          "page_size": 64,
+          "peak_ledger_characters": 1407,
+          "peak_source_characters": 19336,
+          "unsupported_facts": {}
+        }
+      ],
+      "thread_size": 1000
+    },
+    {
+      "fixture_digest": "a833e243820635ff8af01129ec59ba4fed399a69fbc84baba970a861ca54eaa7",
+      "graph": {
+        "family_node_count": 8,
+        "max_neighbors": 8,
+        "neighbors": {
+          "bulletin": [
+            "template-scale-02500-02496",
+            "template-scale-02500-02488",
+            "template-scale-02500-02480",
+            "template-scale-02500-02472",
+            "template-scale-02500-02464",
+            "template-scale-02500-02456",
+            "template-scale-02500-02448",
+            "template-scale-02500-02440"
+          ],
+          "invoice": [
+            "template-scale-02500-02497",
+            "template-scale-02500-02489",
+            "template-scale-02500-02481",
+            "template-scale-02500-02473",
+            "template-scale-02500-02465",
+            "template-scale-02500-02457",
+            "template-scale-02500-02449",
+            "template-scale-02500-02441"
+          ],
+          "meeting": [
+            "template-scale-02500-02493",
+            "template-scale-02500-02485",
+            "template-scale-02500-02477",
+            "template-scale-02500-02469",
+            "template-scale-02500-02461",
+            "template-scale-02500-02453",
+            "template-scale-02500-02445",
+            "template-scale-02500-02437"
+          ],
+          "order": [
+            "template-scale-02500-02499",
+            "template-scale-02500-02491",
+            "template-scale-02500-02483",
+            "template-scale-02500-02475",
+            "template-scale-02500-02467",
+            "template-scale-02500-02459",
+            "template-scale-02500-02451",
+            "template-scale-02500-02443"
+          ],
+          "receipt": [
+            "template-scale-02500-02500",
+            "template-scale-02500-02492",
+            "template-scale-02500-02484",
+            "template-scale-02500-02476",
+            "template-scale-02500-02468",
+            "template-scale-02500-02460",
+            "template-scale-02500-02452",
+            "template-scale-02500-02444"
+          ],
+          "security": [
+            "template-scale-02500-02494",
+            "template-scale-02500-02486",
+            "template-scale-02500-02478",
+            "template-scale-02500-02470",
+            "template-scale-02500-02462",
+            "template-scale-02500-02454",
+            "template-scale-02500-02446",
+            "template-scale-02500-02438"
+          ],
+          "shipment": [
+            "template-scale-02500-02498",
+            "template-scale-02500-02490",
+            "template-scale-02500-02482",
+            "template-scale-02500-02474",
+            "template-scale-02500-02466",
+            "template-scale-02500-02458",
+            "template-scale-02500-02450",
+            "template-scale-02500-02442"
+          ],
+          "support": [
+            "template-scale-02500-02495",
+            "template-scale-02500-02487",
+            "template-scale-02500-02479",
+            "template-scale-02500-02471",
+            "template-scale-02500-02463",
+            "template-scale-02500-02455",
+            "template-scale-02500-02447",
+            "template-scale-02500-02439"
+          ]
+        }
+      },
+      "hard_gate_pass": true,
+      "metrics": {
+        "assignment_recall": 1.0,
+        "character_reduction": 0.664242920580904,
+        "database_bytes": 11886592,
+        "direct_top_8_fact_recall": 0.0032,
+        "fact_recall": 1.0,
+        "family": {
+          "correct": 2500,
+          "expected": 2500,
+          "f1": 1.0,
+          "offered": 2500,
+          "precision": 1.0,
+          "recall": 1.0
+        },
+        "ingest_ms": 6513.176803011447,
+        "latest_family_accuracy": 1.0,
+        "ledger_characters": 54999,
+        "mining_ms": 315.87990099797025,
+        "peak_python_bytes": 46094,
+        "raw_characters": 754617,
+        "slot_source_validity": 1.0,
+        "source_digest_validity": 1.0,
+        "template_retrieval_characters": 253368
+      },
+      "page_sweep": [
+        {
+          "fact_recall": 1.0,
+          "missing_fact_ids": [],
+          "page_count": 157,
+          "page_size": 16,
+          "peak_ledger_characters": 351,
+          "peak_source_characters": 4834,
+          "unsupported_facts": {}
+        },
+        {
+          "fact_recall": 1.0,
+          "missing_fact_ids": [],
+          "page_count": 79,
+          "page_size": 32,
+          "peak_ledger_characters": 703,
+          "peak_source_characters": 9668,
+          "unsupported_facts": {}
+        },
+        {
+          "fact_recall": 1.0,
+          "missing_fact_ids": [],
+          "page_count": 40,
+          "page_size": 64,
+          "peak_ledger_characters": 1407,
+          "peak_source_characters": 19336,
+          "unsupported_facts": {}
+        }
+      ],
+      "thread_size": 2500
+    },
+    {
+      "fixture_digest": "9d11c6afa9db245664b4efb92a9af72aeedb5d834ea5f083d440319b470c0fb2",
+      "graph": {
+        "family_node_count": 8,
+        "max_neighbors": 8,
+        "neighbors": {
+          "bulletin": [
+            "template-scale-05000-05000",
+            "template-scale-05000-04992",
+            "template-scale-05000-04984",
+            "template-scale-05000-04976",
+            "template-scale-05000-04968",
+            "template-scale-05000-04960",
+            "template-scale-05000-04952",
+            "template-scale-05000-04944"
+          ],
+          "invoice": [
+            "template-scale-05000-04993",
+            "template-scale-05000-04985",
+            "template-scale-05000-04977",
+            "template-scale-05000-04969",
+            "template-scale-05000-04961",
+            "template-scale-05000-04953",
+            "template-scale-05000-04945",
+            "template-scale-05000-04937"
+          ],
+          "meeting": [
+            "template-scale-05000-04997",
+            "template-scale-05000-04989",
+            "template-scale-05000-04981",
+            "template-scale-05000-04973",
+            "template-scale-05000-04965",
+            "template-scale-05000-04957",
+            "template-scale-05000-04949",
+            "template-scale-05000-04941"
+          ],
+          "order": [
+            "template-scale-05000-04995",
+            "template-scale-05000-04987",
+            "template-scale-05000-04979",
+            "template-scale-05000-04971",
+            "template-scale-05000-04963",
+            "template-scale-05000-04955",
+            "template-scale-05000-04947",
+            "template-scale-05000-04939"
+          ],
+          "receipt": [
+            "template-scale-05000-04996",
+            "template-scale-05000-04988",
+            "template-scale-05000-04980",
+            "template-scale-05000-04972",
+            "template-scale-05000-04964",
+            "template-scale-05000-04956",
+            "template-scale-05000-04948",
+            "template-scale-05000-04940"
+          ],
+          "security": [
+            "template-scale-05000-04998",
+            "template-scale-05000-04990",
+            "template-scale-05000-04982",
+            "template-scale-05000-04974",
+            "template-scale-05000-04966",
+            "template-scale-05000-04958",
+            "template-scale-05000-04950",
+            "template-scale-05000-04942"
+          ],
+          "shipment": [
+            "template-scale-05000-04994",
+            "template-scale-05000-04986",
+            "template-scale-05000-04978",
+            "template-scale-05000-04970",
+            "template-scale-05000-04962",
+            "template-scale-05000-04954",
+            "template-scale-05000-04946",
+            "template-scale-05000-04938"
+          ],
+          "support": [
+            "template-scale-05000-04999",
+            "template-scale-05000-04991",
+            "template-scale-05000-04983",
+            "template-scale-05000-04975",
+            "template-scale-05000-04967",
+            "template-scale-05000-04959",
+            "template-scale-05000-04951",
+            "template-scale-05000-04943"
+          ]
+        }
+      },
+      "hard_gate_pass": true,
+      "metrics": {
+        "assignment_recall": 1.0,
+        "character_reduction": 0.6639275103744882,
+        "database_bytes": 23678976,
+        "direct_top_8_fact_recall": 0.0016,
+        "fact_recall": 1.0,
+        "family": {
+          "correct": 5000,
+          "expected": 5000,
+          "f1": 1.0,
+          "offered": 5000,
+          "precision": 1.0,
+          "recall": 1.0
+        },
+        "ingest_ms": 12782.254992009257,
+        "latest_family_accuracy": 1.0,
+        "ledger_characters": 109999,
+        "mining_ms": 620.1158549956745,
+        "peak_python_bytes": 39271,
+        "raw_characters": 1509954,
+        "slot_source_validity": 1.0,
+        "source_digest_validity": 1.0,
+        "template_retrieval_characters": 507454
+      },
+      "page_sweep": [
+        {
+          "fact_recall": 1.0,
+          "missing_fact_ids": [],
+          "page_count": 313,
+          "page_size": 16,
+          "peak_ledger_characters": 351,
+          "peak_source_characters": 4834,
+          "unsupported_facts": {}
+        },
+        {
+          "fact_recall": 1.0,
+          "missing_fact_ids": [],
+          "page_count": 157,
+          "page_size": 32,
+          "peak_ledger_characters": 703,
+          "peak_source_characters": 9668,
+          "unsupported_facts": {}
+        },
+        {
+          "fact_recall": 1.0,
+          "missing_fact_ids": [],
+          "page_count": 79,
+          "page_size": 64,
+          "peak_ledger_characters": 1407,
+          "peak_source_characters": 19336,
+          "unsupported_facts": {}
+        }
+      ],
+      "thread_size": 5000
+    }
+  ],
+  "schema_version": 1,
+  "title": "Template-Aware Long-Thread Scale Evaluation"
+}

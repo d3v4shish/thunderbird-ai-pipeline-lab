@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "dimensions": {
+    "chunking": ["fixed", "structure-aware", "sentence-window"],
+    "retrieval": ["exact", "lexical", "dense", "hybrid"],
+    "dense_candidates": ["lsh", "full-scan"],
+    "reranking": ["none", "deterministic", "embedding", "endpoint"],
+    "graph": ["off", "keyword", "intent-multihop"],
+    "tools": ["none", "bounded", "coverage-aware"],
+    "prompt": ["compact", "strict-schema", "evidence-ledger"]
+  },
+  "adaptive_calibration_variants": 48,
+  "adaptive_full_survivors": 8,
+  "calibration_case_ids": [
+    "exact-identifier",
+    "long-document-coverage",
+    "graph-multihop",
+    "prompt-injection",
+    "scope-isolation",
+    "no-answer"
+  ]
+}

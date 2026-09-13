@@ -1,0 +1,114 @@
+{
+  "allowlist": [
+    "granite3.1-moe:3b-instruct-fp16",
+    "deepseek-v2:16b",
+    "phi4:14b-q8_0",
+    "qwen3-embedding:4b",
+    "qwen2.5:14b-instruct-q4_K_M",
+    "granite4.1:30b-q2_K"
+  ],
+  "models": [
+    {
+      "advertised_context": 131072,
+      "capabilities": [
+        "completion",
+        "tools"
+      ],
+      "digest": "ae1d684487dfe227a611981e295aa312fa691fe41ba68dad32fcaae97bc677f7",
+      "family": "granite",
+      "name": "granite4.1:30b-q2_K",
+      "parameter_size": "28.9B",
+      "quantization": "Q2_K",
+      "roles": [
+        "chat"
+      ],
+      "size": 10723798424,
+      "tool_template": true
+    },
+    {
+      "advertised_context": 32768,
+      "capabilities": [
+        "completion",
+        "tools"
+      ],
+      "digest": "7cdf5a0187d5c58cc5d369b255592f7841d1c4696d45a8c8a9489440385b22f6",
+      "family": "qwen2",
+      "name": "qwen2.5:14b-instruct-q4_K_M",
+      "parameter_size": "14.8B",
+      "quantization": "Q4_K_M",
+      "roles": [
+        "chat"
+      ],
+      "size": 8988124069,
+      "tool_template": true
+    },
+    {
+      "advertised_context": 40960,
+      "capabilities": [
+        "tools",
+        "embedding"
+      ],
+      "digest": "df5bd2e3c74cd8d069d21dc038f1b359fcdc9458fce1c99bd43c9eb1518ff907",
+      "family": "qwen3",
+      "name": "qwen3-embedding:4b",
+      "parameter_size": "4.0B",
+      "quantization": "Q4_K_M",
+      "roles": [
+        "embedding"
+      ],
+      "size": 2496704041,
+      "tool_template": true
+    },
+    {
+      "advertised_context": 16384,
+      "capabilities": [
+        "completion"
+      ],
+      "digest": "310d366232f429f1ee2c38893ae202357d45dfbc7c9926b7352ae95636114c26",
+      "family": "phi3",
+      "name": "phi4:14b-q8_0",
+      "parameter_size": "14.7B",
+      "quantization": "Q8_0",
+      "roles": [
+        "chat"
+      ],
+      "size": 15580501989,
+      "tool_template": false
+    },
+    {
+      "advertised_context": 163840,
+      "capabilities": [
+        "completion"
+      ],
+      "digest": "7c8c332f2df7ac4d657f3514d757d969b84ac6d3fec5b0c02bc8491bd0dc5ea1",
+      "family": "deepseek2",
+      "name": "deepseek-v2:16b",
+      "parameter_size": "15.7B",
+      "quantization": "Q4_0",
+      "roles": [
+        "chat"
+      ],
+      "size": 8905124229,
+      "tool_template": false
+    },
+    {
+      "advertised_context": 131072,
+      "capabilities": [
+        "completion",
+        "tools"
+      ],
+      "digest": "cdedb7e7b102840e3c71350775336924f2782f95de78a89cd6ae5108b3a5f3da",
+      "family": "granitemoe",
+      "name": "granite3.1-moe:3b-instruct-fp16",
+      "parameter_size": "3.3B",
+      "quantization": "F16",
+      "roles": [
+        "chat"
+      ],
+      "size": 6603476857,
+      "tool_template": true
+    }
+  ],
+  "pulled": [],
+  "schema_version": 1
+}

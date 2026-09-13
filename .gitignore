@@ -1,0 +1,11 @@
+__pycache__/
+*.py[cod]
+.coverage
+.DS_Store
+.pytest_cache/
+.venv/
+data/models/
+reports/*-checkpoint.json
+reports/*-plan.json
+reports/*.tmp
+data/generated/*.tmp

@@ -1,0 +1,82 @@
+{
+  "results": [
+    {
+      "counts": {
+        "chunks": 1000,
+        "documents": 1000,
+        "graph_edges": 0,
+        "stages": {
+          "chunk": {
+            "count": 1000,
+            "cpu_ms": 15.239454000000997,
+            "errors": 0,
+            "wall_ms": 15.207840998300526
+          },
+          "extract-safety": {
+            "count": 1000,
+            "cpu_ms": 30.375195999999228,
+            "errors": 0,
+            "wall_ms": 30.328855001016564
+          },
+          "graph-index": {
+            "count": 1000,
+            "cpu_ms": 78.70412200000115,
+            "errors": 0,
+            "wall_ms": 78.56969500164723
+          },
+          "index": {
+            "count": 1000,
+            "cpu_ms": 558.608479999999,
+            "errors": 0,
+            "wall_ms": 558.3900879984185
+          },
+          "normalize": {
+            "count": 1000,
+            "cpu_ms": 24.024200000001038,
+            "errors": 0,
+            "wall_ms": 23.971958996867215
+          }
+        },
+        "unsafe_documents": 0
+      },
+      "database_bytes": 3420160,
+      "documents_per_second": 1391.376327716199,
+      "ingest_cpu_seconds": 0.718355655,
+      "ingest_wall_seconds": 0.7187128169999824,
+      "peak_rss_kib": 31968,
+      "query_p50_ms": 1.727748000007523,
+      "query_p95_ms": 1.9955850000314967,
+      "schema_version": 1,
+      "seed": 1,
+      "size": 1000
+    }
+  ],
+  "schema_version": 1,
+  "title": "Deterministic pipeline benchmark",
+  "variant": {
+    "adaptive_searches": 3,
+    "chunk_chars": 1200,
+    "chunk_overlap": 180,
+    "chunking": "fixed",
+    "context_chars": 1800,
+    "context_records": 8,
+    "context_window": 16384,
+    "dense_candidates": "lsh",
+    "embedding_model": "deterministic-local-v1",
+    "graph": "keyword",
+    "id": "tb-current",
+    "max_chunks": 24,
+    "max_output_tokens": 1024,
+    "model": "deterministic",
+    "prompt": "compact",
+    "reranking": "deterministic",
+    "retrieval": "hybrid",
+    "rrf_k": 60,
+    "schema_version": 1,
+    "temperature": 0.2,
+    "tool_calls": 6,
+    "tool_evidence": 24,
+    "tool_rounds": 4,
+    "tools": "bounded"
+  }
+}

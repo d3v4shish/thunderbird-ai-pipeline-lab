@@ -1,0 +1,355 @@
+{
+  "models": [
+    {
+      "advertised_context": 131072,
+      "capabilities": [
+        "completion",
+        "tools"
+      ],
+      "digest": "ae1d684487dfe227a611981e295aa312fa691fe41ba68dad32fcaae97bc677f7",
+      "family": "granite",
+      "name": "granite4.1:30b-q2_K",
+      "parameter_size": "28.9B",
+      "quantization": "Q2_K",
+      "residency": {
+        "advertised_context": 131072,
+        "artifact_bytes": 0,
+        "context_compatible": true,
+        "eligible": false,
+        "full_gpu_residency": false,
+        "model": "granite4.1:30b-q2_K",
+        "ollama_vram_bytes": 0,
+        "reason": "PARTIAL_GPU_RESIDENCY,VRAM_CAP_EXCEEDED",
+        "total_gpu_used_bytes": 2031091712,
+        "within_vram_cap": false
+      },
+      "roles": [
+        "chat"
+      ],
+      "size": 10723798424,
+      "tool_template": true
+    },
+    {
+      "advertised_context": 32768,
+      "capabilities": [
+        "completion",
+        "tools"
+      ],
+      "digest": "7cdf5a0187d5c58cc5d369b255592f7841d1c4696d45a8c8a9489440385b22f6",
+      "family": "qwen2",
+      "name": "qwen2.5:14b-instruct-q4_K_M",
+      "parameter_size": "14.8B",
+      "quantization": "Q4_K_M",
+      "residency": {
+        "advertised_context": 32768,
+        "artifact_bytes": 0,
+        "context_compatible": true,
+        "eligible": false,
+        "full_gpu_residency": false,
+        "model": "qwen2.5:14b-instruct-q4_K_M",
+        "ollama_vram_bytes": 0,
+        "reason": "PARTIAL_GPU_RESIDENCY,VRAM_CAP_EXCEEDED",
+        "total_gpu_used_bytes": 2031091712,
+        "within_vram_cap": false
+      },
+      "roles": [
+        "chat"
+      ],
+      "size": 8988124069,
+      "tool_template": true
+    },
+    {
+      "advertised_context": 40960,
+      "capabilities": [
+        "tools",
+        "embedding"
+      ],
+      "digest": "df5bd2e3c74cd8d069d21dc038f1b359fcdc9458fce1c99bd43c9eb1518ff907",
+      "family": "qwen3",
+      "name": "qwen3-embedding:4b",
+      "parameter_size": "4.0B",
+      "quantization": "Q4_K_M",
+      "residency": {
+        "advertised_context": 40960,
+        "artifact_bytes": 6455432314,
+        "context_compatible": true,
+        "eligible": true,
+        "full_gpu_residency": true,
+        "model": "qwen3-embedding:4b",
+        "ollama_vram_bytes": 6455432314,
+        "reason": "ELIGIBLE",
+        "total_gpu_used_bytes": 8951693312,
+        "within_vram_cap": true
+      },
+      "roles": [
+        "embedding"
+      ],
+      "size": 2496704041,
+      "tool_template": true
+    },
+    {
+      "advertised_context": 16384,
+      "capabilities": [
+        "completion"
+      ],
+      "digest": "310d366232f429f1ee2c38893ae202357d45dfbc7c9926b7352ae95636114c26",
+      "family": "phi3",
+      "name": "phi4:14b-q8_0",
+      "parameter_size": "14.7B",
+      "quantization": "Q8_0",
+      "residency": {
+        "advertised_context": 16384,
+        "artifact_bytes": 16972072876,
+        "context_compatible": true,
+        "eligible": true,
+        "full_gpu_residency": true,
+        "model": "phi4:14b-q8_0",
+        "ollama_vram_bytes": 16972072876,
+        "reason": "ELIGIBLE",
+        "total_gpu_used_bytes": 19473104896,
+        "within_vram_cap": true
+      },
+      "roles": [
+        "chat"
+      ],
+      "size": 15580501989,
+      "tool_template": false
+    },
+    {
+      "advertised_context": 163840,
+      "capabilities": [
+        "completion"
+      ],
+      "digest": "7c8c332f2df7ac4d657f3514d757d969b84ac6d3fec5b0c02bc8491bd0dc5ea1",
+      "family": "deepseek2",
+      "name": "deepseek-v2:16b",
+      "parameter_size": "15.7B",
+      "quantization": "Q4_0",
+      "residency": {
+        "advertised_context": 163840,
+        "artifact_bytes": 11340947127,
+        "context_compatible": true,
+        "eligible": true,
+        "full_gpu_residency": true,
+        "model": "deepseek-v2:16b",
+        "ollama_vram_bytes": 11340947127,
+        "reason": "ELIGIBLE",
+        "total_gpu_used_bytes": 13840154624,
+        "within_vram_cap": true
+      },
+      "roles": [
+        "chat"
+      ],
+      "size": 8905124229,
+      "tool_template": false
+    },
+    {
+      "advertised_context": 131072,
+      "capabilities": [
+        "completion",
+        "tools"
+      ],
+      "digest": "cdedb7e7b102840e3c71350775336924f2782f95de78a89cd6ae5108b3a5f3da",
+      "family": "granitemoe",
+      "name": "granite3.1-moe:3b-instruct-fp16",
+      "parameter_size": "3.3B",
+      "quantization": "F16",
+      "residency": {
+        "advertised_context": 131072,
+        "artifact_bytes": 7325289020,
+        "context_compatible": true,
+        "eligible": true,
+        "full_gpu_residency": true,
+        "model": "granite3.1-moe:3b-instruct-fp16",
+        "ollama_vram_bytes": 7325289020,
+        "reason": "ELIGIBLE",
+        "total_gpu_used_bytes": 9836691456,
+        "within_vram_cap": true
+      },
+      "roles": [
+        "chat"
+      ],
+      "size": 6603476857,
+      "tool_template": true
+    },
+    {
+      "advertised_context": 131072,
+      "capabilities": [
+        "completion",
+        "tools"
+      ],
+      "digest": "46e0c10c039e019119339687c3c1757cc81b9da49709a3b3924863ba87ca666e",
+      "family": "llama",
+      "name": "llama3.1:8b",
+      "parameter_size": "8.0B",
+      "quantization": "Q4_K_M",
+      "residency": {
+        "advertised_context": 131072,
+        "artifact_bytes": 6018396323,
+        "context_compatible": true,
+        "eligible": true,
+        "full_gpu_residency": true,
+        "model": "llama3.1:8b",
+        "ollama_vram_bytes": 6018396323,
+        "reason": "ELIGIBLE",
+        "total_gpu_used_bytes": 8517582848,
+        "within_vram_cap": true
+      },
+      "roles": [
+        "chat"
+      ],
+      "size": 4920753328,
+      "tool_template": true
+    },
+    {
+      "advertised_context": 40960,
+      "capabilities": [
+        "completion",
+        "tools",
+        "thinking"
+      ],
+      "digest": "500a1f067a9f782620b40bee6f7b0c89e17ae61f686b92c24933e4ca4b2b8b41",
+      "family": "qwen3",
+      "name": "qwen3:8b",
+      "parameter_size": "8.2B",
+      "quantization": "Q4_K_M",
+      "residency": {
+        "advertised_context": 40960,
+        "artifact_bytes": 6387799162,
+        "context_compatible": true,
+        "eligible": true,
+        "full_gpu_residency": true,
+        "model": "qwen3:8b",
+        "ollama_vram_bytes": 6387799162,
+        "reason": "ELIGIBLE",
+        "total_gpu_used_bytes": 8899264512,
+        "within_vram_cap": true
+      },
+      "roles": [
+        "chat"
+      ],
+      "size": 5225388164,
+      "tool_template": true
+    },
+    {
+      "advertised_context": 32768,
+      "capabilities": [
+        "tools",
+        "thinking",
+        "embedding"
+      ],
+      "digest": "ac6da0dfba84a81fdbfbaf330198c33cd77c4cdfc53e8bc50eb581914a15621d",
+      "family": "qwen3",
+      "name": "qwen3-embedding:0.6b",
+      "parameter_size": "595.78M",
+      "quantization": "Q8_0",
+      "residency": {
+        "advertised_context": 32768,
+        "artifact_bytes": 4014903132,
+        "context_compatible": true,
+        "eligible": true,
+        "full_gpu_residency": true,
+        "model": "qwen3-embedding:0.6b",
+        "ollama_vram_bytes": 4014903132,
+        "reason": "ELIGIBLE",
+        "total_gpu_used_bytes": 6508511232,
+        "within_vram_cap": true
+      },
+      "roles": [
+        "embedding"
+      ],
+      "size": 639150858,
+      "tool_template": true
+    },
+    {
+      "advertised_context": 8192,
+      "capabilities": [
+        "embedding"
+      ],
+      "digest": "7907646426070047a77226ac3e684fbbe8410524f7b4a74d02837e43f2146bab",
+      "family": "bert",
+      "name": "bge-m3:latest",
+      "parameter_size": "566.70M",
+      "quantization": "F16",
+      "residency": {
+        "advertised_context": 8192,
+        "artifact_bytes": 664000265,
+        "context_compatible": false,
+        "eligible": false,
+        "full_gpu_residency": true,
+        "model": "bge-m3:latest",
+        "ollama_vram_bytes": 664000265,
+        "reason": "CONTEXT_INCOMPATIBLE",
+        "total_gpu_used_bytes": 3150970880,
+        "within_vram_cap": true
+      },
+      "roles": [
+        "embedding"
+      ],
+      "size": 1157672605,
+      "tool_template": false
+    },
+    {
+      "advertised_context": 262144,
+      "capabilities": [
+        "completion",
+        "vision",
+        "tools",
+        "thinking"
+      ],
+      "digest": "a50eda8ed977ab48a12431878896b27ffd5cef552c17af3317d9623b939a7f1e",
+      "family": "qwen35",
+      "name": "qwen3.6:27b",
+      "parameter_size": "27.8B",
+      "quantization": "Q4_K_M",
+      "residency": {
+        "advertised_context": 262144,
+        "artifact_bytes": 16663193844,
+        "context_compatible": true,
+        "eligible": true,
+        "full_gpu_residency": true,
+        "model": "qwen3.6:27b",
+        "ollama_vram_bytes": 16663193844,
+        "reason": "ELIGIBLE",
+        "total_gpu_used_bytes": 20251148288,
+        "within_vram_cap": true
+      },
+      "roles": [
+        "chat"
+      ],
+      "size": 17420432739,
+      "tool_template": true
+    },
+    {
+      "advertised_context": 131072,
+      "capabilities": [
+        "completion",
+        "tools"
+      ],
+      "digest": "a80c4f17acd55265feec403c7aef86be0c25983ab279d83f3bcd3abbcb5b8b72",
+      "family": "llama",
+      "name": "llama3.2:latest",
+      "parameter_size": "3.2B",
+      "quantization": "Q4_K_M",
+      "residency": {
+        "advertised_context": 131072,
+        "artifact_bytes": 3181851442,
+        "context_compatible": true,
+        "eligible": true,
+        "full_gpu_residency": true,
+        "model": "llama3.2:latest",
+        "ollama_vram_bytes": 3181851442,
+        "reason": "ELIGIBLE",
+        "total_gpu_used_bytes": 5680136192,
+        "within_vram_cap": true
+      },
+      "roles": [
+        "chat"
+      ],
+      "size": 2019393189,
+      "tool_template": true
+    }
+  ],
+  "schema_version": 1,
+  "vram_cap_gib": 17
+}

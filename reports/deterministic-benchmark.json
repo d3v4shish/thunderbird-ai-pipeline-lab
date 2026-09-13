@@ -1,0 +1,84 @@
+{
+  "results": [
+    {
+      "counts": {
+        "chunks": 1000,
+        "documents": 1000,
+        "graph_edges": 0,
+        "stages": {
+          "chunk": {
+            "count": 1000,
+            "cpu_ms": 16.477822000001517,
+            "errors": 0,
+            "wall_ms": 16.442885949800257
+          },
+          "extract-safety": {
+            "count": 1000,
+            "cpu_ms": 31.03419199999818,
+            "errors": 0,
+            "wall_ms": 31.03195496078115
+          },
+          "graph-index": {
+            "count": 1000,
+            "cpu_ms": 84.2582139999999,
+            "errors": 0,
+            "wall_ms": 84.09340582147706
+          },
+          "index": {
+            "count": 1000,
+            "cpu_ms": 586.8883800000033,
+            "errors": 0,
+            "wall_ms": 587.1745509211905
+          },
+          "normalize": {
+            "count": 1000,
+            "cpu_ms": 25.65704000000006,
+            "errors": 0,
+            "wall_ms": 25.633746234234422
+          }
+        },
+        "unsafe_documents": 0
+      },
+      "database_bytes": 3432448,
+      "documents_per_second": 1319.3170932287026,
+      "ingest_cpu_seconds": 0.756860452,
+      "ingest_wall_seconds": 0.7579678950060043,
+      "peak_rss_kib": 33220,
+      "query_p50_ms": 1.914264001243282,
+      "query_p95_ms": 2.4055140020209365,
+      "schema_version": 1,
+      "seed": 1,
+      "size": 1000
+    }
+  ],
+  "schema_version": 1,
+  "title": "Deterministic pipeline benchmark",
+  "variant": {
+    "adaptive_searches": 3,
+    "chunk_chars": 1200,
+    "chunk_overlap": 180,
+    "chunking": "fixed",
+    "context_chars": 1800,
+    "context_records": 8,
+    "context_total_chars": 0,
+    "context_window": 16384,
+    "dense_candidates": "lsh",
+    "embedding_model": "deterministic-local-v1",
+    "graph": "keyword",
+    "id": "tb-current",
+    "max_chunks": 24,
+    "max_output_tokens": 1024,
+    "model": "deterministic",
+    "prompt": "compact",
+    "reranking": "deterministic",
+    "retrieval": "hybrid",
+    "retrieval_candidates": 0,
+    "rrf_k": 60,
+    "schema_version": 1,
+    "temperature": 0.2,
+    "tool_calls": 6,
+    "tool_evidence": 24,
+    "tool_rounds": 4,
+    "tools": "bounded"
+  }
+}

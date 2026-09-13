@@ -1,0 +1,9 @@
+{
+  "case_count": 8,
+  "cases_digest": "2a1d82119d20bce146c66c3db0f17c33c4818fdcdc99320bd857d82a76a3aa60",
+  "document_count": 10,
+  "documents_digest": "c501d5dddc28ac79b09c7f8bc6c2a0f4c5858fb4f90cd5a5b47eb2037b78797c",
+  "long_document_bytes": 10240,
+  "long_document_fact_count": 32,
+  "schema_version": 1
+}
