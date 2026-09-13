@@ -15,19 +15,26 @@
   including failed attempts and raw model output, remain reviewable.
   Validation: regenerating and verifying `RESULTS_MANIFEST.sha256` succeeds and
   no retained file exceeds GitHub's 100-MB per-file limit.
-- [ ] Validate and publish this directory as the public
+- [x] Validate and publish this directory as the public
   `d3v4shish/thunderbird-ai-pipeline-lab` Git repository.
   Contract: the default branch is `main`, no profile/mail/credential data is
   present, and the first push preserves the exact validated tree.
   Validation: clean build, full deterministic tests, benchmark, link check,
   secret/profile-data scan, clean Git status, and remote branch verification.
-- [ ] Refresh and incrementally publish the existing ThunderbirdAI source
+  Result: published `main` to
+  `https://github.com/d3v4shish/thunderbird-ai-pipeline-lab` after the build,
+  156-test suite, 1,000-document benchmark, 248-artifact digest verification,
+  zero-broken-link check, staged-file audit, and per-file size gate passed.
+- [x] Refresh and incrementally publish the existing ThunderbirdAI source
   export without editing the active Thunderbird source tree.
   Contract: export artifacts represent all current Gecko/comm changes while
   ordinary Git history records only the delta from the previous export; no
   force push is used.
   Validation: export verification, source-tree status count comparison, clean
   export repository, and remote branch verification.
+  Result: the refreshed bundle passed integrity verification and the 46-test AI
+  xpcshell manifest, then commit `47f7504` was fast-forwarded to the existing
+  ThunderbirdAI `main` branch without modifying the Mercurial source tree.
 
 ## Milestone 13: template-aware RAG and extended-scale qualification
 
