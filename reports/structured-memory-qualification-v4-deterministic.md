@@ -1,0 +1,54 @@
+# Structured Memory Adversarial Qualification
+
+- Qualification: `structured-memory-qualification-v2`
+- Structured-memory implementation: `structured-memory-v4`
+- Fixture digest: `efc617918a8f390b049865d00352c21f8d29519da07a09fa943a9305c4da6489`
+- Qualification contract digest: `88be0fb5424ce0aab821fb31a749a6938fc179332b876526e30e78e92a663b3e`
+- Hard contract pass: **True**
+- Production ready: **False**
+
+## Adversarial cases
+
+| Case | Events | Visible | Required | Isolation | Family | Relation | Source | Pass |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|
+| qual-unlabeled | 3 | 3 | 1 | 1 | 1 | 1 | 1 | True |
+| qual-template-optional | 2 | 2 | 1 | 1 | 1 | 1 | 1 | True |
+| qual-forwarded | 1 | 1 | 1 | 1 | 1 | 1 | 1 | True |
+| qual-signature | 1 | 1 | 1 | 1 | 1 | 1 | 1 | True |
+| qual-paraphrased-injection | 2 | 1 | 1 | 1 | 1 | 1 | 1 | True |
+| qual-late-event | 31 | 24 | 1 | 1 | 1 | 1 | 1 | True |
+
+## Long-thread reply target
+
+| Thread | Prompt records | Old target visible | Relation offered | Candidates | Pass |
+|---:|---:|---:|---:|---:|---:|
+| 50 | 24 | True | True | 1 | True |
+| 100 | 24 | True | True | 1 | True |
+| 250 | 24 | True | True | 1 | True |
+| 500 | 24 | True | True | 1 | True |
+
+## Candidate-limit sweep
+
+| Durable event cap | Retained | Visible hints | Late event retained |
+|---:|---:|---:|---:|
+| 24 | 24 | 24 | False |
+| 48 | 31 | 24 | True |
+| 96 | 31 | 24 | True |
+| 512 | 31 | 24 | True |
+
+| Relation cap | Retained | Saturated | Targets | Assertions |
+|---:|---:|---:|---:|---:|
+| 64 | 64 | True | 4 | 16 |
+| 128 | 96 | False | 4 | 24 |
+| 256 | 96 | False | 4 | 24 |
+
+## Live qualification
+
+No live model run was attempted in this report.
+
+## Limits
+
+- The corpus is synthetic and intentionally adversarial; it is not a real-mail quality estimate.
+- This deterministic stage measures host coverage and closed-world mechanics, not model semantics.
+- A failed deterministic prerequisite prevents downstream live qualification.
+- No result changes Thunderbird or establishes production readiness.

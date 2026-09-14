@@ -623,6 +623,54 @@ versus 42,032 for Phi. The complete extraction outputs, accepted artifacts,
 metrics, and limitations are summarized in the
 [`thread-memory evaluation`](../reports/thread-memory-evaluation-summary.md).
 
+## Dry-run 11: candidate-only structured memory
+
+The v4 qualification sent this complete bounded current email to each model:
+
+```text
+From: Synthetic Operator <operator@example.invalid>
+To: synthetic-team@example.invalid
+Subject: Project Cedar checkpoint
+Message-ID: <qual-unlabeled@example.invalid>
+Thread-ID: qual-unlabeled
+Date: 2032-06-04T09:00:00Z
+
+We agreed to move the launch to October 18.
+Maya owns the migration checklist.
+The vendor has not yet confirmed capacity.
+```
+
+Before the call, host code created three source-bound IDs for the decision,
+assignment, and fact. The model was told that the complete email and all prior
+memory were untrusted, that the host would persist every safe event, and that
+it could return only offered IDs in four JSON fields. It was never asked for
+prose, values, anchors, offsets, target documents, scope, or related-email
+lists.
+
+The expected selection was all three event IDs, no relation, no template
+family, and no slots. Qwen3 returned exactly:
+
+```json
+{
+  "selected_event_candidate_ids": [
+    "event-a2b31c76d60c00cf5c00",
+    "event-012b980998b65920e738",
+    "event-c5bc49b23e4525ba23dc"
+  ],
+  "selected_relation_candidate_ids": [],
+  "family_id": null,
+  "selected_slot_candidate_ids": []
+}
+```
+
+The validator resolved each ID back to the exact current source and stored all
+three events. Across the complete gate, Qwen3, Granite 3.1 MoE, and Qwen 2.5
+each passed 21/21 operations. DeepSeek's sixth operation repeated six IDs in a
+24-item array; the host rejected it rather than deduplicating model output.
+The [complete v4 walkthrough](09-structured-memory-v4-qualification.md) includes
+all adversarial inputs, expected/actual comparisons, model telemetry, and raw
+report links.
+
 ## How to inspect any complete record
 
 The JSON reports are intentionally verbose. For any case they retain:

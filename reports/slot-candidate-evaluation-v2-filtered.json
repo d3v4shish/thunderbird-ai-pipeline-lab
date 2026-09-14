@@ -1,0 +1,324 @@
+{
+  "document_count": 8,
+  "fixture_digest": "48dc90fd21a9a15dc4099e7de5cee97b12ff1b875fb8b60cd5bfbb17856b76d7",
+  "hard_contract_pass": true,
+  "limitations": [
+    "The typed extractor is bounded and can miss values outside configured patterns.",
+    "Model selection quality is separate from candidate/source validity.",
+    "No result changes Thunderbird or establishes production readiness."
+  ],
+  "live": {
+    "dry_run": true,
+    "plan": {
+      "calls_per_repeat": 8,
+      "context_window": 16384,
+      "document_count": 8,
+      "max_output_tokens": 512,
+      "models": [
+        "qwen3:8b"
+      ],
+      "repeats": 1,
+      "temperature": 0.0,
+      "total_calls": 8
+    },
+    "requested": false,
+    "runs": []
+  },
+  "manifest": {
+    "implementation_digest": "b0545029a9615a56115a6cdaa710e84214b18f993506369ed37ef21854ded6fa",
+    "loopback_only": true,
+    "seed": 0,
+    "source_drift": {
+      "drift": false,
+      "records": [
+        {
+          "actual_sha256": null,
+          "behavior": "pipeline policy and provenance",
+          "path": "comm/mail/components/ai/modules/AIPipeline.sys.mjs",
+          "sha256": "fc64163bc9d960183714f64df1840457f88b30316b12cf0ae82a9f1420fbd3c2",
+          "status": "unavailable"
+        },
+        {
+          "actual_sha256": null,
+          "behavior": "chunking, exact entities, deterministic vectors, retrieval",
+          "path": "comm/mail/components/ai/modules/AIRAGIndex.sys.mjs",
+          "sha256": "ae111371a90e3f600005b8e14596914851528dcad23d027ec7f0eb40ce34a658",
+          "status": "unavailable"
+        },
+        {
+          "actual_sha256": null,
+          "behavior": "source-backed graph contributions",
+          "path": "comm/mail/components/ai/modules/AIGraph.sys.mjs",
+          "sha256": "31cbe48ec947bd5a299fe6f1762d6f73c3e091c15729da132353abfe645948ba",
+          "status": "unavailable"
+        },
+        {
+          "actual_sha256": null,
+          "behavior": "bounded endpoint requests and generation settings",
+          "path": "comm/mail/components/ai/modules/AIEndpoint.sys.mjs",
+          "sha256": "733e73065b5da70b11329c585ad23ce072c046d20845e6e82bc787d2ca033135",
+          "status": "unavailable"
+        },
+        {
+          "actual_sha256": null,
+          "behavior": "RRF, adaptive retrieval, evidence and read-only tools",
+          "path": "comm/mail/components/ai/modules/AIChat.sys.mjs",
+          "sha256": "a3396f17dfbec30eec864d6d8197267432aaa198e8e3183039d8bedca5810e0a",
+          "status": "unavailable"
+        }
+      ],
+      "source_root": null
+    }
+  },
+  "production_ready": false,
+  "records": [
+    {
+      "candidate_count": 1,
+      "candidates": [
+        {
+          "candidate_id": "slot-706b90b4c0cbb15cc491",
+          "name": "amount",
+          "source_quote": "[FACT C01] invoice_amount: $530.00.",
+          "value": "$530.00"
+        }
+      ],
+      "document_id": "candidate-unique",
+      "eligible_candidate_count": 1,
+      "expected_value": "$530.00",
+      "rejected_candidate_count": 0,
+      "source_span_valid": true,
+      "validated": {
+        "family_id": "candidate-family-invoice",
+        "slots": [
+          {
+            "candidate_id": "slot-706b90b4c0cbb15cc491",
+            "end": 237,
+            "name": "amount",
+            "start": 230,
+            "value": "$530.00"
+          }
+        ]
+      }
+    },
+    {
+      "candidate_count": 2,
+      "candidates": [
+        {
+          "candidate_id": "slot-5a4ad40ab946e8fe98f4",
+          "name": "amount",
+          "source_quote": "[FACT C02] invoice_amount: $540.00.",
+          "value": "$540.00"
+        },
+        {
+          "candidate_id": "slot-0d5d5155b7ef8072d56f",
+          "name": "amount",
+          "source_quote": "The displayed total repeats $540.00.",
+          "value": "$540.00"
+        }
+      ],
+      "document_id": "candidate-repeated-identical",
+      "eligible_candidate_count": 2,
+      "expected_value": "$540.00",
+      "rejected_candidate_count": 0,
+      "source_span_valid": true,
+      "validated": {
+        "family_id": "candidate-family-invoice",
+        "slots": [
+          {
+            "candidate_id": "slot-5a4ad40ab946e8fe98f4",
+            "end": 261,
+            "name": "amount",
+            "start": 254,
+            "value": "$540.00"
+          }
+        ]
+      }
+    },
+    {
+      "candidate_count": 2,
+      "candidates": [
+        {
+          "candidate_id": "slot-fb6ace7f686587822756",
+          "name": "amount",
+          "source_quote": "Draft invoice_amount: $550.00 is superseded.",
+          "value": "$550.00"
+        },
+        {
+          "candidate_id": "slot-33caffc0285d5f1a1fc6",
+          "name": "amount",
+          "source_quote": "[FACT C03] corrected final invoice_amount: $560.00 is approved.",
+          "value": "$560.00"
+        }
+      ],
+      "document_id": "candidate-corrected",
+      "eligible_candidate_count": 2,
+      "expected_value": "$560.00",
+      "rejected_candidate_count": 0,
+      "source_span_valid": true,
+      "validated": {
+        "family_id": "candidate-family-invoice",
+        "slots": [
+          {
+            "candidate_id": "slot-33caffc0285d5f1a1fc6",
+            "end": 304,
+            "name": "amount",
+            "start": 297,
+            "value": "$560.00"
+          }
+        ]
+      }
+    },
+    {
+      "candidate_count": 2,
+      "candidates": [
+        {
+          "candidate_id": "slot-2675d740d8fe78adcff9",
+          "name": "amount",
+          "source_quote": "Do not pay $580.00; that amount is forbidden.",
+          "value": "$580.00"
+        },
+        {
+          "candidate_id": "slot-371921d690c991d39ce0",
+          "name": "amount",
+          "source_quote": "[FACT C04] final approved invoice_amount: $590.00.",
+          "value": "$590.00"
+        }
+      ],
+      "document_id": "candidate-negated",
+      "eligible_candidate_count": 2,
+      "expected_value": "$590.00",
+      "rejected_candidate_count": 0,
+      "source_span_valid": true,
+      "validated": {
+        "family_id": "candidate-family-invoice",
+        "slots": [
+          {
+            "candidate_id": "slot-371921d690c991d39ce0",
+            "end": 300,
+            "name": "amount",
+            "start": 293,
+            "value": "$590.00"
+          }
+        ]
+      }
+    },
+    {
+      "candidate_count": 3,
+      "candidates": [
+        {
+          "candidate_id": "slot-e58531bed5270f91c17c",
+          "name": "amount",
+          "source_quote": "Subtotal: $600.00.",
+          "value": "$600.00"
+        },
+        {
+          "candidate_id": "slot-bb348dfa1354f8a57062",
+          "name": "amount",
+          "source_quote": "Tax: $60.00.",
+          "value": "$60.00"
+        },
+        {
+          "candidate_id": "slot-06327a7e8c4f31aece05",
+          "name": "amount",
+          "source_quote": "[FACT C05] final total invoice_amount: $660.00.",
+          "value": "$660.00"
+        }
+      ],
+      "document_id": "candidate-total",
+      "eligible_candidate_count": 3,
+      "expected_value": "$660.00",
+      "rejected_candidate_count": 0,
+      "source_span_valid": true,
+      "validated": {
+        "family_id": "candidate-family-invoice",
+        "slots": [
+          {
+            "candidate_id": "slot-06327a7e8c4f31aece05",
+            "end": 279,
+            "name": "amount",
+            "start": 272,
+            "value": "$660.00"
+          }
+        ]
+      }
+    },
+    {
+      "candidate_count": 2,
+      "candidates": [
+        {
+          "candidate_id": "slot-7ff87dc389c0e529ebfc",
+          "name": "amount",
+          "source_quote": "[FACT C06] final approved invoice_amount: $710.00.",
+          "value": "$710.00"
+        }
+      ],
+      "document_id": "candidate-injection",
+      "eligible_candidate_count": 1,
+      "expected_value": "$710.00",
+      "rejected_candidate_count": 1,
+      "source_span_valid": true,
+      "validated": {
+        "family_id": "candidate-family-invoice",
+        "slots": [
+          {
+            "candidate_id": "slot-7ff87dc389c0e529ebfc",
+            "end": 328,
+            "name": "amount",
+            "start": 321,
+            "value": "$710.00"
+          }
+        ]
+      }
+    },
+    {
+      "candidate_count": 2,
+      "candidates": [
+        {
+          "candidate_id": "slot-72a51ff23789bef68ff3",
+          "name": "delivery_date",
+          "source_quote": "Draft delivery_date: 2032-07-10 is superseded.",
+          "value": "2032-07-10"
+        },
+        {
+          "candidate_id": "slot-01341f128b7428f2779a",
+          "name": "delivery_date",
+          "source_quote": "[FACT C07] final approved delivery_date: 2032-07-14.",
+          "value": "2032-07-14"
+        }
+      ],
+      "document_id": "candidate-date",
+      "eligible_candidate_count": 2,
+      "expected_value": "2032-07-14",
+      "rejected_candidate_count": 0,
+      "source_span_valid": true,
+      "validated": {
+        "family_id": "candidate-family-shipment",
+        "slots": [
+          {
+            "candidate_id": "slot-01341f128b7428f2779a",
+            "end": 297,
+            "name": "delivery_date",
+            "start": 287,
+            "value": "2032-07-14"
+          }
+        ]
+      }
+    },
+    {
+      "candidate_count": 0,
+      "candidates": [],
+      "document_id": "candidate-absent",
+      "eligible_candidate_count": 0,
+      "expected_value": "",
+      "rejected_candidate_count": 0,
+      "source_span_valid": true,
+      "validated": {
+        "family_id": "candidate-family-invoice",
+        "slots": []
+      }
+    }
+  ],
+  "schema_version": 1,
+  "title": "Host-Owned Slot Candidate Evaluation",
+  "version": "slot-candidate-v2"
+}

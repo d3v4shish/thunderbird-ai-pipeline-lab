@@ -1,5 +1,108 @@
 # Hotspots
 
+## Host-built structured memory: 2026-09-14
+
+The previous four-call-per-email integration spent tokens generating context
+and summaries that could fail on copied source instructions. The v3 experiment
+uses one candidate-only call per email and makes zero context/summary calls.
+Its eight-email Qwen screen consumed 5,577 prompt tokens, 704 output tokens, and
+9.587 seconds summed request latency. Model prefill remains the dominant cost;
+the fixed-seed non-model benchmark was effectively unchanged.
+
+Semantic omission is the main correctness hotspot. Qwen marked only 10 of 16
+safe events as important. Persisting only those choices would have reproduced
+the earlier 0.875 event recall; v3 instead stores every bounded safe host span
+and treats the 0.625 hint recall as diagnostic ranking metadata. This increases
+memory volume linearly up to 24 event records per email but prevents the model
+from deleting durable source memory.
+
+Candidate fan-out is bounded, not solved: at most 24 events and 64 semantic
+relation choices are produced. Relation choices enumerate allowed predicates
+over assertion/target pairs, so dense prior threads can exhaust the cap and
+bias toward earlier candidates. Structural header relations should remain
+authoritative, and broader relation recall/cap sweeps are required before
+promotion. One synthetic `confirms` case cannot validate open-ended semantics.
+
+The typed-family prefilter removed the measured unique-email false positive,
+but it can reject a legitimate family whose message has optional or
+unrecognized slot formats. Broader unlabeled template/slot coverage must
+measure that false-negative tradeoff. Prompt-injection filtering has the same
+known risk when legitimate content shares a sentence with instruction-like
+text.
+
+## Host-owned candidate selection: 2026-09-14
+
+Candidate IDs remove model-generated offset/anchor failure: the previously
+fatal repeated `$540.00` record passed in both combined and modular live paths.
+The bounded typed extractor is now the coverage hotspot. It emits at most 12
+occurrences per slot and 32 total; unsupported formats or values beyond those
+caps cannot be selected and require explicit extractor coverage tests rather
+than a model fallback.
+
+Opaque IDs alone do not stop semantic prompt injection. In the unfiltered
+screen, Qwen selected a valid but wrong `$700.00` candidate because source text
+said “select the first candidate.” Sentence-local safety filtering hid that ID
+and the rerun passed 8/8. This trades semantic attack surface for potential
+false rejection when a legitimate value shares a sentence with instruction-like
+text; measure that on a broader synthetic and reviewed corpus before promotion.
+
+Integration exposed input fan-in as a security and quality hotspot. Giving a
+memory-only operation template skeletons caused Qwen to relabel metadata as
+email events. Least-privilege payloads fixed that record and reduced unnecessary
+prompt content. The next blocker is generated context itself: full v4 stopped
+after 8/32 valid operations because Qwen repeated a hostile email instruction
+and the validator rejected it. Do not relax this check or allow generated
+context to become evidence.
+
+## Related-message expansion: 2026-09-13
+
+Bounded family expansion has a deliberate coverage ceiling. With a 32-message
+candidate cap, the accounting control can cover at most 64%, 6.4%, and 0.64%
+of 50-, 500-, and 5,000-message families. Increasing global Top-K would move
+the cost into reranking and prompt packing without providing a completeness
+contract. Exhaustive user-selected work therefore uses canonical 32-message
+pages and a separate source ledger; its CPU, storage I/O, and review cost grow
+linearly with the related set.
+
+Template and thread joins are bounded to one hop. Recursive family→thread→family
+closure would turn common sender templates into high-degree graph fan-out and
+is intentionally absent. Assignments are body-digest checked on read, which
+adds a canonical-document lookup but prevents stale metadata after edits.
+
+The historical live bottleneck was strict repeated-value provenance. Qwen3 completed four
+of 32 planned operations, then supplied an anchor containing both `$540.00`
+occurrences despite a concrete isolation example. The host rejected the
+ambiguous span. The partial five-operation run consumed 1,352 prompt tokens,
+713 output tokens, and 11.750 seconds of summed request latency. Do not optimize
+this by accepting the first occurrence: doing so would silently manufacture
+provenance. The separately versioned host-candidate experiment above fixes this
+specific problem; its generated-context integration gate remains open.
+
+## Context-ladder implementation: 2026-09-13
+
+The deterministic ladder rebuilds a small SQLite index once per measured arm
+(23 source-indexed arms in the retained run). That isolation is intentional for
+ablation validity and is not an online serving design. A full live screen plans
+14 whole-email contexts, 14 detailed summaries, and six template-confirmation
+calls per model/repeat; model prefill and serial generation will dominate it.
+The screen is cache-resumable so completed records are not regenerated.
+
+For long sources, correctness cost grows linearly with source size: the 256-KiB
+and 1-MiB controls require 14 and 53 ordered 20,000-character pages. The
+50/500/5,000-message controls confirm that Top-8 recall falls to 0.1600,
+0.0160, and 0.0016, while a complete host ledger is linear in message count.
+Keep this expensive path behind explicit complete/exhaustive intent; it is not
+a substitute for ordinary localized hybrid retrieval. No live cost is claimed
+until the staged screen and three-repeat qualification are actually run.
+
+The first live Qwen3 screen found a new contract hotspot: the model selected a
+host-offered template family and correct slot values, but its character offsets
+were not canonical (`7:15` versus `8:16` and `34:50` versus `44:54`). Strict
+source-slice validation stopped the run after three operations, as intended.
+Before retrying, evaluate an explicit zero-based offset representation or a
+host-side unique-value-to-span resolver that rejects ambiguity; do not weaken
+the source-span requirement or start three-repeat qualification.
+
 Expected hotspots to verify with `scripts/benchmark.sh --full`:
 
 - Chunk insertion and FTS maintenance during large rebuilds.
@@ -359,3 +462,31 @@ without reducing the 79-page output workload.
 See
 [`reports/template-aware-evaluation-summary.md`](reports/template-aware-evaluation-summary.md)
 for the complete before/after model failures and retained artifacts.
+
+## Structured-memory v4 findings: 2026-09-14
+
+The former 24-event list coupled durable memory completeness to a small model
+schema. One 31-sentence message lost its final decision. V4 retains up to 512
+host events but exposes only 24 optional hints. This fixes the measured case
+without enlarging its prompt; sources beyond the durable bound still require
+canonical retrieval rather than a memory-completeness claim.
+
+Long-thread target selection was a correctness hotspot, not a prompt-size
+problem. Taking only the newest 24 prior records removed an explicit reply to
+record one in 50–500-message threads. V4 validates the full host record set but
+pins referenced old records into a still-bounded 24-record prompt. Profiling
+put all prior validation at roughly 5 ms across the deterministic qualification;
+there is no measured reason to add indexing complexity yet.
+
+Relation cross-products can still saturate. Twenty-four confirming assertions
+against four recent unreferenced records generated 96 choices; the operational
+64 cap retained only 16 assertions. Semantic relation metadata is therefore
+non-exhaustive. Explicit reply relations use a single target and one
+lexically-supported predicate, and structural header edges remain authoritative.
+
+Model decoding is the dominant live hotspot. Granite 3.1 completed the 21-call
+gate in 16.181 seconds summed latency, Qwen3 in 34.358 seconds, and Qwen 2.5 in
+52.484 seconds. DeepSeek spent 36.762 seconds through its sixth operation and
+then violated `uniqueItems` by repeating six IDs. Host rejection is retained;
+automatic deduplication would conceal model/schema incompatibility. No model
+exceeded the 17-GiB Ollama allocation cap.

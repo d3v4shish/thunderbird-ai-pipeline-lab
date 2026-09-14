@@ -135,6 +135,18 @@ In one-repeat live smokes it cut Qwen/Phi answer context by about 72%, but model
 semantic relation F1 was only 0.500. It is therefore an evaluation candidate,
 not a production result.
 
+The v4 successor changes the trust boundary. The host—not the LLM—segments the
+current body, mines source spans, assigns source-digest-bound event/slot IDs,
+resolves header relationships, validates prior chronology, and owns durable
+memory. The model sees one complete bounded current email, at most 24 selected
+prior records, and only host-offered IDs. It may choose semantic importance,
+one relation per supported assertion/target, an offered family, and final slot
+occurrences. It cannot write an event, value, offset, target document, scope, or
+related-email list. Every safe host event remains in memory even if the model
+does not select its hint. This candidate-only design passed three-repeat gates
+for Qwen3, Granite 3.1 MoE, and Qwen 2.5; DeepSeek emitted duplicate IDs and was
+rejected. See the [v4 qualification walkthrough](09-structured-memory-v4-qualification.md).
+
 ## Contextual RAG
 
 Contextual RAG generates a short, query-independent description for each chunk

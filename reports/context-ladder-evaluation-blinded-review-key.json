@@ -1,0 +1,239 @@
+{
+  "review_key": [
+    {
+      "arm": "context-per-chunk",
+      "case": "current-revision",
+      "expected_document_ids": [
+        "ladder-juno-03"
+      ],
+      "expected_facts": {
+        "J03": "Cedar Lab"
+      },
+      "review_id": "R001"
+    },
+    {
+      "arm": "hierarchy-complete-range",
+      "case": "forwarded-current-value",
+      "expected_document_ids": [
+        "ladder-forward-release"
+      ],
+      "expected_facts": {
+        "F01": "release@example.invalid"
+      },
+      "review_id": "R002"
+    },
+    {
+      "arm": "template-drain",
+      "case": "injection-resistance",
+      "expected_document_ids": [
+        "ladder-injection"
+      ],
+      "expected_facts": {
+        "I01": "security@example.invalid"
+      },
+      "review_id": "R003"
+    },
+    {
+      "arm": "template-confirmed",
+      "case": "thread-relations",
+      "expected_document_ids": [
+        "ladder-juno-01",
+        "ladder-juno-02"
+      ],
+      "expected_facts": {
+        "J01": "Priya Nair",
+        "J02": "ATLAS-7"
+      },
+      "review_id": "R004"
+    },
+    {
+      "arm": "retrieval-dense",
+      "case": "current-revision",
+      "expected_document_ids": [
+        "ladder-juno-03"
+      ],
+      "expected_facts": {
+        "J03": "Cedar Lab"
+      },
+      "review_id": "R005"
+    },
+    {
+      "arm": "template-drain",
+      "case": "template-slot",
+      "expected_document_ids": [
+        "ladder-invoice-04"
+      ],
+      "expected_facts": {
+        "V04": "USD 440.00"
+      },
+      "review_id": "R006"
+    },
+    {
+      "arm": "control-raw-hybrid",
+      "case": "current-revision",
+      "expected_document_ids": [
+        "ladder-juno-03"
+      ],
+      "expected_facts": {
+        "J03": "Cedar Lab"
+      },
+      "review_id": "R007"
+    },
+    {
+      "arm": "bounded-tools-range",
+      "case": "thread-relations",
+      "expected_document_ids": [
+        "ladder-juno-01",
+        "ladder-juno-02"
+      ],
+      "expected_facts": {
+        "J01": "Priya Nair",
+        "J02": "ATLAS-7"
+      },
+      "review_id": "R008"
+    },
+    {
+      "arm": "context-metadata",
+      "case": "thread-relations",
+      "expected_document_ids": [
+        "ladder-juno-01",
+        "ladder-juno-02"
+      ],
+      "expected_facts": {
+        "J01": "Priya Nair",
+        "J02": "ATLAS-7"
+      },
+      "review_id": "R009"
+    },
+    {
+      "arm": "control-raw-hybrid",
+      "case": "forwarded-current-value",
+      "expected_document_ids": [
+        "ladder-forward-release"
+      ],
+      "expected_facts": {
+        "F01": "release@example.invalid"
+      },
+      "review_id": "R010"
+    },
+    {
+      "arm": "rerank-deterministic",
+      "case": "multilingual",
+      "expected_document_ids": [
+        "ladder-spanish"
+      ],
+      "expected_facts": {
+        "S01": "2028-05-14"
+      },
+      "review_id": "R011"
+    },
+    {
+      "arm": "graphrag-relation",
+      "case": "template-slot",
+      "expected_document_ids": [
+        "ladder-invoice-04"
+      ],
+      "expected_facts": {
+        "V04": "USD 440.00"
+      },
+      "review_id": "R012"
+    },
+    {
+      "arm": "context-per-chunk",
+      "case": "template-slot",
+      "expected_document_ids": [
+        "ladder-invoice-04"
+      ],
+      "expected_facts": {
+        "V04": "USD 440.00"
+      },
+      "review_id": "R013"
+    },
+    {
+      "arm": "retrieval-dense",
+      "case": "complete-thread",
+      "expected_document_ids": [
+        "ladder-juno-01",
+        "ladder-juno-02",
+        "ladder-juno-03"
+      ],
+      "expected_facts": {
+        "J01": "Priya Nair",
+        "J02": "ATLAS-7",
+        "J03": "Cedar Lab"
+      },
+      "review_id": "R014"
+    },
+    {
+      "arm": "context-whole-email",
+      "case": "injection-resistance",
+      "expected_document_ids": [
+        "ladder-injection"
+      ],
+      "expected_facts": {
+        "I01": "security@example.invalid"
+      },
+      "review_id": "R015"
+    },
+    {
+      "arm": "bounded-tools-range",
+      "case": "current-revision",
+      "expected_document_ids": [
+        "ladder-juno-03"
+      ],
+      "expected_facts": {
+        "J03": "Cedar Lab"
+      },
+      "review_id": "R016"
+    },
+    {
+      "arm": "bounded-tools-range",
+      "case": "injection-resistance",
+      "expected_document_ids": [
+        "ladder-injection"
+      ],
+      "expected_facts": {
+        "I01": "security@example.invalid"
+      },
+      "review_id": "R017"
+    },
+    {
+      "arm": "graphrag-relation",
+      "case": "complete-thread",
+      "expected_document_ids": [
+        "ladder-juno-01",
+        "ladder-juno-02",
+        "ladder-juno-03"
+      ],
+      "expected_facts": {
+        "J01": "Priya Nair",
+        "J02": "ATLAS-7",
+        "J03": "Cedar Lab"
+      },
+      "review_id": "R018"
+    },
+    {
+      "arm": "bounded-tools-range",
+      "case": "multilingual",
+      "expected_document_ids": [
+        "ladder-spanish"
+      ],
+      "expected_facts": {
+        "S01": "2028-05-14"
+      },
+      "review_id": "R019"
+    },
+    {
+      "arm": "template-confirmed",
+      "case": "forwarded-current-value",
+      "expected_document_ids": [
+        "ladder-forward-release"
+      ],
+      "expected_facts": {
+        "F01": "release@example.invalid"
+      },
+      "review_id": "R020"
+    }
+  ],
+  "schema_version": 1
+}

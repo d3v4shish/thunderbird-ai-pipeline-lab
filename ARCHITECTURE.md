@@ -113,6 +113,37 @@ canonical body digest and every slot stores an exact source offset. SQLite
 stores family, assignment, and slot records in normalized tables and invalidates
 assignments when source changes.
 
+`slot_candidates` turns those bounded typed occurrences into a closed-world
+model selection surface. IDs are hashes of scope, document identity, canonical
+source digest, slot name, value, and span. Public records contain ID, name,
+value, and a sentence-local source preview but no offsets. Instruction-like
+local candidates are marked in deterministic audit records and omitted from
+the model-visible schema. The validator recomputes identity and source slices
+before returning downstream `{name,value,start,end}` slots.
+
+`structured_memory` removes model-authored durable prose from the whole-email
+memory path. Current-body segmentation excludes quoted and signature regions;
+the sentence miner creates source-digest-bound event IDs and rejects direct or
+paraphrased instruction-like spans. Host code may retain up to 512 safe events,
+while only 24 become optional model importance hints. Semantic relation choices
+use lexical predicate narrowing and bind an exact current event to earlier
+same-thread records. An explicit old `In-Reply-To`/`References` target is pinned
+into the bounded prompt even when it falls outside the newest 24 records;
+RFC-like `reply_to` remains deterministic. A strongly assigned template remains
+selectable when all typed slots are optional, while unassigned same-sender
+lookalikes are removed. The model returns only event-hint, relation, family, and
+slot IDs; host validation reconstructs canonical spans and chronology.
+
+The structured-memory evaluator processes bounded emails chronologically with
+one serial call each. Prior model input is rendered only from previously
+validated host records, exposes at most eight selected event hints per record,
+and omits offsets/digests. The separate qualification evaluator freezes harder
+message shapes, 50–500-record old-reference controls, candidate-cap sweeps, and
+three-repeat resumable live gates. A deterministic rendering can decorate
+retrieval text, but retrieval resolves to unchanged canonical source. The
+explicit Complete path still enumerates the host-owned thread/template union;
+structured memory is neither evidence nor completeness authority.
+
 `template_evaluation` chronologically trains and holds out a frozen 113-message
 family corpus. It isolates exact-subject, normalized-skeleton, Drain threshold/
 support/cap/scope, shingle, and boilerplate factors, then rebuilds identical
@@ -233,6 +264,13 @@ mechanics only and cannot replace live three-repeat model evaluation.
   grounded answers, and completed model repeats are atomically checkpointed.
   Model switches wait for Ollama `/api/ps` to confirm unload, preventing a
   large chat model and embedding model from transiently competing for VRAM.
+- Candidate-only structured-memory generation is also chronological and serial,
+  with one call per bounded email. Resume reconstructs prior input only from
+  successful validated records in the same repeat; failures stop the run.
+- Structured-memory qualification is serial by model. Each repeat contains six
+  bounded adversarial emails and one reply evaluated against 500 prior host
+  records. A failed model prevents later models in the qualification ladder
+  from running; no model calls occur before the deterministic gate passes.
 - Template live qualification is serial and staged: all approved models receive
   one smoke repeat, at most two passers receive three 1,000-record repeats, and
   one winner receives three 5,000-record repeats. Each call is bounded to 64
@@ -264,6 +302,62 @@ mechanics only and cannot replace live three-repeat model evaluation.
   semantic references, not exhaustive coverage: “All/every” requests retain
   the deterministic document-range path because repeated context can dilute
   Top-K ordering on repetitive documents.
+- `context_ladder` is a separate staged evaluator. It freezes synthetic
+  recurring/drifting templates, revisions, forwards, multilingual and injected
+  messages, cross-scope shadows, source-linked relations, long sources, and
+  large-thread controls. It creates unchanged canonical chunks, decorates only
+  retrieval text with source-derived context/template/memory metadata, and
+  queries the same scope-locked SQLite index. Individual arms advance to pairs
+  and then the full package through explicit source/span/unsupported-output and
+  localized-recall gates. Drain labels are chronological and sender-scoped; an
+  optional model can select only a host-offered family and source-valid slot
+  offsets. The live screen is serial, loopback-only, digest-keyed, resumable,
+  and records raw output separately. Sources over 48K characters take ordered
+  host pages rather than a direct model call. JSON/JSONL/Markdown/HTML and a
+  blinded review pack are derived outputs; canonical source text is authoritative.
+- `related_email_rag` evaluates whole-email metadata extraction and
+  related-message expansion as separate trust boundaries. Ordinary hybrid RAG
+  must first return a source-backed, query-qualified top seed. Host code may
+  then enumerate that seed's same-scope thread and one deterministically mined
+  template family exactly once; family members do not recursively open their
+  own threads. Bounded mode reranks at most 32 candidates and returns eight.
+  Explicit user-selected Complete mode traverses the canonical union in
+  32-message pages and validates a separate ID/source ledger.
+- The related-email live boundary compares one combined operation with three
+  modular operations. The combined operation receives the complete current
+  source up to 48,000 characters, prior-only thread memory, at most three
+  sender-scoped families, and host slot candidates. Least-privilege modular
+  calls receive only current source; memory additionally receives prior thread
+  records, while template selection alone receives families/candidates.
+  Models select opaque candidate IDs, never values, anchors, or offsets.
+- Candidate IDs bind scope, document, source digest, slot name, value, and
+  canonical span. Model-visible previews omit offsets. Sentence-local
+  instruction-like candidates are retained for audit but excluded from the
+  dynamic schema; validation also rejects direct attempts to select them.
+  Generated context, summaries, relations, and family confirmations may
+  influence ranking only; original source spans remain the sole evidence.
+  Larger emails use ordered 20,000-character pages after the bounded live gate
+  qualifies.
+- The one-hop host expansion contract passes the frozen deterministic corpus,
+  and the isolated Qwen candidate screen passes 8/8. Candidate IDs fixed the
+  repeated-value failure in both integrated paths. Full integration is not
+  selected: its latest one-repeat run stopped after 8/32 valid operations when
+  Qwen repeated hostile source instructions in generated context and the host
+  rejected it. The three-repeat and alternate-model gates remain unrun.
+- The candidate-only structured-memory successor makes no generated-context or
+  generated-summary calls. Its first live schema rejected duplicate slot
+  occurrences; its second completed but exposed event omission, a lookalike
+  family false positive, and two predicates for one assertion. V3 moved event
+  completeness to host-owned spans, filters typed families without source
+  slots, and permits at most one predicate per assertion/target. One Qwen
+  repeat passed 8/8 with exact source/scope/chronology and Complete retrieval;
+  model event-hint recall was only 0.625, confirming hints cannot own durable
+  memory. V4 subsequently separated durable events from hints, isolated quoted
+  and signature text, retained explicit old reply targets, and supported
+  optional-slot families. Qwen3, Granite 3.1 MoE, and Qwen 2.5 passed 21/21
+  operations each across three repeats. DeepSeek violated unique-ID output on
+  the sixth operation and stopped the matrix; Phi-4 and Granite 4.1 remain
+  untested in this gate. The design remains experimental.
 - Direct endpoint hybrid remains the query-time default. Decomposition is a
   broader-evaluation candidate because it improved ranking without aggregate
   recall regression, but its cost and case-specific rank tradeoffs prevent

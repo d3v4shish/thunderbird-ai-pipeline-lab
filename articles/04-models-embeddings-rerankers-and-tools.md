@@ -102,6 +102,29 @@ included obsolete M01; hierarchy removed that error. Phi fit under the 17-GiB
 Ollama-allocation cap, but required confirmed model unload polling to avoid
 partial residency when switching from embeddings.
 
+### Candidate-only structured-memory qualification
+
+The later v4 test is not comparable to the adaptive matrix or free-prose smoke:
+it asks a narrower schema-bound question. Each model sees one complete bounded
+email plus host-generated candidate IDs and may select only those IDs. Seven
+operations were repeated three times at temperature zero, 16,384 context, and
+a 1,024-token output cap.
+
+| Model | Valid operations | Prompt/output tokens | Summed latency | Ollama allocation | Outcome |
+|---|---:|---:|---:|---:|---|
+| `granite3.1-moe:3b-instruct-fp16` | 21/21 | 21,942/2,853 | 16.181 s | 7,325,289,020 B | pass |
+| `qwen3:8b` | 21/21 | 20,169/2,766 | 34.358 s | 6,387,799,162 B | pass |
+| `qwen2.5:14b-instruct-q4_K_M` | 21/21 | 20,001/2,877 | 52.484 s | 10,521,914,899 B | pass |
+| `deepseek-v2:16b` | 5/6 attempted | 2,326/410 accepted-call tokens | 36.762 s | 11,340,947,127 B | fail |
+
+Granite was the fastest passing model in this task; Qwen3 used the smallest
+measured allocation. Qwen 2.5 passed but was slowest among the passers.
+DeepSeek's sixth response repeated six event IDs, violating `uniqueItems`.
+Validation rejected the record and the staged protocol stopped, so Phi-4 and
+Granite 4.1 have no v4 result. This is evidence about this exact ID-selection
+contract, not a universal ranking of model families. See the
+[complete qualification walkthrough](09-structured-memory-v4-qualification.md).
+
 ## What the 17-GiB cap measured
 
 The cap is 18,253,611,008 bytes of **Ollama-reported model allocation**, summed

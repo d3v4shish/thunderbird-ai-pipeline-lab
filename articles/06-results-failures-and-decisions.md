@@ -2,15 +2,18 @@
 
 ## Executive result
 
-The original adaptive and advanced-RAG test program is complete. The later
-source-linked thread-memory implementation is complete, but its three-repeat
-live qualification is still open. The pipeline is **not production-ready**.
+The original adaptive and advanced-RAG test program is complete. The older
+free-prose source-linked memory lane still has an open qualification. Its
+candidate-only v4 successor passed three fresh repeats with Qwen3, Granite 3.1
+MoE, and Qwen 2.5, then failed closed on DeepSeek and stopped before Phi-4 and
+Granite 4.1. The pipeline is **not production-ready**.
 
 That statement does not mean everything failed. Several components behaved
 very well under synthetic tests. It means the combined evidence is not broad or
 stable enough to claim safe production behavior:
 
-- no live pipeline variant passed every quality threshold;
+- no complete end-to-end configuration in the adaptive RAG matrix passed every
+  quality threshold;
 - endpoint embeddings were not byte-stable under normal batching;
 - generated Contextual RAG helped one cross-chunk case but hurt aggregate
   recall;
@@ -19,6 +22,8 @@ stable enough to claim safe production behavior:
 - model output often needed citation-aware value canonicalization;
 - source-linked summaries recovered their smoke facts, but semantic relation
   precision/recall/F1 was only 0.500;
+- candidate-only v4 fixed every measured host-side v3 failure, but one of four
+  attempted chat models violated the strict output schema;
 - tests used synthetic data and no Thunderbird integration was performed;
 - the measured standard benchmark regressed rather than improved.
 
@@ -26,13 +31,14 @@ stable enough to claim safe production behavior:
 
 | Evaluation | Expected | Actual | Decision |
 |---|---|---|---|
-| Build + deterministic tests | reproducible, no profile/network dependency | build passed; current suite 156/156 | lab contracts validated |
+| Build + deterministic tests | reproducible, no profile/network dependency | build passed; current suite 202/202 | lab contracts validated |
 | Staged modular RAG | identify stage-level strengths | advanced structure and sentence-window pipelines scored 1.000 deterministic quality | structure-aware candidate; retain modular routing |
 | Contextual RAG | improve cross-chunk semantic retrieval without source drift | BOREALIS rose from absent to hybrid rank 3, but full-suite recall fell | selective candidate only |
 | Query-time RAG | generated transforms beat direct retrieval without regression | decomposition only small rank gain; HyDE/Fusion worse; step-back/adaptive no net gain; corrective regressed | direct hybrid default; no global generated method |
 | Selective email RAG | multi-part and exhaustive routing improve answers | selective 13/13 versus direct 12/13; all gain came from thread range | promote thread-range to broader evaluation; not decomposition |
 | 50–500-message threads | expose K loss and prove bounded exhaustive coverage | direct recall 0.160 to 0.016; full/paged/hierarchy all 1.000 | page + hierarchy for all/every |
 | Source-linked thread memory | retain final state without repeating all memory | hierarchy matched 0.9744 recall while using 54.4% fewer indexed chars; both model relation streams scored 0.500 F1 | hierarchical localized candidate; canonical exhaustive route; live qualification open |
+| Candidate-only structured memory v4 | keep source anchors and completeness out of model control | deterministic 6/6 email and 4/4 scale pass; three models 21/21 each; DeepSeek rejected on duplicate IDs | strongest memory design tested; broader validation required |
 | Parent storage normalization | smaller DB with exact parity | -37.410% DB, exact ranking/evidence parity | integration candidate |
 | Embedding drift | exact vectors or bounded quality tolerance | batch 24 not exact; overlap/quality tolerance passed; warmed singleton exact | persist vectors; monitor tolerance |
 | True cross-encoder | improve order without candidate/safety mutation | fact MRR 0.7933 to 0.8388; +281 ms p50 at depth 8 | optional broader evaluation, CPU cost high |
@@ -222,6 +228,38 @@ canonical paging for explicit exhaustive mode. Do not promote the model lane:
 these are one-repeat diagnostics, semantic relation quality is below threshold,
 and finalist validation is unfinished. See the
 [`thread-memory evaluation summary`](../reports/thread-memory-evaluation-summary.md).
+
+## Candidate-only structured-memory v4 result
+
+V4 stopped asking the model to create source anchors, event prose, values,
+offsets, targets, or email lists. Host code mined the current source, created
+opaque candidate IDs, retained all safe events, and resolved selected IDs back
+to immutable spans. The model received one complete bounded email, no user
+query, at most 24 selected prior records, and only closed-world choices.
+
+The unchanged v3 baseline passed 1/6 adversarial emails and 0/4 old-reference
+thread cases. It lost the optional template family, treated quoted/signature/
+injection text as current events, dropped the decision after sentence 24, and
+omitted the explicitly referenced oldest message. V4 passed 6/6 and 4/4. It
+retained all 31 events with a durable cap of 48 or more while holding model
+hints to 24, and it found the exact oldest reply target at 50, 100, 250, and
+500 prior messages.
+
+Three fresh temperature-zero repeats produced:
+
+| Model | Result | Summed latency | Measured allocation |
+|---|---:|---:|---:|
+| Granite 3.1 MoE | 21/21 | 16.181 s | 7,325,289,020 B |
+| Qwen3 8B | 21/21 | 34.358 s | 6,387,799,162 B |
+| Qwen 2.5 14B | 21/21 | 52.484 s | 10,521,914,899 B |
+| DeepSeek V2 16B | 5/6 attempted | 36.762 s | 11,340,947,127 B |
+
+DeepSeek's sixth output contained 24 entries but duplicated six IDs. The host
+rejected the response and did not silently deduplicate it. Per the staged gate,
+Phi-4 and Granite 4.1 were not run. This makes v4 the strongest memory design
+tested here, not a production result. The exact prompt, expected and raw output,
+tokens, telemetry, and failure are in the
+[`structured-memory v4 qualification`](09-structured-memory-v4-qualification.md).
 
 ## Storage result
 
@@ -419,6 +457,12 @@ but they clearly do not support a performance-improvement claim. The major live
 hotspots were model generation, embedding rebuilds, CPU cross-encoder scoring,
 and exhaustive output length—not the millisecond deterministic retrieval path.
 
+The later same-method structured-memory v4 check measured baseline/final ingest
+at 0.730760/0.732320 seconds, p50 at 1.797299/1.852720 ms, p95 at
+2.320323/2.367568 ms, RSS at 34,860/35,108 KiB, and identical 3,465,216-byte
+databases. That movement is also mixed and unreplicated; no improvement is
+claimed.
+
 ## What is ready for broader integration testing
 
 - structure-aware, source-verifiable chunks;
@@ -428,6 +472,8 @@ and exhaustive output length—not the millisecond deterministic retrieval path.
 - ordered thread/document range for explicit exhaustive requests;
 - page-level ledgers and bounded hierarchical reduction;
 - normalized parent storage;
+- host-generated, source-digest-bound event and slot candidates;
+- model-selected IDs as optional semantic hints rather than memory authority;
 - strict scope, source-span, fact, citation, abstention, and completeness gates;
 - persisted embeddings with visible drift policy;
 - optional selective contextual/cross-encoder lanes behind measurements.
@@ -450,9 +496,11 @@ Thunderbird port, parity tests against Thunderbird's interfaces, realistic and
 privacy-safe email evaluation without synthetic FACT labels, multilingual route
 coverage, concurrency/soak/crash recovery, GPU reranker evaluation if desired,
 security review of the actual integration boundary, and quality gates that all
-pass across repeated runs. Source-linked memory additionally needs its complete
-three-repeat Qwen3/Phi-4 matrix, improved or deterministically replaced semantic
-relations, and live validation of selected 180-message and oversized finalists.
+pass across repeated runs. The older free-prose memory lane still has its open
+matrix. Candidate-only v4 needs a DeepSeek disposition, followed by the blocked
+Phi-4/Granite 4.1 ladder, plus HTML/MIME, multilingual, deletion/invalidation,
+larger unlabeled retrieval, human review, concurrency, cancellation, and
+selected 180-message/oversized finalists.
 
 The authoritative consolidated review is
 [`hardening-evaluation-summary.md`](../reports/hardening-evaluation-summary.md).
@@ -460,6 +508,6 @@ The newer source-linked result is
 [`thread-memory-evaluation-summary.md`](../reports/thread-memory-evaluation-summary.md).
 The latest template/scale result is
 [`template-aware-evaluation-summary.md`](../reports/template-aware-evaluation-summary.md).
-Earlier raw evidence remains under [`reports/`](../reports/). The source-linked
-summary records the exact transient paths for its latest deterministic and live
-JSON audits; they were deliberately not committed as permanent generated data.
+The candidate-only result is
+[`structured-memory-qualification-summary.md`](../reports/structured-memory-qualification-summary.md).
+Earlier raw evidence remains under [`reports/`](../reports/).

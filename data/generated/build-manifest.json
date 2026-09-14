@@ -11,7 +11,7 @@
     "schema_version": 1
   },
   "fts5": true,
-  "implementation_digest": "74fb7f1504c61c40252649d6f60f6a15c26f9d1ed4655935204e4ccc1a5c7304",
+  "implementation_digest": "210743be72073bef2ff8ca287b2e79f03ae724c9acb067d993aa71d9281a31a8",
   "model_config_digest": "e1387812ccefa0d6f46f759da559d95fce34d1a861e3e87edf51cf0f91036e19",
   "python_required": "3.14",
   "schema_version": 1,

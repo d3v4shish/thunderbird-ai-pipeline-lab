@@ -1,5 +1,165 @@
 # Benchmarks
 
+## Host-built structured-memory experiment: 2026-09-14
+
+Commands:
+
+```sh
+./scripts/benchmark.sh --name structured-memory-baseline-1000
+./scripts/run.sh structured-memory-evaluate --dry-run \
+  --name structured-memory-evaluation-v3
+./scripts/run.sh structured-memory-evaluate --live --chat-model qwen3:8b \
+  --repeats 1 --no-resume --name structured-memory-qwen3-screen-v3
+./scripts/benchmark.sh --name structured-memory-postchange-1000
+```
+
+V1 passed the first email and then failed closed on the repeated-value email:
+Qwen selected both source-valid `$540.00` occurrence IDs for the one `amount`
+slot. A dynamic one-per-distinct-slot array cap fixed that. V2 completed all
+8/8 calls without validation errors, but semantic quality still failed: event
+recall was 0.875, family F1 was 0.923 because the unique lookalike received the
+invoice family, and relation F1 was 0.667 because one assertion selected both
+`confirms` and `answers`.
+
+V3 persists all 16 host-safe event spans and treats model event choices only as
+optional importance hints. It removes typed-family offers when no matching
+source slot exists and permits one semantic predicate per assertion/target.
+The fresh Qwen screen passed 8/8: persisted event P/R, relation F1, family F1,
+slot P/R, source validity, chronology, poisoned-case accuracy, and Complete
+retrieval were all 1.000. Model event-hint recall was 0.625 (10/16), directly
+supporting the decision not to let hints own memory completeness. Raw and
+structured localized fact recall were both 1.000 with zero unrelated Complete
+records. The run used 5,577 prompt tokens, 704 output tokens, 9,587.0 ms summed
+latency, a 40,960 advertised context, and 6,387,799,162 bytes of Ollama model
+VRAM. This is one repeat over eight synthetic emails, not a stability or
+production qualification.
+
+The fixed-seed 1K baseline/post-change pair was:
+
+| Run | Ingest wall | Throughput | Query p50 | Query p95 | Peak RSS | DB size |
+|---|---:|---:|---:|---:|---:|---:|
+| baseline | 0.728849 s | 1,372.026 docs/s | 1.811 ms | 2.397 ms | 34,692 KiB | 3,465,216 B |
+| post-change | 0.728506 s | 1,372.672 docs/s | 1.848 ms | 2.359 ms | 34,672 KiB | 3,465,216 B |
+
+The standard benchmark does not exercise model generation or the new bounded
+candidate miner. Its mixed sub-millisecond deltas are a regression check; no
+performance improvement is claimed.
+
+## Host-owned slot candidate experiment: 2026-09-14
+
+Commands:
+
+```sh
+./scripts/run.sh slot-candidate-evaluate --dry-run \
+  --name slot-candidate-evaluation-v2-filtered
+./scripts/run.sh slot-candidate-evaluate --live --chat-model qwen3:8b \
+  --repeats 1 --no-resume --name slot-candidate-qwen3-screen-v2-filtered
+./scripts/run.sh related-email-rag-evaluate --live --chat-model qwen3:8b \
+  --repeats 1 --no-resume --name related-email-qwen3-screen-v4-least-privilege
+./scripts/benchmark.sh --name slot-candidate-postchange-1000
+```
+
+The isolated unfiltered candidate-ID screen completed 8/8 calls with valid
+source spans but failed the poisoned semantic case: selection accuracy was
+0.875 and slot precision/recall 0.857/0.857. It used 3,385 prompt-evaluation
+tokens, 327 output-evaluation tokens, and 5,761.3 ms summed request latency.
+After sentence-local host filtering removed the instruction-context candidate
+from the dynamic schema, the v2 rerun passed 8/8 with family, selection,
+precision, recall, source-span, and poisoned-case metrics all 1.000. It used
+3,158 prompt tokens, 322 output tokens, and 5,715.0 ms summed latency. Both ran
+with Qwen's 40,960 advertised context and 6,387,799,162-byte Ollama allocation.
+
+Full v3 candidate integration passed the formerly fatal repeated-value
+combined operation, then stopped after 6/32 valid operations because modular
+memory emitted template metadata as source events. Least-privilege modular
+inputs fixed that contamination. Full v4 reached 8/32, used 2,812 prompt
+tokens, 1,203 output tokens, and 16,310.7 ms summed latency, then correctly
+rejected instruction-like text copied into generated context. These partial
+runs are failure diagnostics, not throughput or stability measurements.
+
+The fixed-seed 1K regression measured 0.726 s ingestion (1,378 documents/s),
+1.963 ms query p50, 2.347 ms p95, 34,308 KiB peak RSS, and a 3,465,216-byte
+database. The preceding snapshot measured 0.749 s, 1.834/2.418 ms p50/p95,
+34,356 KiB RSS, and the same database size. Mixed single-run deltas are noise;
+no performance improvement is claimed.
+
+## Whole-email related-message expansion: 2026-09-13
+
+The frozen 18-document/eight-case matrix measured nine isolated arms with:
+
+```sh
+./scripts/run.sh related-email-rag-evaluate --dry-run \
+  --name related-email-rag-evaluation
+./scripts/benchmark.sh --name related-email-postchange-1000
+```
+
+Raw hybrid seed accuracy was 0.750. Adding all whole-email context, prior
+memory, and template metadata for ranking reached 0.875. Bounded one-hop
+thread-plus-family expansion and explicit Complete union both reached related
+precision/recall 1.000/1.000, source/scope validity 1.000/1.000, and zero
+unrelated returned documents on this synthetic fixture. The corresponding
+deterministic arm walls were 11.628 and 12.094 ms and each SQLite artifact was
+221,184 bytes. These are small-corpus contract timings, not serving benchmarks.
+
+The fixed-seed regression check measured:
+
+| Documents | Ingest wall | Throughput | Query p50 | Query p95 | Peak RSS | DB size |
+|---:|---:|---:|---:|---:|---:|---:|
+| 1,000 | 0.749 s | 1,334 docs/s | 1.834 ms | 2.418 ms | 34,356 KiB | 3,465,216 B |
+
+The immediately preceding context-ladder snapshot on the same fixed corpus
+measured 0.748 s ingest, 2.029/2.359 ms query p50/p95, 33,904 KiB RSS, and the
+same database size. The mixed one-run deltas are small and include noise; this
+is a regression/reproducibility guard, not a performance-improvement claim.
+Artifacts are `reports/related-email-rag-evaluation.*` and
+`reports/related-email-postchange-1000.{json,md}`.
+
+The version-2 live Qwen3 screen planned 32 serial calls but stopped after four
+valid operations and one rejected operation. The accepted records used 1,352
+prompt-evaluation tokens, 713 output-evaluation tokens, and 11,750.1 ms summed
+request latency. Qwen advertised 40,960 context and occupied 6,387,799,162
+Ollama VRAM bytes, within the 17-GiB model-allocation cap. The fifth response
+copied the correct repeated value but supplied an ambiguous anchor containing
+both occurrences. Because the prerequisite gate failed, no three-repeat model
+matrix or oversized live lane ran. This partial run is a failure diagnostic,
+not a latency, quality, or stability benchmark.
+
+## Context-ladder implementation validation: 2026-09-13
+
+The new staged context/template/memory evaluator was validated with:
+
+```sh
+./scripts/run.sh context-ladder-evaluate --dry-run \
+  --name context-ladder-evaluation
+./scripts/benchmark.sh --name context-ladder-postchange-1000
+```
+
+The ladder is a deterministic correctness experiment, not an online benchmark:
+it evaluated 23 source-indexed arms over 14 retrieval sources, while its
+10-KiB/256-KiB/1-MiB and 50/500/5,000-message controls use bounded paging and
+host-ledger checks. The standard fixed-seed 1K regression check measured:
+
+| Documents | Ingest wall | Throughput | Query p50 | Query p95 | Peak RSS | DB size |
+|---:|---:|---:|---:|---:|---:|---:|
+| 1,000 | 0.748 s | 1,336 docs/s | 2.029 ms | 2.359 ms | 33,904 KiB | 3,465,216 B |
+
+Artifacts are `reports/context-ladder-evaluation.*` and
+`reports/context-ladder-postchange-1000.*`. This is one post-change
+reproducibility measurement; it does not establish a performance improvement
+or regression against a paired baseline.
+
+## Qwen3 context-ladder screen: 2026-09-13
+
+The loopback-only one-repeat Qwen3 screen began under eligible residency
+(40,960 advertised context and 6,387,799,162 bytes of Ollama VRAM). Its first
+whole-email-context call took 2,741.2 ms and its detailed-summary call took
+560.0 ms; both returned valid JSON. The third call, schema-bound template
+confirmation, took 1,082.1 ms and failed source-offset validation despite the
+correct offered family and values. The screen stopped after 3/34 planned calls.
+This is a fail-closed diagnostic, not a quality, latency, or stability result.
+The raw response and exact prompt are retained in
+`reports/context-ladder-qwen3-screen.json`.
+
 ## Public archive validation: 2026-09-13
 
 After the documentation and artifact-integrity packaging change, the standard
@@ -703,3 +863,36 @@ unreplicated movements do not establish a generic pipeline performance change.
 Full evidence is in
 [`reports/template-aware-evaluation-summary.md`](reports/template-aware-evaluation-summary.md)
 and its linked JSON reports.
+
+## Structured-memory adversarial qualification: 2026-09-14
+
+Unchanged v3 passed 1/6 adversarial message cases and 0/4 explicit-old-reply
+thread cases. V4 passed 6/6 and 4/4. The sentence-31 source event was absent at
+a durable cap of 24 and present at 48/96/512, while prompt hints stayed at 24.
+A dense no-reference relation diagnostic retained 64/96/96 candidates at caps
+64/128/256. The selected 64 cap is a prompt bound, not semantic completeness;
+explicit replies produced one exact relation candidate at all thread sizes.
+
+| Model | Valid operations | Prompt/output tokens | Summed latency | Ollama allocation | Result |
+|---|---:|---:|---:|---:|---|
+| Qwen3 8B | 21/21 | 20,169/2,766 | 34.358 s | 6,387,799,162 B | pass |
+| Granite 3.1 MoE F16 | 21/21 | 21,942/2,853 | 16.181 s | 7,325,289,020 B | pass |
+| Qwen 2.5 14B Q4 | 21/21 | 20,001/2,877 | 52.484 s | 10,521,914,899 B | pass |
+| DeepSeek V2 16B | 5/6 attempted | 2,326/410 accepted-call tokens | 36.762 s | 11,340,947,127 B | fail: duplicate ID |
+
+DeepSeek returned a 24-item event array containing six duplicate IDs. Strict
+validation rejected it. The staged matrix stopped, so Phi-4 and Granite 4.1
+have no v4 result.
+
+The generic fixed-seed 1K baseline/post measurements were 0.730760/0.732320 s
+ingest, 1.797299/1.852720 ms query p50, 2.320323/2.367568 ms p95,
+34,860/35,108 KiB peak RSS, and identical 3,465,216-byte databases. These
+single-run movements do not establish a performance improvement. The baseline
+and final post cProfile runs took 0.124 and 0.117 seconds including imports; the
+qualification evaluator itself took 0.020 and 0.034 seconds. The final fixture
+also hashes all generated scale inputs. Prior validation took 0.006 seconds.
+
+Artifacts: `reports/structured-memory-qualification-v3-baseline.*`,
+`reports/structured-memory-qualification-v4-deterministic.*`,
+`reports/structured-memory-qualification-{qwen3,granite31,qwen25,deepseek}-v4.*`,
+and `reports/structured-memory-qualification-{baseline,postchange}-1000.*`.

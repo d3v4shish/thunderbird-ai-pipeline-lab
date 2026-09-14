@@ -451,6 +451,13 @@ class Index:
         ).fetchone()
         if not row:
             return None
+        source = self.connection.execute(
+            """SELECT body FROM documents
+               WHERE id = ? AND tenant = ? AND collection_name = ?""",
+            (document_id, scope.tenant, scope.collection),
+        ).fetchone()
+        if not source or content_digest(str(source["body"])) != row["source_digest"]:
+            return None
         slots = tuple(
             TemplateSlot(
                 slot_type=item["slot_type"],
@@ -477,6 +484,43 @@ class Index:
             analysis_text=row["analysis_text"],
             schema_version=row["schema_version"],
         )
+
+    def template_family_document_ids(
+        self, family_id: str, scope: Scope
+    ) -> list[str]:
+        """Return current source-backed family members in canonical order."""
+        rows = self.connection.execute(
+            """SELECT a.document_id, a.source_digest, d.body, d.timestamp
+               FROM template_assignments a
+               JOIN documents d
+                 ON d.id = a.document_id
+                AND d.tenant = a.tenant
+                AND d.collection_name = a.collection_name
+               WHERE a.family_id = ? AND a.tenant = ?
+                 AND a.collection_name = ?
+               ORDER BY d.timestamp, a.document_id""",
+            (family_id, scope.tenant, scope.collection),
+        )
+        return [
+            str(row["document_id"])
+            for row in rows
+            if content_digest(str(row["body"])) == row["source_digest"]
+        ]
+
+    def thread_document_ids(self, thread_id: str, scope: Scope) -> list[str]:
+        """Return same-scope thread members in canonical order."""
+        rows = self.connection.execute(
+            """SELECT id, timestamp, metadata_json FROM documents
+               WHERE tenant = ? AND collection_name = ?
+               ORDER BY timestamp, id""",
+            (scope.tenant, scope.collection),
+        )
+        result = []
+        for row in rows:
+            metadata = json.loads(row["metadata_json"])
+            if str(metadata.get("thread_id", "")) == thread_id:
+                result.append(str(row["id"]))
+        return result
 
     def delete_document(self, document_id: str, scope: Scope) -> None:
         with self.connection:

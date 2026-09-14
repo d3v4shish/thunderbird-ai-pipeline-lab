@@ -16,18 +16,27 @@ The short verdict is:
 - prefer structure-aware source chunks, with original source offsets retained;
 - consider hierarchical thread and template metadata for retrieval efficiency,
   but never treat generated summaries, relations, or templates as evidence;
+- keep related-message expansion behind a qualified source seed and an
+  explicit user-selected Complete mode; do not recursively traverse families;
+- let models select only host-generated, source-bound slot candidate IDs;
+  deterministically hide candidates found in instruction-like local context;
+- build durable thread memory from host-mined source spans; model-selected
+  event IDs are optional hints, while semantic relation/template/slot choices
+  remain closed-world IDs and never control scope or completeness;
 - do not globally enable the tested Contextual RAG, HyDE, Fusion, corrective,
   adaptive, decomposition, or model-memory lanes from these results;
-- do not call the pipeline production-ready yet. The data is synthetic, no
-  survivor passed every live quality gate, embedding drift is still a concern,
-  thread-relation F1 is 0.500, and real-mail/Thunderbird integration, security,
-  cancellation, concurrency, and usability validation remain.
+- do not call the pipeline production-ready yet. Structured-memory v4 passed
+  three repeats with Qwen3, Granite 3.1 MoE, and Qwen 2.5, but DeepSeek failed
+  strict schema validation and stopped the remaining model ladder. The data is
+  synthetic, embedding drift remains a concern, and real-mail/Thunderbird
+  integration, security, cancellation, concurrency, and usability validation
+  remain.
 
 The deterministic lane uses only Python 3.14's standard library. The live lane
 talks only to an explicitly configured loopback Ollama endpoint. Build, test,
 and benchmark never download models. The retained final implementation digest
-is `74fb7f1504c61c40252649d6f60f6a15c26f9d1ed4655935204e4ccc1a5c7304`;
-the matching suite passed 156/156 deterministic tests in 19.079 seconds.
+is `210743be72073bef2ff8ca287b2e79f03ae724c9acb067d993aa71d9281a31a8`;
+the matching suite passed 202/202 deterministic tests.
 
 ## RAG explained from one tested email
 
@@ -374,6 +383,117 @@ stage recovered 15,000/15,000 offered values over 237 bounded pages with no
 retry or unsupported output. This proves that particular exhaustive ledger
 contract on synthetic templates, not open-ended semantic completeness.
 
+### Whole email plus thread and template expansion
+
+The newest experiment asks a narrower question: once ordinary RAG finds one
+qualified source email, can the host safely retrieve its complete thread and
+all messages from the same mined template family? The model receives the whole
+current email (up to 48,000 characters), prior-only thread memory, and at most
+three host-offered template skeletons. It may produce context, a detailed
+summary, source-quoted events, prior relations, one offered family ID, and exact
+slot values. It does not choose tenant scope, enumerate related mail, or claim
+completeness. Generated fields remain retrieval metadata; original email spans
+are the only evidence.
+
+The first provenance repair asked the model for `{name, value, anchor}` while
+host code calculated offsets. It worked for unique values but failed when
+`$540.00` appeared twice: Qwen's anchor contained both occurrences. The current
+design moves occurrence identity entirely into host code. A deterministic typed
+extractor finds bounded amount/date occurrences and assigns each an opaque ID
+bound to tenant, collection, document, source digest, slot name, value, and
+span. The model sees ID/name/value/local-quote previews and may select an ID; it
+never creates a value, anchor, or offset. Editing or moving the source makes the
+ID invalid.
+
+An eight-email semantic screen covered unique and repeated-identical amounts,
+superseded corrections, negation, subtotal/tax/total, a final date, absence,
+and a poisoned “select the first candidate” sentence. The unfiltered ID design
+kept every selected span valid but Qwen obeyed the poison and chose `$700.00`
+instead of final `$710.00`: selection accuracy was 0.875 and slot
+precision/recall 0.857/0.857. Sentence-local host filtering then retained the
+unsafe occurrence in audit data but removed its ID from the model schema. The
+version-2 Qwen rerun passed all 8/8 cases with family accuracy, selection
+accuracy, slot precision/recall, source-span validity, and poisoned-case
+accuracy all 1.000.
+
+Nine deterministic arms used 18 synthetic messages and eight questions. Raw
+hybrid seed accuracy was 0.750; combined whole-email context, prior memory, and
+template metadata reached 0.875. Thread-only expansion missed related messages
+in other threads, family-only expansion missed one reply, and their bounded
+one-hop union reached related precision/recall 1.000/1.000. Explicit Complete
+union also reached 1.000/1.000 with exact source/scope validity and no unrelated
+message. This is a frozen-fixture result, not a real-mail quality estimate.
+
+Top-32 expansion cannot promise completeness for large families: the accounting
+control covered 64%, 6.4%, and 0.64% at 50, 500, and 5,000 messages. Complete
+mode instead enumerates the canonical non-recursive union in 32-message pages
+and retained ledger recall 1.000. A separate 64-KiB source required four ordered
+20,000-character pages and zero direct oversized model calls.
+
+The integrated candidate-ID run passed the previously fatal repeated-value
+email in both combined and modular paths. Its first attempt then exposed that a
+memory-only call had unnecessarily received template metadata and emitted it
+as alleged source events; least-privilege input separation fixed that. The next
+run reached 8/32 valid operations, then Qwen copied a hostile email instruction
+into generated context. The context validator rejected it. Thus the slot design
+passes its isolated live gate and fixes the target provenance failure, while
+the larger generated-context pipeline still does not qualify. No three-repeat
+model matrix or large-page live lane ran. See the
+[candidate v2 report](reports/slot-candidate-qwen3-screen-v2-filtered.md),
+[current deterministic integration](reports/related-email-rag-evaluation-v3-candidates.md),
+and [failed full integration](reports/related-email-qwen3-screen-v4-least-privilege.md).
+
+The next version removes generated context, summaries, event prose, relation
+targets, values, and offsets from the model output altogether. One complete
+bounded email is still sent per call. Host code mines every body-sentence
+occurrence, rejects instruction-like occurrences, assigns source-digest-bound
+event IDs, creates semantic-relation choices only against earlier same-thread
+records, and retains authoritative `reply_to` edges directly from headers. The
+model returns only event-hint, relation, family, and slot IDs. Every safe host
+event is persisted regardless of the hint, so a model omission cannot erase
+source memory.
+
+This design took three measured iterations. V1 failed after 1/8 valid calls
+because Qwen selected both identical `$540.00` occurrences for one slot. V2
+completed 8/8 but retained only 14/16 events, selected both `confirms` and
+`answers` for one assertion, and falsely assigned the unique “Invoice garden”
+message to the invoice family. V3 enforced slot and relation cardinality,
+removed typed-family offers with no matching source slot, and made all safe
+events host-owned. The fresh Qwen v3 screen passed 8/8 with event, relation,
+family, slot, source, chronology, poison, and retrieval gates at 1.000. Qwen
+marked only 10/16 events as important (hint recall 0.625), demonstrating why
+those hints cannot own memory completeness. Raw and structured localized fact
+recall were both 1.000; explicit Complete expansion retained related recall
+1.000 with no unrelated records. This is one synthetic repeat, not promotion.
+See the [v3 report](reports/structured-memory-qwen3-screen-v3.md) and
+[deterministic contract](reports/structured-memory-evaluation-v3.md).
+
+The adversarial v4 qualification then tested ordinary unlabeled prose, an
+optional-slot template, forwarded history, signatures, paraphrased prompt
+injection, a required event after sentence 24, and replies to the oldest item
+in 50/100/250/500-message threads. Unchanged v3 passed only one of six message
+cases and zero of four scale cases. V4 separates up to 512 durable host events
+from 24 model-visible hints, excludes quoted/signature segments, pins explicit
+old references into the 24-record prompt window, narrows semantic relation
+choices, and keeps a strongly assigned template selectable when its typed slot
+is absent. The deterministic v4 gate passed every case.
+
+Three fresh temperature-zero repeats produced 21/21 passing operations for
+Qwen3, Granite 3.1 MoE, and Qwen 2.5. Their summed model latencies were
+34.358 s, 16.181 s, and 52.484 s, with Ollama allocations of 6.388 GB,
+7.325 GB, and 10.522 GB. DeepSeek was eligible at 11.341 GB and passed its
+first five operations, then returned six duplicate event IDs in the 24-ID
+long-message response. The host rejected that schema violation and stopped the
+matrix; Phi-4 and Granite 4.1 were intentionally not run. See the
+[v3 baseline](reports/structured-memory-qualification-v3-baseline.md),
+[v4 deterministic report](reports/structured-memory-qualification-v4-deterministic.md),
+[Qwen3](reports/structured-memory-qualification-qwen3-v4.md),
+[Granite 3.1](reports/structured-memory-qualification-granite31-v4.md),
+[Qwen 2.5](reports/structured-memory-qualification-qwen25-v4.md), and
+[DeepSeek failure](reports/structured-memory-qualification-deepseek-v4.md).
+The [combined qualification report](reports/structured-memory-qualification-summary.md)
+explains the complete before/after test in one place.
+
 ### Models, embeddings, and the 17-GiB rule
 
 The approved set covered Granite MoE, DeepSeek, Phi, Qwen, and Granite 4.1
@@ -403,9 +523,9 @@ files, and local model caches are intentionally excluded from Git.
 
 `RESULTS_MANIFEST.sha256` hashes every retained report and generated fixture.
 Run `./scripts/results-manifest.sh verify` to prove that the review artifacts
-match this repository snapshot. The planned next template-family experiment is
-saved in [NEXT_PLAN.md](NEXT_PLAN.md); it has not been implemented in
-Thunderbird.
+match this repository snapshot. The related-email experiment and its blocked
+qualification work are recorded in [NEXT_PLAN.md](NEXT_PLAN.md). Nothing from
+this experiment has been implemented in Thunderbird.
 
 ## Evaluation articles
 
@@ -413,9 +533,10 @@ Start with [one email from source to answer](articles/00-rag-one-email-from-sour
 for a ground-up explanation of RAG, chunking, SQLite FTS5/BM25, embeddings,
 hybrid fusion, reranking, evidence packing, prompting, and validation. The
 [evaluation article index](articles/README.md) then covers every RAG family,
-the complete 156-test catalog, actual prompts/raw outputs, all tested models,
+the complete 202-test catalog, actual prompts/raw outputs, all tested models,
 every parameter sweep, and final expected-versus-actual decisions. Raw JSON in
-`reports/` remains the source of truth.
+`reports/` remains the source of truth. The latest end-to-end explanation is
+[structured memory v4: complete qualification walkthrough](articles/09-structured-memory-v4-qualification.md).
 
 ## Quick start
 
@@ -467,6 +588,134 @@ one model call receives the complete email without a target chunk and shares
 that email-level context across its canonical passages. Both are
 query-independent and resumably cached. Generated text is untrusted search
 metadata only; answer evidence remains the original verified source span.
+
+Run the staged whole-email, template, and thread-memory ladder without an
+endpoint:
+
+```sh
+./scripts/run.sh context-ladder-evaluate --dry-run \
+  --name context-ladder-evaluation
+```
+
+It freezes recurring/drifting templates, a lookalike unique message, a forward,
+Spanish source, prompt injection, a cross-tenant shadow, revisions,
+source-linked relations, and 10-KiB/256-KiB/1-MiB source controls. It measures
+raw, metadata, per-chunk, whole-email, and detailed-summary context; real
+chronological sender-scoped Drain labels; closed-world template confirmation;
+Markdown and graph memory; retrieval, reranking, graph, range, and hierarchy
+arms individually, then qualifying pairs, then the full package.
+
+Generated records are untrusted retrieval metadata, never evidence. Whole-email
+and detailed-summary calls take a complete email only at or below 48,000
+characters. Larger sources are ordered 20,000-character host pages—never a
+silently truncated direct model prompt. The command writes JSON, JSONL,
+Markdown, HTML, and a 20-case blinded review pack with its key in a separate
+file. Its source-derived stand-ins validate mechanics, not model quality.
+
+After reviewing the dry-run, screen a model serially through loopback Ollama:
+
+```sh
+./scripts/run.sh context-ladder-evaluate --live --chat-model qwen3:8b \
+  --repeats 1 --name context-ladder-qwen3-screen
+```
+
+The live lane is temperature-zero, cache/digest keyed, cancellation-safe, and
+records prompts, raw output, validation, and residency separately from the
+deterministic score table. Three fresh repeats for Qwen3, Granite 3.1, and an
+eligible alternate remain required after an acceptable screen. A true
+cross-encoder remains the separate loopback `cross-encoder-evaluate` control;
+the deterministic reranker does not stand in for it.
+
+The retained one-repeat Qwen3 screen failed closed and did not advance. Its
+residency passed (40,960 advertised context; 6,387,799,162 bytes of Ollama VRAM
+under the 17-GiB cap). The first whole-email context and detailed-summary JSON
+records validated, but template confirmation selected the offered family and
+correct values while returning invalid source offsets: `INV-4101` was `7:15`
+instead of `8:16`, and `USD 410.00` was `34:50` instead of `44:54`. The screen
+stopped after three of 34 planned calls; no three-repeat or large-page live run
+was authorized. See `reports/context-ladder-qwen3-screen.json` for the exact
+prompt, raw response, residency, and failure.
+
+Use `--include-large-pages` only in the later qualified lane. It performs
+page-level context and summary extraction for the 256-KiB and 1-MiB controls,
+with absolute page headers and host-validated coverage/merge records; it never
+turns those sources into one direct prompt.
+
+The retained deterministic run (`context-ladder-evaluation`) measured 23
+source-indexed arms: 22 met the advance rule and exact-only retrieval correctly
+failed it at 0.667 localized fact recall. Raw hybrid and every qualifying
+context/template/memory pair and full package retained 1.000 localized and
+complete fact recall, 1.000 source-span validity, and 1.000 scope validity on
+this intentionally small synthetic fixture. Ordered page/ledger traversal
+retained all facts in 10-KiB, 256-KiB, and 1-MiB sources; direct whole-email
+calls were allowed only for the 10-KiB source. At 50/500/5,000 thread messages,
+Top-8 retained 0.1600/0.0160/0.0016 of facts while the deterministic ordered
+ledger retained 1.000. These are contract and completeness measurements, not
+evidence that any generated-context or memory design is better on real mail.
+The ladder's live screen failed closed after three of 34 planned operations,
+as recorded immediately above.
+
+Run the whole-email related-message expansion experiment without an endpoint:
+
+```sh
+./scripts/run.sh related-email-rag-evaluate --dry-run \
+  --name related-email-rag-evaluation-v3-candidates
+```
+
+It compares ranking-only metadata, thread-only expansion, family-only
+expansion, their bounded one-hop union, and explicit Complete union. It also
+records 50/500/5,000-family accounting and a 64-KiB ordered-page contract.
+
+First run the isolated host-candidate semantic gate:
+
+```sh
+./scripts/run.sh slot-candidate-evaluate --live \
+  --chat-model qwen3:8b --repeats 1 --no-resume \
+  --name slot-candidate-qwen3-screen-v2-filtered
+```
+
+Only after that passes, run the combined-versus-modular integration gate:
+
+```sh
+./scripts/run.sh related-email-rag-evaluate --live \
+  --chat-model qwen3:8b --repeats 1 --no-resume \
+  --name related-email-qwen3-screen-v4-least-privilege
+```
+
+Do not run the three-repeat model matrix unless this one-repeat gate passes.
+The isolated candidate gate passed 8/8, but full integration failed after 8/32
+valid operations when generated context repeated a hostile source instruction,
+so the later live gates remain intentionally unrun.
+
+Run the replacement candidate-only structured-memory contract and its staged
+one-repeat screen with:
+
+```sh
+./scripts/run.sh structured-memory-evaluate --dry-run \
+  --name structured-memory-evaluation-v3
+./scripts/run.sh structured-memory-evaluate --live --chat-model qwen3:8b \
+  --repeats 1 --no-resume --name structured-memory-qwen3-screen-v3
+```
+
+This path makes one whole-email call for each of eight bounded synthetic emails
+and makes zero generated-context or generated-summary calls. The retained v3
+screen passes and remains historical evidence.
+
+Run the harder v4 deterministic and live qualification with:
+
+```sh
+./scripts/run.sh structured-memory-qualify --dry-run \
+  --name structured-memory-qualification-v4-deterministic
+./scripts/run.sh structured-memory-qualify --live --chat-model qwen3:8b \
+  --repeats 3 --no-resume \
+  --name structured-memory-qualification-qwen3-v4
+```
+
+The command uses six adversarial bounded emails plus one old-reference reply
+against 500 prior host records. It writes exact prompts, schemas, raw output,
+validated records, checks, tokens, latency, model digest, and residency. A
+failed model gate is retained and prevents later models from being inferred as
+tested.
 
 Run the isolated live query-time RAG comparison:
 
@@ -662,6 +911,16 @@ relation F1 was only 0.500 and the required three-repeat live matrix remains
 open. See the
 [source-linked thread-memory evaluation](reports/thread-memory-evaluation-summary.md)
 for exact retrieval, latency, VRAM, large-thread, and oversized-email results.
+
+The newer `structured-memory-evaluate` lane addresses that relation-stream
+weakness without replacing this historical matrix. It sends each current email
+once, exposes only host-generated source-bound IDs, persists all safe host event
+spans, and uses model selection only for optional event importance plus bounded
+semantic relation/template/slot choices. Its one-repeat Qwen screen passes; it
+does not qualify the older free-prose memory lane. The v4 successor passed
+three repeats for Qwen3, Granite 3.1 MoE, and Qwen 2.5, then stopped on
+DeepSeek's duplicate-ID schema violation. This does not establish production
+readiness.
 
 ## Template-aware and extreme-scale evaluation
 

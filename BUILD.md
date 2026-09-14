@@ -50,6 +50,111 @@ its accepted context is shared across canonical evidence passages. Repeating
 the same command reuses only successful cache records with the same corpus,
 model digest, and prompt version. Use `--no-resume` for a fresh run.
 
+Run the staged whole-email-context/template/thread-memory ladder without an
+endpoint:
+
+```sh
+./scripts/run.sh context-ladder-evaluate --dry-run \
+  --name context-ladder-evaluation
+```
+
+The deterministic command uses only frozen synthetic sources. It writes JSON,
+JSONL, Markdown, HTML, and a blinded review pack with a separate key. Individual
+arms run before qualifying pairs and the full package. It uses real chronological
+sender-scoped Drain mining; source-derived context stand-ins are contract tests,
+not LLM quality results. Sources above 48,000 characters have zero direct model
+calls and instead traverse ordered 20,000-character host pages.
+
+The opt-in live screen is serial and loopback-only:
+
+```sh
+./scripts/run.sh context-ladder-evaluate --live --chat-model qwen3:8b \
+  --repeats 1 --name context-ladder-qwen3-screen
+```
+
+It uses temperature zero, checks the configured 17-GiB allocation guard,
+atomically checkpoints every bounded operation, and resumes only records whose
+model digest, corpus, prompt versions, and repeat count match. Use `--no-resume`
+for a fresh screen. Do not start three-repeat qualification before review.
+Add `--include-large-pages` only after the initial screen: it sends labelled
+20,000-character pages for the 256-KiB and 1-MiB controls and retains host-side
+source-coverage/merge records without a direct oversized prompt.
+
+Run the deterministic whole-email related-message expansion matrix with:
+
+```sh
+./scripts/run.sh related-email-rag-evaluate --dry-run \
+  --name related-email-rag-evaluation-v3-candidates
+```
+
+The command freezes 18 synthetic messages, mines sender-scoped templates,
+validates host-owned candidate IDs and resolved slot spans, compares bounded thread/family/union
+expansion with user-selected Complete paging, and writes JSON, JSONL, Markdown,
+HTML, blinded review, and separate review-key artifacts. The optional live gate
+is serial, loopback-only, temperature-zero, digest-keyed, and resumable. Run
+the isolated semantic candidate prerequisite first:
+
+```sh
+./scripts/run.sh slot-candidate-evaluate --live \
+  --chat-model qwen3:8b --repeats 1 --no-resume \
+  --name slot-candidate-qwen3-screen-v2-filtered
+```
+
+Then run full integration only after that gate passes:
+
+```sh
+./scripts/run.sh related-email-rag-evaluate --live \
+  --chat-model qwen3:8b --repeats 1 --no-resume \
+  --name related-email-qwen3-screen-v4-least-privilege
+```
+
+The isolated candidate screen passes 8/8. The retained full screen fails closed
+after 8/32 successful operations when Qwen repeats instruction-like source text
+in generated context; do not run three-repeat qualification or oversized live
+pages until a new versioned full screen passes.
+
+The replacement host-built structured-memory lane is:
+
+```sh
+./scripts/run.sh structured-memory-evaluate --dry-run \
+  --name structured-memory-evaluation-v3
+./scripts/run.sh structured-memory-evaluate --live \
+  --chat-model qwen3:8b --repeats 1 --no-resume \
+  --name structured-memory-qwen3-screen-v3
+```
+
+It makes one candidate-only call per bounded email and zero context/summary
+generation calls. V3 passes the retained eight-email one-repeat screen.
+
+The expanded v4 qualification is reproducible with:
+
+```sh
+./scripts/run.sh structured-memory-qualify --dry-run \
+  --name structured-memory-qualification-v4-deterministic
+./scripts/run.sh structured-memory-qualify --live \
+  --chat-model qwen3:8b --repeats 3 --no-resume \
+  --name structured-memory-qualification-qwen3-v4
+./scripts/run.sh structured-memory-qualify --live \
+  --chat-model granite3.1-moe:3b-instruct-fp16 --repeats 3 --no-resume \
+  --name structured-memory-qualification-granite31-v4
+./scripts/run.sh structured-memory-qualify --live \
+  --chat-model qwen2.5:14b-instruct-q4_K_M --repeats 3 --no-resume \
+  --name structured-memory-qualification-qwen25-v4
+./scripts/run.sh structured-memory-qualify --live \
+  --chat-model deepseek-v2:16b --repeats 3 --no-resume \
+  --name structured-memory-qualification-deepseek-v4
+```
+
+`--chat-model` is repeatable and `--repeats` accepts 1–3. The live command
+requires only loopback Ollama, never downloads models, and refuses models below
+16K advertised context or above the configured 17-GiB measured allocation.
+Run models sequentially and stop after a failed gate. The frozen retained run
+passed Qwen3, Granite 3.1 MoE, and Qwen 2.5, then failed closed on DeepSeek;
+Phi-4 and Granite 4.1 were therefore not run in this qualification.
+The exact current result and raw-artifact map are in
+`reports/structured-memory-qualification-summary.md` and
+`articles/09-structured-memory-v4-qualification.md`.
+
 The live query-time advanced-RAG suite is:
 
 ```sh

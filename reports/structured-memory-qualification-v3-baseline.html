@@ -1,0 +1,35 @@
+<!doctype html><html><head><meta charset="utf-8"><title>Structured memory qualification</title></head><body><pre># Structured Memory Adversarial Qualification
+
+- Qualification: `structured-memory-qualification-v1`
+- Structured-memory implementation: `structured-memory-v3`
+- Fixture digest: `d37fddb1d7108a512fbc3678d5f18e8637ca769b4a251e303403dcbbf1f4d823`
+- Hard contract pass: **False**
+- Production ready: **False**
+
+## Adversarial cases
+
+| Case | Events | Visible | Required | Isolation | Family | Relation | Source | Pass |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|
+| qual-unlabeled | 3 | 3 | 1 | 1 | 1 | 1 | 1 | True |
+| qual-template-optional | 2 | 2 | 1 | 1 | 0 | 1 | 1 | False |
+| qual-forwarded | 5 | 5 | 1 | 0 | 1 | 1 | 1 | False |
+| qual-signature | 4 | 4 | 1 | 0 | 1 | 1 | 1 | False |
+| qual-paraphrased-injection | 2 | 2 | 1 | 0 | 1 | 1 | 1 | False |
+| qual-late-event | 24 | 24 | 0 | 1 | 1 | 1 | 1 | False |
+
+## Long-thread reply target
+
+| Thread | Prompt records | Old target visible | Relation offered | Candidates | Pass |
+|---:|---:|---:|---:|---:|---:|
+| 50 | 24 | False | False | 64 | False |
+| 100 | 24 | False | False | 64 | False |
+| 250 | 24 | False | False | 64 | False |
+| 500 | 24 | False | False | 64 | False |
+
+## Limits
+
+- The corpus is synthetic and intentionally adversarial; it is not a real-mail quality estimate.
+- This deterministic stage measures host coverage and closed-world mechanics, not model semantics.
+- A failed deterministic prerequisite prevents downstream live qualification.
+- No result changes Thunderbird or establishes production readiness.
+</pre></body></html>

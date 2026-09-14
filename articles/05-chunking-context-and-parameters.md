@@ -316,6 +316,32 @@ default 48,000-character ceiling, the effective direct source threshold is
 256-KiB source required 23, 14, or 9 pages at 12K, 20K, or 30K page budgets and
 retained complete deterministic fact/source coverage in each lane.
 
+### Candidate-only structured-memory limits
+
+The v4 qualification separates storage completeness from model input size.
+The frozen 31-sentence email produced 31 safe host events:
+
+| Durable event cap | Events retained | Model-visible hints | Final event retained |
+|---:|---:|---:|:---:|
+| 24 | 24 | 24 | no |
+| 48 | 31 | 24 | yes |
+| 96 | 31 | 24 | yes |
+| 512 | 31 | 24 | yes |
+
+The selected design keeps a 512-event hard storage bound but presents at most
+24 optional event hints to the model. The final decision after sentence 30 was
+therefore durable even though it was outside the hint list. A model omission
+cannot erase it.
+
+A separate no-reference stress case generated 96 plausible assertion/target
+relation choices. Caps 64/128/256 retained 64/96/96 respectively. The selected
+64 cap controls prompt size and is explicitly non-exhaustive for inferred
+semantic metadata. An explicit `In-Reply-To` target instead generated one exact
+candidate and remained visible with 50, 100, 250, and 500 prior messages. At
+most 24 prior records enter the prompt, with explicit references selected before
+recent records. These are safety/cost bounds, not claims that 24 hints or 64
+relations describe every meaning in an email.
+
 ## Provisional configuration produced by these sweeps
 
 These are candidates for the next integrated evaluation, not production

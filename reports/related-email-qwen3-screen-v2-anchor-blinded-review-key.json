@@ -1,0 +1,97 @@
+{
+  "review_key": [
+    {
+      "case_id": "localized-invoice",
+      "expected_related_ids": [
+        "rel-invoice-01",
+        "rel-invoice-02",
+        "rel-invoice-03",
+        "rel-invoice-04",
+        "rel-invoice-05",
+        "rel-invoice-06",
+        "rel-invoice-04-reply"
+      ],
+      "expected_seed": "rel-invoice-04",
+      "review_id": "R01"
+    },
+    {
+      "case_id": "complete-invoice-related",
+      "expected_related_ids": [
+        "rel-invoice-01",
+        "rel-invoice-02",
+        "rel-invoice-03",
+        "rel-invoice-04",
+        "rel-invoice-05",
+        "rel-invoice-06",
+        "rel-invoice-04-reply"
+      ],
+      "expected_seed": "rel-invoice-04",
+      "review_id": "R02"
+    },
+    {
+      "case_id": "complete-shipment-related",
+      "expected_related_ids": [
+        "rel-shipment-01",
+        "rel-shipment-02",
+        "rel-shipment-03",
+        "rel-shipment-04",
+        "rel-shipment-04-reply"
+      ],
+      "expected_seed": "rel-shipment-04",
+      "review_id": "R03"
+    },
+    {
+      "case_id": "complete-multilingual-family",
+      "expected_related_ids": [
+        "rel-factura-01",
+        "rel-factura-02",
+        "rel-factura-03",
+        "rel-factura-04"
+      ],
+      "expected_seed": "rel-factura-04",
+      "review_id": "R04"
+    },
+    {
+      "case_id": "localized-thread-reply",
+      "expected_related_ids": [
+        "rel-invoice-01",
+        "rel-invoice-02",
+        "rel-invoice-03",
+        "rel-invoice-04",
+        "rel-invoice-05",
+        "rel-invoice-06",
+        "rel-invoice-04-reply"
+      ],
+      "expected_seed": "rel-invoice-04-reply",
+      "review_id": "R05"
+    },
+    {
+      "case_id": "injection-family",
+      "expected_related_ids": [
+        "rel-invoice-01",
+        "rel-invoice-02",
+        "rel-invoice-03",
+        "rel-invoice-04",
+        "rel-invoice-05",
+        "rel-invoice-06"
+      ],
+      "expected_seed": "rel-invoice-05",
+      "review_id": "R06"
+    },
+    {
+      "case_id": "lookalike-unique",
+      "expected_related_ids": [
+        "rel-unique-garden"
+      ],
+      "expected_seed": "rel-unique-garden",
+      "review_id": "R07"
+    },
+    {
+      "case_id": "unsupported-seed",
+      "expected_related_ids": [],
+      "expected_seed": null,
+      "review_id": "R08"
+    }
+  ],
+  "schema_version": 1
+}

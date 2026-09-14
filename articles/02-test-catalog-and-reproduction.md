@@ -13,7 +13,7 @@ The project used four distinct validation layers. They should not be confused:
 4. **Benchmarks** measure one fixed ingestion/search workload. They do not prove
    model quality or production latency.
 
-The current deterministic suite passed **156/156 tests in 19.079 seconds** on
+The current deterministic suite passed **202/202 tests in 19.406 seconds** on
 the recorded host. Live evaluations were separate because they depend on installed
 Ollama models and, for the cross-encoder, a separately started loopback TEI
 service.
@@ -34,7 +34,7 @@ fixtures, and do not depend on the caller's working directory. Build, test, and
 benchmark do not download models. See [`BUILD.md`](../BUILD.md) for optional
 environment variables and complete live commands.
 
-## Deterministic test inventory: 156 tests
+## Deterministic test inventory: 202 tests
 
 The exact executable methods are in [`tests/`](../tests/). The inventory below
 groups every test by its source file.
@@ -248,6 +248,68 @@ groups every test by its source file.
 - promotion requires three safe repeats and a measured quality gain;
 - completed smoke repeats resume without another endpoint request.
 
+### Whole-email context ladder — 7 tests
+
+[`test_context_ladder.py`](../tests/test_context_ladder.py) verifies:
+
+- chronological and scope-safe source offers;
+- 10KB/256KiB/1MiB direct-versus-paged contracts;
+- source-bound template confirmation;
+- stage ordering and pair-only promotion;
+- complete JSON/JSONL/Markdown/HTML/blinded-review output;
+- resumable live screening and fail-closed malformed/cancelled output.
+
+### Related-email retrieval and expansion — 10 tests
+
+[`test_related_email_rag.py`](../tests/test_related_email_rag.py) verifies:
+
+- fixed thread/family/scope controls and staged deterministic evaluation;
+- non-recursive thread-plus-template union after a qualified seed;
+- canonical storage enumeration and stale-assignment invalidation;
+- unique-value and exact-anchor resolution;
+- model family/offset rejection and host-only slot IDs;
+- resumable combined/modular screens and fail-closed cancellation;
+- visible, machine-readable, and blinded review reports.
+
+### Host-generated slot candidates — 10 tests
+
+[`test_slot_candidates.py`](../tests/test_slot_candidates.py) verifies:
+
+- fixed unique, repeated, corrected, negated, subtotal/tax/total, date,
+  absent-slot, and injected-selection cases;
+- exact source-bound occurrence IDs and one final/current selection per slot;
+- instruction-local candidates remain audit-only and outside the schema;
+- stale, invented, duplicate, null-family, malformed, and cancelled output is
+  rejected;
+- three-repeat fake-endpoint stability, resumption, and report completeness.
+
+### Candidate-only structured memory — 10 tests
+
+[`test_structured_memory.py`](../tests/test_structured_memory.py) verifies:
+
+- source-bound host event and relation candidates;
+- only prior same-thread/scope records can be relation targets;
+- all public records are host validated and expose no source offsets;
+- the model schema contains only offered IDs;
+- relation/event cardinality, stale-source, unsafe, hidden, duplicate, and
+  invented selections fail closed;
+- live stability, checkpoint resumption, cancellation, and failed-report
+  preservation.
+
+### Structured-memory v4 qualification — 9 tests
+
+[`test_structured_memory_qualification.py`](../tests/test_structured_memory_qualification.py)
+verifies:
+
+- the exact v4 fixture and qualification-contract digests;
+- durable events remain complete beyond the smaller model-hint schema;
+- optional-slot template families remain selectable;
+- forwarded history, signatures, and paraphrased instructions do not become
+  current-email events;
+- an explicit oldest-message reply survives 50/100/250/500-message threads;
+- 24/48/96/512 event and 64/128/256 relation-cap behavior;
+- three-repeat live stability/resumption and fail-closed malformed output.
+
 ### Template mining and template-aware scale — 17 tests
 
 [`test_template_mining.py`](../tests/test_template_mining.py) verifies:
@@ -386,9 +448,29 @@ streams. Deterministic hardening executed 18 parameter cells, 50–500-message
 threads, and complete 10KB/256KiB source routes with no hard-gate failure.
 Separate one-repeat Qwen3 and Phi-4 smokes tested whole-email extraction,
 prior-only memory, repeated versus hierarchical placement, grounded final
-answers, checkpoint resumption, and measured model residency. Exact results and
-the still-open three-repeat qualification are in the
+answers, checkpoint resumption, and measured model residency. Exact results for
+this historical free-prose design and its still-open qualification are in the
 [`thread-memory evaluation summary`](../reports/thread-memory-evaluation-summary.md).
+
+### Candidate-only structured-memory v4 qualification
+
+```sh
+./scripts/run.sh structured-memory-qualify --dry-run \
+  --name structured-memory-qualification-v4-deterministic
+./scripts/run.sh structured-memory-qualify --live \
+  --chat-model qwen3:8b --repeats 3 --no-resume \
+  --name structured-memory-qualification-qwen3-v4
+```
+
+The frozen gate compared unchanged v3 with v4 on six adversarial complete
+emails, an event after sentence 24, and explicit-old replies in
+50/100/250/500-message threads. V4 passed 6/6 email cases and 4/4 scale cases.
+Qwen3, Granite 3.1 MoE, and Qwen 2.5 each passed all 21 live operations across
+three fresh repeats. DeepSeek passed five operations, then repeated six event
+IDs; strict validation rejected the response and stopped the ladder before
+Phi-4 and Granite 4.1. Exact prompts, raw output, expected/actual tables, and
+resource measurements are in the
+[`structured-memory v4 walkthrough`](09-structured-memory-v4-qualification.md).
 
 ### Template-aware retrieval and extreme scale
 
@@ -536,6 +618,12 @@ seconds ingest, 1.850639 ms p50, 2.622365 ms p95, 33,920 KiB peak RSS, and a
 0.745197 seconds and 1.860272 ms p50 with identical storage. The mixed
 single-run movement does not establish a performance change.
 
+The final structured-memory v4 baseline/post comparison used the same fixed
+1,000-document workload. Ingest was 0.730760/0.732320 seconds, query p50 was
+1.797299/1.852720 ms, query p95 was 2.320323/2.367568 ms, RSS was
+34,860/35,108 KiB, and both databases were 3,465,216 bytes. These mixed
+single-run differences do not establish a performance improvement.
+
 ## What was not tested
 
 - no real Thunderbird profile or email;
@@ -551,5 +639,7 @@ single-run movement does not establish a performance change.
   page-generation soak.
 - no real-mail estimate of template prevalence, multilingual family drift, or
   adversarial online cluster poisoning under mailbox concurrency.
+- no completed v4 result for DeepSeek, Phi-4, or Granite 4.1; no v4 HTML/MIME,
+  multilingual, deletion/invalidation, concurrency, or Thunderbird parity run.
 
 Those limits are part of the test result, not footnotes to ignore.

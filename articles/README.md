@@ -5,14 +5,15 @@ important statement to a retained report. It is written for readers who do not
 want to reverse-engineer several megabytes of JSON.
 
 The short conclusion is: the original adaptive and advanced-RAG experiments
-are complete; the newer source-linked thread-memory implementation has passed
-deterministic hardening but still needs its three-repeat live qualification.
-The evaluated Thunderbird AI pipeline is **not certified as
+are complete, and the candidate-only structured-memory v4 successor has passed
+three fresh repeats with Qwen3, Granite 3.1 MoE, and Qwen 2.5. DeepSeek failed
+closed on duplicate IDs, which stopped the staged ladder before Phi-4 and
+Granite 4.1. The evaluated Thunderbird AI pipeline is **not certified as
 production-ready**. Several components are good candidates for integration,
 especially structure-aware chunks, hybrid retrieval, deterministic thread-range
-coverage, normalized parent storage, and source/citation validation. Generated
-query expansion is not a global win, endpoint embeddings are not byte-stable in
-normal batches, and no full live configuration passed every quality threshold.
+coverage, normalized parent storage, host-owned source events, and strict
+source/citation validation. Generated query expansion is not a global win and
+endpoint embeddings are not byte-stable in normal batches.
 
 ## Reading order
 
@@ -25,7 +26,7 @@ normal batches, and no full live configuration passed every quality threshold.
    Corrective RAG, Adaptive/Agentic RAG, GraphRAG, sentence-window retrieval,
    and hierarchical thread coverage.
 3. [Complete test catalog and reproduction](02-test-catalog-and-reproduction.md)
-   inventories the 156 deterministic tests and every measured evaluation lane.
+   inventories the 202 deterministic tests and every measured evaluation lane.
 4. [Actual emails, prompts, outputs, and dry-runs](03-emails-prompts-and-dry-runs.md)
    follows retained ORCHID, MERIDIAN, ATLAS, GUARDIAN, BOREALIS, and 10,240-byte
    cases through the real experimental pipeline.
@@ -48,6 +49,10 @@ normal batches, and no full live configuration passed every quality threshold.
    explains sender-scoped Drain families, typed slots, boilerplate reduction,
    5,000-message/16MiB tests, schema-constrained model output, and the final
    staged Granite/Qwen result.
+10. [Structured memory v4: complete qualification walkthrough](09-structured-memory-v4-qualification.md)
+    explains why the model no longer creates anchors, the exact host/LLM
+    boundary, every adversarial and scale case, expected versus actual output,
+    all live model results, performance, limitations, and reproduction.
 
 ## Terminology map
 
@@ -96,15 +101,21 @@ The oversized-email report set records implementation digest
 `8787d97c5ee556d56a5f639f7e7c0e21649b4bf88cf9e1415ad45420dbee1f14`.
 The complete design-matrix report records implementation digest
 `06a3f6c2b5d46c75ed5f0cde4965ab6c869622a1724196f416ddd9030de90aba`.
-The latest deterministic validation completed 156/156 tests. Retained live
-reports also pin model digests, so future code or tag changes cannot silently be
-mistaken for the versions tested here.
+The latest deterministic validation completed 202/202 tests against
+implementation digest
+`210743be72073bef2ff8ca287b2e79f03ae724c9acb067d993aa71d9281a31a8`.
+Retained live reports also pin model digests, so future code or tag changes
+cannot silently be mistaken for the versions tested here.
 
 The newest source-linked memory result is consolidated in the
 [thread-memory evaluation summary](../reports/thread-memory-evaluation-summary.md).
 It records the 1,152-cell preflight, 180-message parameter sweep, 50–500-message
 and 10KB/256KiB deterministic hardening, and one-repeat Qwen3/Phi-4 diagnostics.
-It does not replace the still-open three-repeat live qualification.
+That free-prose relation stream remains historical and unqualified. Its
+candidate-only v4 successor is documented in the
+[structured-memory qualification](09-structured-memory-v4-qualification.md):
+three models passed 21/21 operations each, DeepSeek failed the sixth operation,
+and the remaining model ladder stopped by design.
 
 The newest template-aware result is consolidated in the
 [template-aware evaluation summary](../reports/template-aware-evaluation-summary.md).

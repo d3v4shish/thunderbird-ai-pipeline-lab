@@ -1,5 +1,309 @@
 # TODO
 
+## Milestone 20: publish the complete current evaluation record
+
+- [x] Reconcile every explanatory document with the structured-memory v4 run.
+  Contract: the README, article index, test catalog, model comparison, result
+  verdict, architecture, build, benchmark, hotspot, and next-plan documents
+  distinguish historical free-prose memory from the qualified candidate-only
+  design and retain every failed or deferred gate.
+  Validation: documentation search finds no stale 156-test/current-memory
+  claims; links resolve to retained reports; exact digests and measured values
+  agree with machine-readable JSON.
+  Result: the README and seven existing articles now distinguish the historical
+  free-prose lane from v4; the 21-section inventory sums to 202 tests and all 18
+  checked local-document sets resolve without a missing link.
+- [x] Add a newcomer-readable structured-memory v4 test walkthrough.
+  Contract: explain the input email, host candidate generation, exact prompt
+  contract, expected result, accepted outputs, DeepSeek failure, long-thread
+  behavior, security cases, performance, limitations, and reproduction commands
+  without treating generated metadata as evidence.
+  Validation: every result links to a retained raw or Markdown artifact and the
+  article states that all fixtures are synthetic and Thunderbird was untouched.
+  Result: `articles/09-structured-memory-v4-qualification.md` records the trust
+  boundary, complete synthetic examples, exact prompt/output shape, v3/v4 and
+  model comparisons, DeepSeek failure, performance, reproduction, and limits.
+- [ ] Validate and publish the current lab snapshot.
+  Contract: never commit profiles, real mail, credentials, model caches, or
+  transient checkpoints; publish only to the configured personal GitHub remote.
+  Validation: build, 202-test suite, benchmark record, result-manifest verify,
+  secret/private-artifact scan, Git diff check, commit, push, and remote commit
+  verification all pass.
+
+## Milestone 19: structured-memory adversarial qualification
+
+- [x] Freeze a broader synthetic-only qualification corpus and unchanged-v3 baseline.
+  Contract: exercise 50/100/250/500-message threads, an event after the
+  twenty-fourth sentence, ordinary unlabeled prose, an optional-slot template,
+  forwarded/quoted history, noisy signatures, and paraphrased prompt
+  injection without reading a profile or real mail.
+  Validation: fixed fixture digest; exact source-span, scope, chronology,
+  durable-event, quote-isolation, family/slot, and relation-candidate accounting;
+  retain the original v3 result even when a hypothesis fails.
+  Result: unchanged v3 passed 1/6 message cases and 0/4 long-thread cases. It
+  lost the optional-slot family, retained quoted/signature/paraphrased hostile
+  text, truncated the sentence-31 event, and omitted an old explicit reply
+  target at every tested thread size. The failed report is retained.
+- [x] Implement only the host-side corrections justified by that baseline.
+  Contract: durable source events are not silently truncated by the smaller
+  model-hint budget; quoted/signature material cannot become a new current-email
+  event; relation choices remain bounded and target only justified earlier
+  records; optional slots do not make a valid family impossible to select.
+  Validation: candidate-cap sweep, hidden-ID rejection, stale-source rejection,
+  long-thread scope/chronology tests, and no regression on the frozen v3 suite.
+  Result: v4 passed 6/6 adversarial cases and 4/4 scale cases. It separates a
+  512-event durable cap from 24 model hints, isolates quote/signature segments,
+  filters paraphrased instructions, pins old explicit references into the
+  24-record prompt, narrows relations, and accepts high-confidence families
+  with absent optional slots. A 64/128/256 relation pressure sweep retained
+  64/96/96 optional no-reference candidates; the selected 64 cap is explicitly
+  non-exhaustive, while explicit reply relations remained exact.
+- [x] Run the staged model qualification without skipping failed gates.
+  Contract: first pass the expanded deterministic gate, then run three fresh
+  temperature-zero Qwen repeats, then only installed alternate chat models that
+  independently satisfy the advertised-context and 17-GiB Ollama-allocation
+  gates. Stop downstream model qualification at the first hard failure.
+  Validation: retain exact prompts, raw outputs, validation errors, model digest,
+  context/VRAM telemetry, tokens, and latency for every attempted operation.
+  Result: Qwen3, Granite 3.1 MoE, and Qwen 2.5 each passed 21/21 operations over
+  three fresh repeats within the 17-GiB cap. DeepSeek passed five operations,
+  then duplicated six event IDs on the long-message case; strict validation
+  rejected it. Per the staged contract, Phi-4 and Granite 4.1 were not run.
+- [x] Reconcile reproducibility, measurements, and the promotion verdict.
+  Contract: historical v1-v3 artifacts remain unchanged and no Thunderbird or
+  real-mail code is touched. Reports clearly separate deterministic mechanics
+  from live semantic quality and never imply production readiness.
+  Validation: baseline/profile/post-change benchmark, build, full deterministic
+  suite, manifest verification, and README/BUILD/ARCHITECTURE/BENCHMARKS/
+  HOTSPOTS/NEXT_PLAN updates with every unfinished item left visible.
+  Result: build digest is
+  `210743be72073bef2ff8ca287b2e79f03ae724c9acb067d993aa71d9281a31a8`;
+  202 deterministic tests pass. Baseline/post 1K measurements are retained and
+  no performance improvement is claimed. The failed DeepSeek gate prevents a
+  production or Thunderbird-promotion claim.
+
+## Milestone 18: host-built structured thread memory
+
+- [x] Add source-bound event and semantic-relation candidates.
+  Contract: host code extracts bounded current-email event spans and creates
+  relation choices only for earlier same-scope/thread documents. Opaque IDs
+  bind scope, document, source digest, predicate/kind, target, and source span;
+  instruction-local records remain audit-only and are never model-visible.
+  Validation: exact-span, stale-source, duplicate, invented, unsafe,
+  future-target, cross-thread, and cross-scope selections fail closed.
+  Result: the bounded body-sentence miner retains canonical source spans and
+  hides instruction-like occurrences. Relation choices bind an allowed
+  predicate and exact assertion event to only an earlier same-thread host
+  record; structural `reply_to` edges remain fully deterministic.
+- [x] Add one candidate-only chronological model operation per email.
+  Contract: the complete bounded current email and prior host-built structured
+  memory may be read by the model, but output contains only event-hint,
+  relation, family, and slot candidate IDs. The host persists every safe event
+  span and constructs the record; model event choices are optional ranking
+  hints, not completeness authority. No generated context, summary, event
+  prose, relation target, value, anchor, or offset is requested or stored.
+  Validation: a frozen clean/repeated/corrected/reply/injection/unique matrix,
+  strict dynamic schema, poisoned source, chronological visibility, malformed
+  output, cancellation, checkpoint/resume, and three-repeat fake-model tests.
+  Result: v1 failed closed after 1/8 valid calls when Qwen selected both
+  repeated `$540.00` occurrences for one slot. Schema slot cardinality fixed
+  that. V2 completed 8/8 but missed 2/16 safe events, added one lookalike family,
+  and selected two predicates for one assertion. V3 moved event completeness to
+  the host, filtered typed-family offers lacking a source slot, and capped one
+  relation predicate per assertion/target. It passed 8/8 with no errors.
+- [x] Test the structured records as low-cost retrieval metadata.
+  Contract: a deterministic renderer may decorate retrieval text, while every
+  returned passage and answer remains an original canonical source span.
+  Validation: compare raw and structured-memory retrieval on the frozen
+  related-email cases; require unchanged scope/source validity, no localized
+  regression, and exact Complete-mode host enumeration.
+  Result: raw and structured localized fact recall were both 1.000. Explicit
+  Complete union retained related recall 1.000, exact source/scope validity,
+  and zero unrelated messages on the frozen eight-case fixture.
+- [x] Run staged live validation and reconcile all project evidence.
+  Contract: deterministic candidate/retrieval gates and the isolated one-repeat
+  Qwen screen must pass before any three-repeat or alternate-model run. No
+  Thunderbird changes or production claim are allowed.
+  Validation: baseline/post-change fixed-seed benchmark, build, complete test
+  suite, live prompt/raw-output report, result-manifest verification, and
+  README/BUILD/ARCHITECTURE/BENCHMARKS/HOTSPOTS/NEXT_PLAN updates.
+  Result: Qwen v3 used 5,577 prompt tokens, 704 output tokens, and 9,587.0 ms
+  summed latency. Persisted event, relation, family, slot, source, chronology,
+  poison, and retrieval gates all passed; model event-hint recall was 0.625 and
+  is diagnostic only. Ollama allocation was 6,387,799,162 bytes under the
+  17-GiB cap. Build digest is
+  `c3183bf94dd4eb90d25ea3416a1fd25c1a3b45d37b6c4e9a908b07eb4c5320a1`;
+  193 tests pass. No three-repeat, alternate-model, oversized-page, real-mail,
+  or Thunderbird run followed, so the design remains experimental.
+
+## Milestone 17: host-owned slot occurrence candidates
+
+- [x] Add deterministic, source-backed slot occurrence candidates.
+  Contract: host code extracts bounded typed candidates from the current
+  canonical email, assigns opaque digest-bound IDs, and retains values and
+  offsets. Models receive candidate IDs/value previews but never create values,
+  anchors, offsets, family members, or scope.
+  Validation: unique, repeated-identical, corrected, negated, subtotal/total,
+  absent, stale-source, duplicate-ID, unoffered-ID, and cross-scope controls
+  reject every unsupported selection.
+  Result: bounded amount/date extraction creates source-digest-, document-, and
+  scope-bound opaque IDs. Only ID/name/value/local-quote previews are exposed;
+  offsets remain private. Stale, duplicated, invented, wrong-family,
+  multiple-per-slot, and polluted cross-scope candidates fail closed.
+- [x] Add an isolated semantic candidate-selection evaluation.
+  Contract: a temperature-zero loopback model selects at most one offered
+  candidate per slot or abstains, including corrected and negated amounts and
+  a poisoned source. Host validation resolves only the selected ID.
+  Validation: frozen fixture digest, exact candidate/value/span accuracy,
+  abstention, malformed output, cancellation, resume, raw-output retention,
+  and fail-closed reporting are covered before integration testing.
+  Result: eight controls are frozen at digest
+  `48dc90fd21a9a15dc4099e7de5cee97b12ff1b875fb8b60cd5bfbb17856b76d7`.
+  Unfiltered Qwen completed 8/8 calls but followed a poisoned “select first”
+  sentence, scoring 0.875 selection accuracy and 0.857 slot precision/recall.
+  Sentence-local host filtering hid that unsafe candidate; the version-2 rerun
+  passed 8/8 with every family/selection/slot/span/poison metric at 1.000.
+- [x] Replace the related-email live anchor schema with candidate IDs.
+  Contract: both combined and modular whole-email paths use the same candidate
+  set; their validated artifacts preserve the existing `{name,value,start,end}`
+  downstream contract. Historical v1/v2 reports remain unchanged.
+  Validation: the prior repeated `$540.00` case no longer asks the model for an
+  anchor; all existing family, memory, event, relation, expansion, scope, and
+  evidence gates still pass.
+  Result: combined and modular paths consume identical host candidates and
+  preserve validated slot values/spans downstream. Qwen passed both paths for
+  the formerly fatal repeated `$540.00` email. Least-privilege modular inputs
+  also fixed template-metadata contamination discovered in the first
+  integration attempt.
+- [x] Run staged validation and reconcile reports/documentation.
+  Contract: the isolated Qwen candidate screen must pass before rerunning the
+  32-call combined/modular gate. A failed prerequisite stops later work; no
+  Thunderbird change or production claim is allowed.
+  Validation: build, complete tests, deterministic candidate report, live
+  report if run, fixed-seed benchmark, result-manifest verification, and all
+  required project documents are current.
+  Result: build digest is
+  `b0545029a9615a56115a6cdaa710e84214b18f993506369ed37ef21854ded6fa`;
+  183 tests pass. The fixed-seed 1K regression report is
+  `slot-candidate-postchange-1000`. The full integration advanced from 4/32
+  valid operations with anchors to 8/32 with candidates and least-privilege
+  inputs, then correctly rejected Qwen copying a hostile source instruction
+  into generated context. No three-repeat, alternate-model, large-page, or
+  Thunderbird run followed; the complete pipeline remains experimental.
+
+## Milestone 16: whole-email related-message expansion
+
+- [x] Add a frozen synthetic corpus and source-backed expansion primitives.
+  Contract: chronological whole-email ingestion stores deterministic template
+  assignments and prior-only thread memory; a qualified seed can expand one
+  hop to its same-scope thread and template-family members without recursive
+  fan-out. Generated metadata is never evidence.
+  Validation: localized, complete, lookalike, multilingual, injection,
+  repeated-slot, stale-source, and cross-scope fixtures have digest-stable
+  expected seed/thread/family/union sets.
+  Result: 18 documents and eight cases are frozen at digest
+  `0cc1f3097a7d693aac05fc358169bbf6a997415984c9948f155dc6d57c5518ba`.
+  Same-scope thread/family enumeration, one-hop union expansion, source-edit
+  invalidation, and non-recursive/cross-tenant controls pass.
+- [x] Replace model-computed slot offsets and add combined whole-email live
+  extraction.
+  Contract: the model can select only a host-offered family and returns exact
+  slot values plus optional exact anchors; host code resolves unique canonical
+  spans and rejects missing or ambiguous values. The combined prompt receives
+  the bounded whole email, prior-only thread memory, and at most three offered
+  families.
+  Validation: original-offset regression, unique/repeated value resolution,
+  malformed output, null/wrong family, injection, cancellation, and resume
+  tests pass without weakening source validation.
+  Result: model schemas now return `{name,value,anchor}` and host code derives
+  canonical spans. Unique and uniquely anchored repeated values pass; absent,
+  ambiguous, old-offset, and unoffered-family outputs fail closed. Combined
+  and three-stage modular paths are checkpointed and covered by fake-client
+  tests. The real Qwen3 v2 screen accepted four operations, then correctly
+  rejected an anchor containing both repeated `$540.00` occurrences.
+- [x] Evaluate ranking-only, bounded expansion, and explicit Complete mode.
+  Contract: localized mode expands only one qualified top seed into bounded
+  thread/family candidates before reranking; user-selected Complete mode pages
+  the non-recursive union and validates an independent ID/source ledger.
+  Validation: isolated arms report seed precision, expansion precision/recall,
+  fact Recall@K/MRR, complete coverage, source/scope validity, calls, tokens,
+  latency, storage, and failure reasons.
+  Result: nine isolated deterministic arms were measured. Combined ranking
+  raised seed accuracy from 0.750 to 0.875; bounded and Complete union both
+  reached 1.000 related precision/recall on the frozen corpus. At
+  50/500/5,000 family messages, bounded top-32 coverage was
+  0.640/0.064/0.0064 while Complete ledger coverage remained 1.000. A 64-KiB
+  source was covered by four ordered pages with no direct model call.
+- [x] Run staged validation and reconcile all required documentation.
+  Contract: one-repeat Qwen screening must pass before any three-repeat live
+  matrix; incomplete live runs return failure and remain explicit in every
+  report format. No Thunderbird code is changed and no production claim is
+  made.
+  Validation: build, full deterministic tests, deterministic report, paired
+  benchmark, artifact-manifest verification, and documentation reconciliation
+  complete; live results are recorded only if actually run.
+  Result: build passed with implementation digest
+  `7cf4498617e78a97a41df9104cb4902204bafca8c0d50ce45cc0e01c59e54095`;
+  173 deterministic tests pass; the fixed-seed 1K benchmark is retained as
+  `related-email-postchange-1000`. Qwen3 remained eligible at 6,387,799,162
+  Ollama VRAM bytes but failed the v2 repeated-anchor screen after 4/32 valid
+  operations. Therefore no three-repeat, alternate-model, large-page live, or
+  Thunderbird run was started, and the feature remains experimental.
+
+## Milestone 15: template, whole-email-context, and thread-memory ladder
+
+- [x] Add one frozen synthetic ladder corpus and deterministic staged evaluator.
+  Contract: the corpus covers recurring and drifting templates, forwards,
+  multilingual text, injection, same-looking unique messages, cross-scope
+  shadows, source revisions, source-linked relations, 10-KiB/256-KiB/1-MiB
+  messages, and 50/500/5,000-message controls without profile or real-mail
+  data. Every expected family, slot, span, relation, current revision, and
+  fact is labeled and digest-stable.
+  Validation: fixture, scope, source-span, long-source paging, and scale
+  contracts pass in the standard-library test suite.
+  Result: 17 synthetic documents, seven retrieval cases, 10-KiB/256-KiB/1-MiB
+  controls, and 50/500/5,000-message controls are frozen in
+  `context_ladder`; all paging and ledger contracts passed.
+- [x] Evaluate raw, deterministic metadata, per-chunk context, whole-email
+  context, detailed source-linked summaries, deterministic Drain templates,
+  schema-validated offered-family confirmation, Markdown ledgers, relation
+  graphs, and their bounded combination in staged isolation.
+  Contract: generated text stays untrusted retrieval metadata; original
+  canonical spans remain the sole answer evidence. Template confirmation can
+  select only a host-offered same-scope family or null and can return only
+  source-verifiable slot offsets.
+  Validation: every individual arm, qualifying pair, and full package records
+  retrieval/fact metrics, scope/span validity, unsupported output, and its
+  promotion gate in JSON, Markdown, and HTML reports.
+  Result: 23 deterministic source-indexed arms were measured; 22 passed the
+  advance rule, exact-only retrieval failed at 0.667 localized fact recall,
+  and the full package remained source/scope valid. A true cross-encoder is
+  explicitly deferred to its separately configured evaluator.
+- [x] Add resumable loopback-only live screening and blinded review artifacts.
+  Contract: a live run is temperature-zero, cache/digest keyed, source bounded,
+  serial, and stays within the configured 17-GiB Ollama allocation cap. Whole
+  emails above 48,000 characters are structure-paged and never truncated into
+  a direct model call. The review pack uses neutral IDs and stores its key
+  separately.
+  Validation: dry-run, malformed model output, cache resume, cancellation,
+  invalid offsets, cross-scope offers, and report/review-pack tests pass.
+  Result: the command writes JSON/JSONL/Markdown/HTML plus a neutral 20-case
+  review pack and separate key. The one-repeat Qwen3 screen was attempted with
+  eligible 6,387,799,162-byte Ollama residency, then failed closed after its
+  third operation: it selected the offered family and correct values but gave
+  invalid source offsets. The three-repeat and large-page live lanes remain
+  blocked pending a separately evaluated offset-representation repair.
+- [x] Record deterministic measurements and the explicit live-qualification
+  status in all required project documents.
+  Contract: no live or Thunderbird-promotion result is inferred from a
+  deterministic stand-in; deferred model work remains visible.
+  Validation: build, full tests, deterministic ladder report, benchmark, and
+  documentation reconciliation complete.
+  Result: build passed; 163/163 deterministic tests passed in 18.390 seconds;
+  `context-ladder-evaluation` is retained; the post-change 1K benchmark is in
+  `reports/context-ladder-postchange-1000.*`. No live or Thunderbird-promotion
+  claim is made.
+
 ## Milestone 14: reproducible public evaluation archive
 
 - [x] Turn `README.md` into the beginner-oriented primary evaluation article.

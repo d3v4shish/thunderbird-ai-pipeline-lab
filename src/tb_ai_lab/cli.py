@@ -24,6 +24,13 @@ from .contextual_rag import (
     evaluate_contextual_rag,
     write_contextual_rag_report,
 )
+from .context_ladder import (
+    context_ladder_fixture,
+    evaluate_context_ladder,
+    live_screen_plan,
+    run_live_screen,
+    write_context_ladder_report,
+)
 from .corpus import load_cases, load_documents, write_frozen_corpus
 from .evaluation import combine_repeats, evaluate_variant
 from .email_rag import (
@@ -74,6 +81,13 @@ from .query_rag import (
     query_rag_challenge_fixture,
     write_query_rag_report,
 )
+from .related_email_rag import (
+    evaluate_related_email_rag,
+    live_related_plan,
+    related_email_fixture,
+    run_live_related_screen,
+    write_related_email_report,
+)
 from .rag_evaluation import evaluate_rag_stages, write_rag_report
 from .reporting import checkpoint, write_report
 from .scale_evaluation import (
@@ -88,6 +102,24 @@ from .scale_evaluation import (
     markdown_scale_report,
     markdown_storage_report,
     write_scale_report,
+)
+from .slot_candidates import (
+    evaluate_slot_candidates_deterministic,
+    run_live_slot_candidate_screen,
+    slot_candidate_live_plan,
+    write_slot_candidate_report,
+)
+from .structured_memory import (
+    evaluate_structured_memory_deterministic,
+    run_live_structured_memory_screen,
+    structured_memory_live_plan,
+    write_structured_memory_report,
+)
+from .structured_memory_qualification import (
+    evaluate_structured_memory_qualification,
+    qualification_live_plan,
+    run_live_qualification,
+    write_qualification_report,
 )
 from .storage import Index
 from .template_evaluation import evaluate_template_mining, write_template_report
@@ -381,6 +413,496 @@ def contextual_rag_evaluate(arguments: argparse.Namespace) -> int:
         )
     )
     return 0
+
+
+def context_ladder_evaluate(arguments: argparse.Namespace) -> int:
+    """Run the deterministic ladder and optionally a bounded live screen."""
+    if not 1 <= arguments.repeats <= 3:
+        raise ValueError("context-ladder repeats must be between 1 and 3")
+    report = evaluate_context_ladder()
+    documents, _ = context_ladder_fixture()
+    requested_models = list(arguments.chat_model) or ["qwen3:8b"]
+    plan = live_screen_plan(
+        documents,
+        requested_models,
+        arguments.repeats,
+        include_large_pages=arguments.include_large_pages,
+    )
+    live: dict[str, Any] = {
+        "requested": bool(arguments.live),
+        "dry_run": bool(arguments.dry_run),
+        "plan": plan,
+        "runs": [],
+    }
+    if arguments.live and not arguments.dry_run:
+        config = read_json(CONFIG / "models.json")
+        client = model_client()
+        client.vram_cap_gib = float(config["vram_cap_gib"])
+        discovered = {item["name"]: item for item in client.discover()}
+        cache_base = arguments.cache_name or arguments.name
+        for model in requested_models:
+            record = discovered.get(model)
+            if not record or "chat" not in record.get("roles", []):
+                raise ModelError(f"Chat model is unavailable or incompatible: {model}")
+            if int(record.get("advertised_context", 0) or 0) < 16_384:
+                raise ModelError(f"Chat model context is too small for ladder screen: {model}")
+            model_key = sha256(model.encode("utf-8")).hexdigest()[:12]
+            cache_path = report_directory() / f"{cache_base}-{model_key}-context-ladder-checkpoint.json"
+            try:
+                result = run_live_screen(
+                    client,
+                    model,
+                    str(record.get("digest", "")),
+                    documents,
+                    arguments.repeats,
+                    cache_path,
+                    resume=not arguments.no_resume,
+                    include_large_pages=arguments.include_large_pages,
+                )
+                try:
+                    residency = client.residency(
+                        model,
+                        int(record.get("advertised_context", 0) or 0),
+                        float(config["vram_cap_gib"]),
+                        required_context=16_384,
+                    ).as_dict()
+                except ModelError as error:
+                    residency = {"eligible": False, "reason": str(error)}
+                live["runs"].append(
+                    {
+                        "model": model,
+                        "model_digest": record.get("digest", ""),
+                        "checkpoint": str(cache_path),
+                        "residency": residency,
+                        "result": result,
+                    }
+                )
+            finally:
+                try:
+                    client.unload(model)
+                except ModelError:
+                    pass
+    report["live"] = live
+    report["manifest"] = {
+        "implementation_digest": implementation_digest(),
+        "source_drift": source_drift(),
+        "seed": 0,
+        "loopback_only": True,
+    }
+    paths = write_context_ladder_report(report_directory(), arguments.name, report)
+    print(
+        json.dumps(
+            {
+                "hard_contract_pass": report["hard_contract_pass"],
+                "production_ready": False,
+                "live": {
+                    "requested": live["requested"],
+                    "dry_run": live["dry_run"],
+                    "run_count": len(live["runs"]),
+                },
+                "reports": {key: str(value) for key, value in paths.items()},
+            },
+            indent=2,
+            sort_keys=True,
+        )
+    )
+    live_passed = all(
+        run.get("result", {}).get("complete", False)
+        for run in live["runs"]
+    )
+    return 1 if live["requested"] and not live["dry_run"] and not live_passed else 0
+
+
+def related_email_rag_evaluate(arguments: argparse.Namespace) -> int:
+    """Evaluate source-backed thread/template expansion and optional live metadata."""
+    if not 1 <= arguments.repeats <= 3:
+        raise ValueError("related-email repeats must be between 1 and 3")
+    report = evaluate_related_email_rag()
+    documents, _ = related_email_fixture()
+    requested_models = list(arguments.chat_model) or ["qwen3:8b"]
+    live: dict[str, Any] = {
+        "requested": bool(arguments.live),
+        "dry_run": bool(arguments.dry_run),
+        "plan": live_related_plan(documents, requested_models, arguments.repeats),
+        "runs": [],
+    }
+    live_passed = True
+    if arguments.live and not arguments.dry_run:
+        config = read_json(CONFIG / "models.json")
+        client = model_client()
+        client.vram_cap_gib = float(config["vram_cap_gib"])
+        discovered = {item["name"]: item for item in client.discover()}
+        cache_base = arguments.cache_name or arguments.name
+        for model in requested_models:
+            record = discovered.get(model)
+            if not record or "chat" not in record.get("roles", []):
+                raise ModelError(f"Chat model is unavailable or incompatible: {model}")
+            if int(record.get("advertised_context", 0) or 0) < 16_384:
+                raise ModelError(f"Chat model context is too small for related-email screen: {model}")
+            model_key = sha256(model.encode("utf-8")).hexdigest()[:12]
+            cache_path = report_directory() / f"{cache_base}-{model_key}-related-email-checkpoint.json"
+            try:
+                result = run_live_related_screen(
+                    client,
+                    model,
+                    str(record.get("digest", "")),
+                    documents,
+                    arguments.repeats,
+                    cache_path,
+                    resume=not arguments.no_resume,
+                )
+                try:
+                    residency = client.residency(
+                        model,
+                        int(record.get("advertised_context", 0) or 0),
+                        float(config["vram_cap_gib"]),
+                        required_context=16_384,
+                    ).as_dict()
+                except ModelError as error:
+                    residency = {"eligible": False, "reason": str(error)}
+                run_passed = bool(
+                    result.get("complete")
+                    and result.get("quality_gate_pass")
+                    and residency.get("eligible")
+                )
+                live["runs"].append(
+                    {
+                        "model": model,
+                        "model_digest": record.get("digest", ""),
+                        "checkpoint": str(cache_path),
+                        "residency": residency,
+                        "passed": run_passed,
+                        "result": result,
+                    }
+                )
+                live_passed = live_passed and run_passed
+                if not run_passed:
+                    break
+            finally:
+                try:
+                    client.unload(model)
+                except ModelError:
+                    pass
+    report["live"] = live
+    report["manifest"] = {
+        "implementation_digest": implementation_digest(),
+        "source_drift": source_drift(),
+        "seed": 0,
+        "loopback_only": True,
+    }
+    paths = write_related_email_report(report_directory(), arguments.name, report)
+    print(
+        json.dumps(
+            {
+                "hard_contract_pass": report["hard_contract_pass"],
+                "production_ready": False,
+                "live_passed": live_passed if live["requested"] and not live["dry_run"] else None,
+                "reports": {key: str(value) for key, value in paths.items()},
+            },
+            indent=2,
+            sort_keys=True,
+        )
+    )
+    return 1 if live["requested"] and not live["dry_run"] and not live_passed else 0
+
+
+def slot_candidate_evaluate(arguments: argparse.Namespace) -> int:
+    """Evaluate host-owned source candidates and optional model ID selection."""
+    if not 1 <= arguments.repeats <= 3:
+        raise ValueError("slot-candidate repeats must be between 1 and 3")
+    report = evaluate_slot_candidates_deterministic()
+    requested_models = list(arguments.chat_model) or ["qwen3:8b"]
+    live: dict[str, Any] = {
+        "requested": bool(arguments.live),
+        "dry_run": bool(arguments.dry_run),
+        "plan": slot_candidate_live_plan(requested_models, arguments.repeats),
+        "runs": [],
+    }
+    live_passed = True
+    if arguments.live and not arguments.dry_run:
+        config = read_json(CONFIG / "models.json")
+        client = model_client()
+        client.vram_cap_gib = float(config["vram_cap_gib"])
+        discovered = {item["name"]: item for item in client.discover()}
+        cache_base = arguments.cache_name or arguments.name
+        for model in requested_models:
+            record = discovered.get(model)
+            if not record or "chat" not in record.get("roles", []):
+                raise ModelError(f"Chat model is unavailable or incompatible: {model}")
+            if int(record.get("advertised_context", 0) or 0) < 16_384:
+                raise ModelError(f"Chat model context is too small for slot-candidate screen: {model}")
+            model_key = sha256(model.encode("utf-8")).hexdigest()[:12]
+            cache_path = report_directory() / f"{cache_base}-{model_key}-slot-candidate-checkpoint.json"
+            try:
+                result = run_live_slot_candidate_screen(
+                    client,
+                    model,
+                    str(record.get("digest", "")),
+                    arguments.repeats,
+                    cache_path,
+                    resume=not arguments.no_resume,
+                )
+                try:
+                    residency = client.residency(
+                        model,
+                        int(record.get("advertised_context", 0) or 0),
+                        float(config["vram_cap_gib"]),
+                        required_context=16_384,
+                    ).as_dict()
+                except ModelError as error:
+                    residency = {"eligible": False, "reason": str(error)}
+                run_passed = bool(
+                    result.get("complete")
+                    and result.get("quality_gate_pass")
+                    and residency.get("eligible")
+                )
+                live["runs"].append(
+                    {
+                        "model": model,
+                        "model_digest": record.get("digest", ""),
+                        "checkpoint": str(cache_path),
+                        "residency": residency,
+                        "passed": run_passed,
+                        "result": result,
+                    }
+                )
+                live_passed = live_passed and run_passed
+                if not run_passed:
+                    break
+            finally:
+                try:
+                    client.unload(model)
+                except ModelError:
+                    pass
+    report["live"] = live
+    report["manifest"] = {
+        "implementation_digest": implementation_digest(),
+        "source_drift": source_drift(),
+        "seed": 0,
+        "loopback_only": True,
+    }
+    paths = write_slot_candidate_report(report_directory(), arguments.name, report)
+    print(
+        json.dumps(
+            {
+                "hard_contract_pass": report["hard_contract_pass"],
+                "live_passed": live_passed if live["requested"] and not live["dry_run"] else None,
+                "production_ready": False,
+                "reports": {key: str(value) for key, value in paths.items()},
+            },
+            indent=2,
+            sort_keys=True,
+        )
+    )
+    return 1 if live["requested"] and not live["dry_run"] and not live_passed else 0
+
+
+def structured_memory_evaluate(arguments: argparse.Namespace) -> int:
+    """Evaluate host-built candidate-only thread memory."""
+    if not 1 <= arguments.repeats <= 3:
+        raise ValueError("structured-memory repeats must be between 1 and 3")
+    report = evaluate_structured_memory_deterministic()
+    documents, _ = related_email_fixture()
+    requested_models = list(arguments.chat_model) or ["qwen3:8b"]
+    live: dict[str, Any] = {
+        "requested": bool(arguments.live),
+        "dry_run": bool(arguments.dry_run),
+        "plan": structured_memory_live_plan(requested_models, arguments.repeats),
+        "runs": [],
+    }
+    live_passed = True
+    if arguments.live and not arguments.dry_run:
+        config = read_json(CONFIG / "models.json")
+        client = model_client()
+        client.vram_cap_gib = float(config["vram_cap_gib"])
+        discovered = {item["name"]: item for item in client.discover()}
+        cache_base = arguments.cache_name or arguments.name
+        for model in requested_models:
+            record = discovered.get(model)
+            if not record or "chat" not in record.get("roles", []):
+                raise ModelError(f"Chat model is unavailable or incompatible: {model}")
+            if int(record.get("advertised_context", 0) or 0) < 16_384:
+                raise ModelError(
+                    f"Chat model context is too small for structured-memory screen: {model}"
+                )
+            model_key = sha256(model.encode("utf-8")).hexdigest()[:12]
+            cache_path = (
+                report_directory()
+                / f"{cache_base}-{model_key}-structured-memory-checkpoint.json"
+            )
+            try:
+                result = run_live_structured_memory_screen(
+                    client,
+                    model,
+                    str(record.get("digest", "")),
+                    documents,
+                    arguments.repeats,
+                    cache_path,
+                    resume=not arguments.no_resume,
+                )
+                try:
+                    residency = client.residency(
+                        model,
+                        int(record.get("advertised_context", 0) or 0),
+                        float(config["vram_cap_gib"]),
+                        required_context=16_384,
+                    ).as_dict()
+                except ModelError as error:
+                    residency = {"eligible": False, "reason": str(error)}
+                run_passed = bool(
+                    result.get("complete")
+                    and result.get("quality_gate_pass")
+                    and residency.get("eligible")
+                )
+                live["runs"].append(
+                    {
+                        "model": model,
+                        "model_digest": record.get("digest", ""),
+                        "checkpoint": str(cache_path),
+                        "residency": residency,
+                        "passed": run_passed,
+                        "result": result,
+                    }
+                )
+                live_passed = live_passed and run_passed
+                if not run_passed:
+                    break
+            finally:
+                try:
+                    client.unload(model)
+                except ModelError:
+                    pass
+    report["live"] = live
+    report["manifest"] = {
+        "implementation_digest": implementation_digest(),
+        "source_drift": source_drift(),
+        "seed": 0,
+        "loopback_only": True,
+    }
+    paths = write_structured_memory_report(
+        report_directory(), arguments.name, report
+    )
+    print(
+        json.dumps(
+            {
+                "hard_contract_pass": report["hard_contract_pass"],
+                "live_passed": (
+                    live_passed
+                    if live["requested"] and not live["dry_run"]
+                    else None
+                ),
+                "production_ready": False,
+                "reports": {key: str(value) for key, value in paths.items()},
+            },
+            indent=2,
+            sort_keys=True,
+        )
+    )
+    return 1 if live["requested"] and not live["dry_run"] and not live_passed else 0
+
+
+def structured_memory_qualify(arguments: argparse.Namespace) -> int:
+    if not 1 <= arguments.repeats <= 3:
+        raise ValueError("qualification repeats must be between 1 and 3")
+    report = evaluate_structured_memory_qualification()
+    requested_models = arguments.chat_model or ["qwen3:8b"]
+    live = {
+        "requested": bool(arguments.live),
+        "dry_run": bool(arguments.dry_run),
+        "plan": qualification_live_plan(requested_models, arguments.repeats),
+        "runs": [],
+    }
+    live_passed = True
+    if arguments.live and not arguments.dry_run:
+        if not report["hard_contract_pass"]:
+            raise RuntimeError("deterministic qualification prerequisite failed")
+        config = read_json(CONFIG / "models.json")
+        client = model_client()
+        client.vram_cap_gib = float(config["vram_cap_gib"])
+        discovered = {item["name"]: item for item in client.discover()}
+        cache_base = arguments.cache_name or arguments.name
+        for model in requested_models:
+            record = discovered.get(model)
+            if not record or "chat" not in record.get("roles", []):
+                raise ModelError(f"Chat model is unavailable or incompatible: {model}")
+            advertised_context = int(record.get("advertised_context", 0) or 0)
+            if advertised_context < 16_384:
+                raise ModelError(
+                    f"Chat model context is too small for qualification: {model}"
+                )
+            model_key = sha256(model.encode("utf-8")).hexdigest()[:12]
+            cache_path = (
+                report_directory()
+                / f"{cache_base}-{model_key}-qualification-checkpoint.json"
+            )
+            try:
+                result = run_live_qualification(
+                    client,
+                    model,
+                    str(record.get("digest", "")),
+                    arguments.repeats,
+                    cache_path,
+                    resume=not arguments.no_resume,
+                )
+                try:
+                    residency = client.residency(
+                        model,
+                        advertised_context,
+                        float(config["vram_cap_gib"]),
+                        required_context=16_384,
+                    ).as_dict()
+                except ModelError as error:
+                    residency = {"eligible": False, "reason": str(error)}
+                run_passed = bool(
+                    result.get("complete")
+                    and result.get("quality_gate_pass")
+                    and residency.get("eligible")
+                )
+                live["runs"].append(
+                    {
+                        "model": model,
+                        "model_digest": record.get("digest", ""),
+                        "checkpoint": str(cache_path),
+                        "residency": residency,
+                        "passed": run_passed,
+                        "result": result,
+                    }
+                )
+                live_passed = live_passed and run_passed
+                if not run_passed:
+                    break
+            finally:
+                try:
+                    client.unload(model)
+                except ModelError:
+                    pass
+    report["live"] = live
+    report["manifest"] = {
+        "implementation_digest": implementation_digest(),
+        "source_drift": source_drift(),
+        "seed": 0,
+        "loopback_only": True,
+    }
+    paths = write_qualification_report(report_directory(), arguments.name, report)
+    print(
+        json.dumps(
+            {
+                "hard_contract_pass": report["hard_contract_pass"],
+                "live_passed": (
+                    live_passed
+                    if live["requested"] and not live["dry_run"]
+                    else None
+                ),
+                "production_ready": False,
+                "reports": {key: str(value) for key, value in paths.items()},
+            },
+            indent=2,
+            sort_keys=True,
+        )
+    )
+    return 1 if live["requested"] and not live["dry_run"] and not live_passed else (
+        0 if report["hard_contract_pass"] else 1
+    )
 
 
 def thread_memory_evaluate(arguments: argparse.Namespace) -> int:
@@ -2135,6 +2657,106 @@ def parser() -> argparse.ArgumentParser:
         help="reuse a named context cache while writing a different report",
     )
     contextual_rag_parser.set_defaults(handler=contextual_rag_evaluate)
+
+    context_ladder_parser = commands.add_parser("context-ladder-evaluate")
+    context_ladder_parser.add_argument(
+        "--chat-model", action="append", default=[], help="Loopback chat model for an opt-in live screen"
+    )
+    context_ladder_parser.add_argument("--repeats", type=int, default=1)
+    context_ladder_parser.add_argument("--live", action="store_true")
+    context_ladder_parser.add_argument(
+        "--include-large-pages",
+        action="store_true",
+        help="Run bounded page metadata extraction for synthetic sources above 48K characters",
+    )
+    context_ladder_parser.add_argument(
+        "--dry-run",
+        action="store_true",
+        help="Write the deterministic report and live-call plan without contacting Ollama",
+    )
+    context_ladder_parser.add_argument("--no-resume", action="store_true")
+    context_ladder_parser.add_argument("--cache-name", type=artifact_name)
+    context_ladder_parser.add_argument(
+        "--name", type=artifact_name, default="context-ladder-evaluation"
+    )
+    context_ladder_parser.set_defaults(handler=context_ladder_evaluate)
+
+    related_parser = commands.add_parser("related-email-rag-evaluate")
+    related_parser.add_argument(
+        "--chat-model",
+        action="append",
+        default=[],
+        help="Loopback chat model for the staged whole-email screen",
+    )
+    related_parser.add_argument("--repeats", type=int, default=1)
+    related_parser.add_argument("--live", action="store_true")
+    related_parser.add_argument(
+        "--dry-run",
+        action="store_true",
+        help="Write deterministic results and the exact live-call plan without Ollama",
+    )
+    related_parser.add_argument("--no-resume", action="store_true")
+    related_parser.add_argument("--cache-name", type=artifact_name)
+    related_parser.add_argument(
+        "--name", type=artifact_name, default="related-email-rag-evaluation"
+    )
+    related_parser.set_defaults(handler=related_email_rag_evaluate)
+
+    slot_candidate_parser = commands.add_parser("slot-candidate-evaluate")
+    slot_candidate_parser.add_argument(
+        "--chat-model",
+        action="append",
+        default=[],
+        help="Loopback chat model for host-owned slot candidate selection",
+    )
+    slot_candidate_parser.add_argument("--repeats", type=int, default=1)
+    slot_candidate_parser.add_argument("--live", action="store_true")
+    slot_candidate_parser.add_argument(
+        "--dry-run",
+        action="store_true",
+        help="Write deterministic candidate results and the live-call plan without Ollama",
+    )
+    slot_candidate_parser.add_argument("--no-resume", action="store_true")
+    slot_candidate_parser.add_argument("--cache-name", type=artifact_name)
+    slot_candidate_parser.add_argument(
+        "--name", type=artifact_name, default="slot-candidate-evaluation"
+    )
+    slot_candidate_parser.set_defaults(handler=slot_candidate_evaluate)
+
+    structured_memory_parser = commands.add_parser("structured-memory-evaluate")
+    structured_memory_parser.add_argument(
+        "--chat-model",
+        action="append",
+        default=[],
+        help="Loopback chat model for candidate-only structured thread memory",
+    )
+    structured_memory_parser.add_argument("--repeats", type=int, default=1)
+    structured_memory_parser.add_argument("--live", action="store_true")
+    structured_memory_parser.add_argument(
+        "--dry-run",
+        action="store_true",
+        help="Write deterministic structured-memory results and live plan without Ollama",
+    )
+    structured_memory_parser.add_argument("--no-resume", action="store_true")
+    structured_memory_parser.add_argument("--cache-name", type=artifact_name)
+    structured_memory_parser.add_argument(
+        "--name", type=artifact_name, default="structured-memory-evaluation"
+    )
+    structured_memory_parser.set_defaults(handler=structured_memory_evaluate)
+
+    qualification_parser = commands.add_parser("structured-memory-qualify")
+    qualification_parser.add_argument("--chat-model", action="append", default=[])
+    qualification_parser.add_argument("--repeats", type=int, default=3)
+    qualification_parser.add_argument("--live", action="store_true")
+    qualification_parser.add_argument("--dry-run", action="store_true")
+    qualification_parser.add_argument("--no-resume", action="store_true")
+    qualification_parser.add_argument("--cache-name", type=artifact_name)
+    qualification_parser.add_argument(
+        "--name",
+        type=artifact_name,
+        default="structured-memory-qualification",
+    )
+    qualification_parser.set_defaults(handler=structured_memory_qualify)
 
     thread_memory_parser = commands.add_parser("thread-memory-evaluate")
     thread_memory_parser.add_argument(
