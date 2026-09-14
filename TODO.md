@@ -23,12 +23,18 @@
   Result: `articles/09-structured-memory-v4-qualification.md` records the trust
   boundary, complete synthetic examples, exact prompt/output shape, v3/v4 and
   model comparisons, DeepSeek failure, performance, reproduction, and limits.
-- [ ] Validate and publish the current lab snapshot.
+- [x] Validate and publish the current lab snapshot.
   Contract: never commit profiles, real mail, credentials, model caches, or
   transient checkpoints; publish only to the configured personal GitHub remote.
   Validation: build, 202-test suite, benchmark record, result-manifest verify,
   secret/private-artifact scan, Git diff check, commit, push, and remote commit
   verification all pass.
+  Result: build digest
+  `210743be72073bef2ff8ca287b2e79f03ae724c9acb067d993aa71d9281a31a8`,
+  202/202 tests, 18-document-set link validation, report-manifest verification,
+  and the staged privacy scan passed. Publication commit `58ea17e` was pushed
+  to `d3v4shish/thunderbird-ai-pipeline-lab` on `main`; the follow-up commit
+  records this completed gate.
 
 ## Milestone 19: structured-memory adversarial qualification
 
